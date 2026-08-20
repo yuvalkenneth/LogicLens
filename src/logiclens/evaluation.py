@@ -57,7 +57,7 @@ def run_codex_evaluation(
         f"{case['case_id']}-{timestamp}-{uuid4().hex[:6]}"
     )
     session.mkdir(parents=True, exist_ok=False)
-    output_schema = _bundled_answer_schema(root, case)
+    output_schema = _codex_answer_schema(root, case)
     schema_path = session / "answer.schema.json"
     _write_json(schema_path, output_schema)
 
@@ -382,15 +382,20 @@ def _resolve_codex(explicit: Path | None) -> tuple[Path, str | None]:
     raise FileNotFoundError("No working Codex CLI found; pass --codex with its path")
 
 
-def _bundled_answer_schema(root: Path, case: dict[str, Any]) -> dict[str, Any]:
+def _codex_answer_schema(root: Path, case: dict[str, Any]) -> dict[str, Any]:
     schema = _read_json(root / case["agent_input"]["output_schema"])
     evidence = _read_json(root / "evals" / "schemas" / "evidence.schema.json")
 
     def replace(value: Any) -> Any:
         if isinstance(value, dict):
             if value.get("$ref", "").endswith("/evidence.schema.json"):
-                return evidence
-            return {key: replace(item) for key, item in value.items()}
+                return replace(evidence)
+            converted = {
+                ("anyOf" if key == "oneOf" else key): replace(item)
+                for key, item in value.items()
+                if key not in {"$schema", "$id", "allOf"}
+            }
+            return converted
         if isinstance(value, list):
             return [replace(item) for item in value]
         return value
@@ -425,6 +430,10 @@ def _check_answer(answer: Any, case: dict[str, Any]) -> None:
     }
     if actual_turns != expected_turns:
         raise ValueError("Codex answer does not contain exactly the requested turns")
+    for turn in answer["turns"]:
+        for claim in turn["claims"]:
+            if claim["stance"] in {"confirmed", "inferred"} and not claim["evidence"]:
+                raise ValueError("confirmed and inferred claims require evidence")
 
 
 def _project_root(path: Path) -> Path:

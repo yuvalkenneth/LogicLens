@@ -6,6 +6,8 @@ from jsonschema import Draft202012Validator
 
 from logiclens.evaluation import (
     _build_prompt,
+    _check_answer,
+    _codex_answer_schema,
     _extract_usage,
     _parse_events,
     run_codex_evaluation,
@@ -48,6 +50,36 @@ def test_event_telemetry_uses_last_usage_and_completed_tools() -> None:
         "tool_calls": 1,
         "raw_files_read": None,
     }
+
+
+def test_codex_schema_uses_supported_composition() -> None:
+    case = json.loads(CASE.read_text(encoding="utf-8"))
+    schema = _codex_answer_schema(ROOT, case)
+    encoded = json.dumps(schema)
+
+    assert '"allOf"' not in encoded
+    assert '"oneOf"' not in encoded
+    assert '"anyOf"' in encoded
+    assert "evidence.schema.json" not in encoded
+
+
+def test_strict_claim_evidence_postcondition() -> None:
+    case = json.loads(CASE.read_text(encoding="utf-8"))
+    answer = {
+        "contract_version": "0.1",
+        "case_id": case["case_id"],
+        "turns": [
+            {
+                "turn_id": "onboarding",
+                "claims": [
+                    {"stance": "confirmed", "evidence": []},
+                ],
+            }
+        ],
+    }
+
+    with pytest.raises(ValueError, match="require evidence"):
+        _check_answer(answer, case)
 
 
 def test_dry_run_materializes_isolated_paired_artifacts(tmp_path: Path) -> None:
