@@ -94,7 +94,8 @@
               "properties": {
                 "commit": {"type": "string", "minLength": 1},
                 "version": {"type": "string", "minLength": 1},
-                "index_wall_ms": {"type": "integer", "minimum": 0}
+                "index_wall_ms": {"type": ["integer", "null"], "minimum": 0},
+                "invoked": {"type": "boolean"}
               }
             }
           ]

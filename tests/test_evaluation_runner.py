@@ -9,6 +9,8 @@ from logiclens.evaluation import (
     _check_answer,
     _codex_answer_schema,
     _extract_usage,
+    _install_logiclens_skill,
+    _logiclens_invoked,
     _parse_events,
     run_codex_evaluation,
 )
@@ -24,15 +26,13 @@ CASE = (
 )
 
 
-def test_condition_prompts_do_not_leak_oracle() -> None:
+def test_conditions_use_the_same_prompt() -> None:
     case = json.loads(CASE.read_text(encoding="utf-8"))
-    native, _ = _build_prompt(case, "native")
-    logiclens, _ = _build_prompt(case, "logiclens")
+    prompt, wrapper = _build_prompt(case)
 
-    assert "LogicLens is unavailable" in native
-    assert ".logiclens/repository-context.json" in logiclens
-    assert "build_service constructs" not in native
-    assert "build_service constructs" not in logiclens
+    assert "LogicLens" not in prompt
+    assert "build_service constructs" not in prompt
+    assert "identical user task" in wrapper
 
 
 def test_event_telemetry_uses_last_usage_and_completed_tools() -> None:
@@ -52,14 +52,22 @@ def test_event_telemetry_uses_last_usage_and_completed_tools() -> None:
     }
 
 
+def test_logiclens_invocation_is_detected_from_the_tool_trace() -> None:
+    events = _parse_events(
+        '{"type":"item.completed","item":{"type":"command_execution",'
+        '"command":"logiclens map . --db .logiclens/index.sqlite"}}'
+    )
+    assert _logiclens_invoked(events)
+
+
 def test_codex_schema_uses_supported_composition() -> None:
     case = json.loads(CASE.read_text(encoding="utf-8"))
-    schema = _codex_answer_schema(ROOT, case, "logiclens")
+    schema = _codex_answer_schema(ROOT, case)
     encoded = json.dumps(schema)
 
     assert '"allOf"' not in encoded
     assert '"oneOf"' not in encoded
-    assert '"anyOf"' in encoded
+    assert '"logiclens_ref"' not in encoded
     assert '"uniqueItems"' not in encoded
     assert "evidence.schema.json" not in encoded
     assert schema["properties"]["contract_version"]["type"] == "string"
@@ -68,8 +76,14 @@ def test_codex_schema_uses_supported_composition() -> None:
         "onboarding"
     ]
 
-    native = json.dumps(_codex_answer_schema(ROOT, case, "native"))
-    assert "logiclens_ref" not in native
+
+
+def test_logiclens_skill_is_added_only_to_the_treatment_workspace(tmp_path: Path) -> None:
+    workspace = tmp_path / "repository"
+    workspace.mkdir()
+    _install_logiclens_skill(ROOT, workspace)
+
+    assert (workspace / ".agents" / "skills" / "logiclens" / "SKILL.md").is_file()
 
 
 def test_strict_claim_evidence_postcondition() -> None:
@@ -129,7 +143,7 @@ def test_dry_run_materializes_isolated_paired_artifacts(tmp_path: Path) -> None:
     native = next(result for result in results if result["condition"] == "native")
     assert native["environment"]["logiclens"] is None
     logiclens = next(result for result in results if result["condition"] == "logiclens")
-    assert logiclens["environment"]["logiclens"]["index_wall_ms"] >= 0
+    assert logiclens["environment"]["logiclens"]["index_wall_ms"] is None
     assert json.loads((session / "scoring-packet.blind.json").read_text())["answers"] == []
 
 

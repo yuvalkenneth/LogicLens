@@ -59,8 +59,9 @@ role case declares the role file and its output schema. Initial roles are:
 Each end-to-end case runs both required conditions:
 
 - `native`: LogicLens is unavailable; the harness uses its normal repository tools.
-- `logiclens`: the harness must start from LogicLens. Targeted source reads are
-  allowed after indexed investigation and are counted.
+- `logiclens`: the LogicLens skill and CLI are available to the harness. The user
+  question and answer schema remain identical; the harness chooses whether to invoke
+  LogicLens. Targeted source reads are allowed and counted.
 
 A valid pair holds these values constant:
 
@@ -151,9 +152,11 @@ resolved relations are more harmful than honest abstentions.
 
 ## Session cost
 
-For a one-turn case, LogicLens indexing time is included in the condition cost. A
-future multi-turn case reuses one index within that case and reports both total and
-per-turn cost. It must never reuse the index across repetitions or conditions.
+For a one-turn case, LogicLens indexing time is included in the condition wall time.
+If the harness cannot isolate that timing from an agent tool trace, it records
+`index_wall_ms: null`; it must not record a fabricated zero. A future multi-turn
+case reuses one index within that case and reports both total and per-turn cost. It
+must never reuse the index across repetitions or conditions.
 
 ## First benchmark
 
@@ -173,10 +176,10 @@ logiclens eval evals/benchmarks/tiny_python/repository-understanding.case.json \
 ```
 
 The runner creates a fresh, history-free fixture copy for every condition and
-repetition. LogicLens indexing happens inside its copy and is included in wall time.
-Each session contains raw Codex events, structured run results, a condition-blind
-scoring packet, and a separate private key. Outputs remain unscored until the blind
-packet receives structured human or rubric-based judgments.
+repetition. In the LogicLens condition it exposes the repository-local skill and
+CLI, but does not pre-index the repository or alter the user prompt. Each session
+contains raw Codex events, structured run results, a condition-blind scoring packet,
+and a separate private key.
 
 ## Versioning
 

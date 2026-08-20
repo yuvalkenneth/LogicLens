@@ -5,6 +5,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from importlib import metadata
 import json
+import os
 from pathlib import Path
 import random
 import shutil
@@ -57,11 +58,8 @@ def run_codex_evaluation(
         f"{case['case_id']}-{timestamp}-{uuid4().hex[:6]}"
     )
     session.mkdir(parents=True, exist_ok=False)
-    schema_paths = {}
-    for condition in conditions:
-        schema_path = session / f"answer.{condition}.schema.json"
-        _write_json(schema_path, _codex_answer_schema(root, case, condition))
-        schema_paths[condition] = schema_path
+    schema_path = session / "answer.schema.json"
+    _write_json(schema_path, _codex_answer_schema(root, case))
 
     run_paths: list[str] = []
     statuses: list[str] = []
@@ -77,7 +75,7 @@ def run_codex_evaluation(
             executable=executable,
             harness_version=harness_version,
             model=model,
-            output_schema=schema_paths[condition],
+            output_schema=schema_path,
             session=session,
             dry_run=dry_run,
         )
@@ -140,22 +138,15 @@ def _run_once(
     with tempfile.TemporaryDirectory(prefix="logiclens-eval-") as temporary:
         workspace = Path(temporary) / "repository"
         shutil.copytree(fixture, workspace)
-        index_wall_ms = 0
         if condition == "logiclens":
-            index_started = time.monotonic()
-            inventory = build_inventory(workspace)
-            database = workspace / ".logiclens" / "index.sqlite"
-            create_database(database, inventory, analyze_python_modules(inventory))
-            context = read_repository_brief_context(database)
-            _write_json(workspace / ".logiclens" / "repository-context.json", context)
-            index_wall_ms = round((time.monotonic() - index_started) * 1000)
+            _install_logiclens_skill(root, workspace)
             logiclens_environment = {
                 "commit": _git_commit(root),
                 "version": _logiclens_version(),
-                "index_wall_ms": index_wall_ms,
+                "index_wall_ms": None,
             }
 
-        prompt, wrapper = _build_prompt(case, condition)
+        prompt, wrapper = _build_prompt(case)
         prompt_path = run_directory / "prompt.txt"
         prompt_path.write_text(prompt, encoding="utf-8")
         raw_path = run_directory / "events.jsonl"
@@ -200,6 +191,7 @@ def _run_once(
                     capture_output=True,
                     timeout=case["protocol"]["budget"]["wall_seconds"],
                     check=False,
+                    env=_codex_environment(root, condition),
                 )
                 raw_path.write_text(completed.stdout, encoding="utf-8")
                 stderr_path.write_text(completed.stderr, encoding="utf-8")
@@ -219,6 +211,8 @@ def _run_once(
                 status = "failed"
                 error = str(exc)
 
+    if logiclens_environment is not None:
+        logiclens_environment["invoked"] = _logiclens_invoked(events)
     usage = _extract_usage(events)
     result = {
         "contract_version": "0.1",
@@ -272,28 +266,10 @@ def _run_once(
     return result
 
 
-def _build_prompt(case: dict[str, Any], condition: str) -> tuple[str, str]:
-    condition_data = next(
-        item
-        for item in case["protocol"]["conditions"]
-        if item["condition_id"] == condition
-    )
-    if condition == "logiclens":
-        method = (
-            "Begin with .logiclens/repository-context.json, which contains a deterministic "
-            "LogicLens file/module/import/symbol map. Treat it as the primary evidence map. "
-            "Then make only targeted source reads needed to confirm behavior. LogicLens "
-            "references must be exactly file:<path>, module:<name>, a symbol id, or "
-            "import:<source>-><target> from that context. Use source spans otherwise."
-        )
-    else:
-        method = (
-            "LogicLens is unavailable. Use the coding harness's normal local "
-            "repository tools. Emit source_span evidence only, never logiclens_ref."
-        )
+def _build_prompt(case: dict[str, Any]) -> tuple[str, str]:
     wrapper = (
-        "Fresh snapshot; no network or repository history; condition-specific investigation; "
-        "JSON answer constrained by the case output schema."
+        "Fresh snapshot; no network or repository history; identical user task and "
+        "answer schema across conditions."
     )
     turns = "\n\n".join(
         f"Turn {turn['turn_id']}: {turn['prompt']}"
@@ -305,16 +281,14 @@ Rules:
 - Do not use the network, Git history, or files outside the current workspace.
 - Do not modify the workspace.
 - Do not invent missing behavior. Separate confirmed facts, inferences, and unknowns.
-- Cite exact source spans for source claims. A source span uses 1-based line numbers.
+- Cite exact source spans for every confirmed or inferred claim and relation.
+  A source span uses 1-based line numbers.
 - Return only JSON matching the supplied output schema.
 - Set contract_version to \"0.1\" and case_id to \"{case['case_id']}\".
-- Use exactly these turn_id values: {', '.join(turn['turn_id'] for turn in case['agent_input']['turns'])}.
+- Use exactly these turn_id values:
+  {', '.join(turn['turn_id'] for turn in case['agent_input']['turns'])}.
 - reading_order contains repository-relative file paths, not claim IDs.
 - Be concise: at most 8 claims, 6 relations, and 2 evidence items per claim or relation.
-
-Investigation method:
-{method}
-{condition_data.get('instructions', '')}
 
 Task:
 {turns}
@@ -388,13 +362,10 @@ def _resolve_codex(explicit: Path | None) -> tuple[Path, str | None]:
     raise FileNotFoundError("No working Codex CLI found; pass --codex with its path")
 
 
-def _codex_answer_schema(
-    root: Path, case: dict[str, Any], condition: str
-) -> dict[str, Any]:
+def _codex_answer_schema(root: Path, case: dict[str, Any]) -> dict[str, Any]:
     schema = _read_json(root / case["agent_input"]["output_schema"])
     evidence = _read_json(root / "evals" / "schemas" / "evidence.schema.json")
-    if condition == "native":
-        evidence = evidence["oneOf"][0]
+    evidence = evidence["oneOf"][0]
 
     def replace(value: Any) -> Any:
         if isinstance(value, dict):
@@ -439,6 +410,35 @@ def _json_type(value: Any) -> str:
     if value is None:
         return "null"
     raise ValueError(f"unsupported JSON const type: {type(value).__name__}")
+
+
+def _install_logiclens_skill(root: Path, workspace: Path) -> None:
+    source = root / "skills" / "logiclens"
+    if not source.is_dir():
+        raise FileNotFoundError(f"LogicLens skill does not exist: {source}")
+    shutil.copytree(source, workspace / ".agents" / "skills" / "logiclens")
+
+
+def _codex_environment(root: Path, condition: str) -> dict[str, str]:
+    environment = os.environ.copy()
+    if condition == "logiclens":
+        executable = root / ".venv" / "bin" / "logiclens"
+        if not executable.is_file():
+            raise FileNotFoundError(
+                "LogicLens executable is required for the skill-available condition"
+            )
+        environment["PATH"] = f"{executable.parent}{os.pathsep}{environment['PATH']}"
+    return environment
+
+
+def _logiclens_invoked(events: Sequence[dict[str, Any]]) -> bool:
+    return any(
+        event.get("type") == "item.completed"
+        and isinstance(event.get("item"), dict)
+        and event["item"].get("type") == "command_execution"
+        and "logiclens" in event["item"].get("command", "")
+        for event in events
+    )
 
 
 def _check_case(case: dict[str, Any], root: Path) -> None:
