@@ -1,0 +1,94 @@
+{
+  "description": "Selected golden facts for the tiny Python fixture; not an exhaustive AST graph.",
+  "span_convention": "Lines are 1-based inclusive; columns are 1-based with an exclusive end column.",
+  "nodes": [
+    {"id": "file:src/shop/main.py", "kind": "file", "name": "src/shop/main.py"},
+    {"id": "file:src/shop/service.py", "kind": "file", "name": "src/shop/service.py"},
+    {"id": "file:src/shop/repository.py", "kind": "file", "name": "src/shop/repository.py"},
+    {"id": "function:shop.main.build_service", "kind": "function", "name": "build_service"},
+    {"id": "function:shop.main.create_order", "kind": "function", "name": "create_order"},
+    {"id": "class:shop.service.OrderService", "kind": "class", "name": "OrderService"},
+    {"id": "method:shop.service.OrderService.create", "kind": "method", "name": "create"},
+    {"id": "class:shop.repository.OrderRepository", "kind": "class", "name": "OrderRepository"},
+    {"id": "method:shop.repository.OrderRepository.save", "kind": "method", "name": "save"}
+  ],
+  "edges": [
+    {
+      "source": "file:src/shop/main.py",
+      "target": "function:shop.main.build_service",
+      "kind": "DEFINES",
+      "origin": "EXTRACTED",
+      "evidence": {"file": "src/shop/main.py", "start_line": 5, "start_column": 1, "end_line": 7, "end_column": 36}
+    },
+    {
+      "source": "file:src/shop/main.py",
+      "target": "function:shop.main.create_order",
+      "kind": "DEFINES",
+      "origin": "EXTRACTED",
+      "evidence": {"file": "src/shop/main.py", "start_line": 10, "start_column": 1, "end_line": 12, "end_column": 36}
+    },
+    {
+      "source": "file:src/shop/service.py",
+      "target": "class:shop.service.OrderService",
+      "kind": "DEFINES",
+      "origin": "EXTRACTED",
+      "evidence": {"file": "src/shop/service.py", "start_line": 4, "start_column": 1, "end_line": 9, "end_column": 46}
+    },
+    {
+      "source": "class:shop.service.OrderService",
+      "target": "method:shop.service.OrderService.create",
+      "kind": "DEFINES",
+      "origin": "EXTRACTED",
+      "evidence": {"file": "src/shop/service.py", "start_line": 8, "start_column": 5, "end_line": 9, "end_column": 46}
+    },
+    {
+      "source": "file:src/shop/repository.py",
+      "target": "class:shop.repository.OrderRepository",
+      "kind": "DEFINES",
+      "origin": "EXTRACTED",
+      "evidence": {"file": "src/shop/repository.py", "start_line": 1, "start_column": 1, "end_line": 3, "end_column": 24}
+    },
+    {
+      "source": "class:shop.repository.OrderRepository",
+      "target": "method:shop.repository.OrderRepository.save",
+      "kind": "DEFINES",
+      "origin": "EXTRACTED",
+      "evidence": {"file": "src/shop/repository.py", "start_line": 2, "start_column": 5, "end_line": 3, "end_column": 24}
+    },
+    {
+      "source": "function:shop.main.build_service",
+      "target": "class:shop.repository.OrderRepository",
+      "kind": "CONSTRUCTS",
+      "origin": "RESOLVED",
+      "evidence": {"file": "src/shop/main.py", "start_line": 6, "start_column": 18, "end_line": 6, "end_column": 35}
+    },
+    {
+      "source": "function:shop.main.build_service",
+      "target": "class:shop.service.OrderService",
+      "kind": "CONSTRUCTS",
+      "origin": "RESOLVED",
+      "evidence": {"file": "src/shop/main.py", "start_line": 7, "start_column": 12, "end_line": 7, "end_column": 36}
+    },
+    {
+      "source": "function:shop.main.create_order",
+      "target": "function:shop.main.build_service",
+      "kind": "CALLS",
+      "origin": "RESOLVED",
+      "evidence": {"file": "src/shop/main.py", "start_line": 11, "start_column": 15, "end_line": 11, "end_column": 29}
+    },
+    {
+      "source": "function:shop.main.create_order",
+      "target": "method:shop.service.OrderService.create",
+      "kind": "CALLS",
+      "origin": "RESOLVED",
+      "evidence": {"file": "src/shop/main.py", "start_line": 12, "start_column": 12, "end_line": 12, "end_column": 36}
+    },
+    {
+      "source": "method:shop.service.OrderService.create",
+      "target": "method:shop.repository.OrderRepository.save",
+      "kind": "CALLS",
+      "origin": "RESOLVED",
+      "evidence": {"file": "src/shop/service.py", "start_line": 9, "start_column": 16, "end_line": 9, "end_column": 46}
+    }
+  ]
+}

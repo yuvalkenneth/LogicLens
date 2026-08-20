@@ -1,0 +1,2 @@
+"""Tiny Shop mapping fixture."""
+
