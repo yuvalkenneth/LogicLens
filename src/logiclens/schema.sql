@@ -19,3 +19,26 @@ CREATE TABLE files (
 );
 
 CREATE INDEX files_category_index ON files (category);
+
+CREATE TABLE modules (
+    id INTEGER PRIMARY KEY,
+    file_id INTEGER NOT NULL UNIQUE REFERENCES files (id),
+    name TEXT NOT NULL,
+    kind TEXT NOT NULL CHECK (kind IN ('package', 'module'))
+);
+
+CREATE INDEX modules_name_index ON modules (name);
+
+CREATE TABLE imports (
+    id INTEGER PRIMARY KEY,
+    source_module_id INTEGER NOT NULL REFERENCES modules (id),
+    imported_name TEXT NOT NULL,
+    target_module_id INTEGER REFERENCES modules (id),
+    start_line INTEGER NOT NULL,
+    start_column INTEGER NOT NULL,
+    end_line INTEGER NOT NULL,
+    end_column INTEGER NOT NULL
+);
+
+CREATE INDEX imports_source_index ON imports (source_module_id);
+CREATE INDEX imports_target_index ON imports (target_module_id);

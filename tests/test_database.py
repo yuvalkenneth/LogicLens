@@ -3,8 +3,9 @@ import sqlite3
 
 import pytest
 
-from logiclens.database import create_database, read_files
+from logiclens.database import create_database, read_files, read_imports, read_modules
 from logiclens.inventory import build_inventory
+from logiclens.python_modules import analyze_python_modules
 
 
 FIXTURE = Path(__file__).parent / "fixtures" / "tiny_python"
@@ -31,3 +32,19 @@ def test_database_is_not_overwritten(tmp_path: Path) -> None:
 
     with pytest.raises(FileExistsError):
         create_database(database, inventory)
+
+
+def test_python_structure_round_trip(tmp_path: Path) -> None:
+    inventory = build_inventory(FIXTURE)
+    structure = analyze_python_modules(inventory)
+    database = tmp_path / "tiny.sqlite"
+
+    create_database(database, inventory, structure)
+
+    assert read_modules(database) == structure.modules
+    imports = read_imports(database)
+    assert [(record.source_module, record.target_module) for record in imports] == [
+        ("shop.main", "shop.repository"),
+        ("shop.main", "shop.service"),
+        ("shop.service", "shop.repository"),
+    ]
