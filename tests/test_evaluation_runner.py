@@ -58,6 +58,11 @@ def test_logiclens_invocation_is_detected_from_the_tool_trace() -> None:
         '"command":"logiclens map . --db .logiclens/index.sqlite"}}'
     )
     assert _logiclens_invoked(events)
+    skill_read = _parse_events(
+        '{"type":"item.completed","item":{"type":"command_execution",'
+        '"command":"sed -n 1,20p .agents/skills/logiclens/SKILL.md"}}'
+    )
+    assert not _logiclens_invoked(skill_read)
 
 
 def test_codex_schema_uses_supported_composition() -> None:

@@ -8,6 +8,7 @@ import json
 import os
 from pathlib import Path
 import random
+import re
 import shutil
 import subprocess
 import tempfile
@@ -160,7 +161,7 @@ def _run_once(
             "--ignore-rules",
             "--skip-git-repo-check",
             "--sandbox",
-            "read-only",
+            "workspace-write",
             "--json",
             "--model",
             model,
@@ -279,7 +280,7 @@ def _build_prompt(case: dict[str, Any]) -> tuple[str, str]:
 
 Rules:
 - Do not use the network, Git history, or files outside the current workspace.
-- Do not modify the workspace.
+- Do not modify source files.
 - Do not invent missing behavior. Separate confirmed facts, inferences, and unknowns.
 - Cite exact source spans for every confirmed or inferred claim and relation.
   A source span uses 1-based line numbers.
@@ -436,7 +437,11 @@ def _logiclens_invoked(events: Sequence[dict[str, Any]]) -> bool:
         event.get("type") == "item.completed"
         and isinstance(event.get("item"), dict)
         and event["item"].get("type") == "command_execution"
-        and "logiclens" in event["item"].get("command", "")
+        and re.search(
+            r"(?:^|[\s;&|])logiclens\s+(?:map|context|validate-brief)(?:\s|$)",
+            event["item"].get("command", ""),
+        )
+        is not None
         for event in events
     )
 
