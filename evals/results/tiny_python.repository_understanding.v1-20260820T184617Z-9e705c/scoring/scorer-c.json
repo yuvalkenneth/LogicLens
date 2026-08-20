@@ -1,0 +1,1643 @@
+{
+  "scores": [
+    {
+      "case_id": "tiny_python.repository_understanding.v1",
+      "claim_judgments": [
+        {
+          "claim_id": "c1",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "purpose"
+          ],
+          "rationale": "The repository description and metadata support the purpose and Python requirement.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c2",
+          "evidence_verdict": "partial",
+          "matched_fact_ids": [
+            "declared-runtime-entrypoint"
+          ],
+          "rationale": "The conclusion is correct, but the cited function references do not themselves establish the claim about manifest scripts or repository-wide adapter absence.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c3",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "business-entry-function"
+          ],
+          "rationale": "create_order is the documented orchestration function and the cited references identify its service dependency.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c4",
+          "evidence_verdict": "partial",
+          "matched_fact_ids": [
+            "service-construction",
+            "order-flow"
+          ],
+          "rationale": "build_service evidence proves construction and injection, but the evidence list does not directly cover the claim that create_order subsequently calls service.create.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c5",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "order-flow",
+            "repository-behavior"
+          ],
+          "rationale": "The two method references support delegation and the unchanged return value.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c6",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "repository-behavior"
+          ],
+          "rationale": "The repository class and save method show that no state is retained and the string is merely returned.",
+          "verdict": "correct"
+        }
+      ],
+      "contract_version": "0.1",
+      "criterion_judgments": [
+        {
+          "criterion_id": "explain-purpose",
+          "rationale": "Purpose is accurate.",
+          "value": 1
+        },
+        {
+          "criterion_id": "distinguish-entrypoint",
+          "rationale": "The answer distinguishes the callable business entry from runtime adapters.",
+          "value": 1
+        },
+        {
+          "criterion_id": "trace-order-flow",
+          "rationale": "All construction, service, repository, and return steps are present.",
+          "value": 1
+        },
+        {
+          "criterion_id": "recommend-reading-order",
+          "rationale": "The reading order is coherent and complete.",
+          "value": 1
+        }
+      ],
+      "decision_judgments": [],
+      "human_audit": {
+        "notes": null,
+        "reviewer": null,
+        "status": "not_reviewed"
+      },
+      "metrics": {
+        "claim_precision": 1,
+        "correct_abstention_rate": 1,
+        "decision_precision": null,
+        "decision_recall": null,
+        "evidence_precision": 0.8333333333333334,
+        "false_abstention_rate": 0,
+        "relation_precision": 1,
+        "relation_recall": 0.45454545454545453,
+        "required_fact_recall": 1,
+        "task_success": 1,
+        "unsupported_claim_rate": 0
+      },
+      "relation_judgments": [
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|function:shop.main.build_service",
+          "rationale": "The referenced function contains the direct call.",
+          "relation_id": "r1",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.repository.OrderRepository",
+          "rationale": "build_service constructs OrderRepository.",
+          "relation_id": "r2",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.service.OrderService",
+          "rationale": "build_service constructs OrderService with the repository dependency.",
+          "relation_id": "r3",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|method:shop.service.OrderService.create",
+          "rationale": "The semantic delegation relation is the oracle call edge.",
+          "relation_id": "r4",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "method:shop.service.OrderService.create|CALLS|method:shop.repository.OrderRepository.save",
+          "rationale": "The semantic delegation relation is the oracle call edge.",
+          "relation_id": "r5",
+          "verdict": "correct"
+        }
+      ],
+      "run_id": "logiclens-r1-f1cf3c32",
+      "score_id": "score.blind-c.logiclens-r1-f1cf3c32",
+      "scorer": {
+        "blinded_to_condition": true,
+        "blinded_to_harness": true,
+        "configuration": {
+          "rubric_contract_version": "0.1",
+          "scoring_basis": "authorized-oracle-and-source-only"
+        },
+        "kind": "llm",
+        "name": "context-free-blind-scorer-c",
+        "version": "1"
+      },
+      "validity": {
+        "evidence_resolvable": true,
+        "output_schema_valid": true,
+        "snapshot_match": true
+      }
+    },
+    {
+      "case_id": "tiny_python.repository_understanding.v1",
+      "claim_judgments": [
+        {
+          "claim_id": "c1",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "purpose"
+          ],
+          "rationale": "The README directly states the three-layer order-creation purpose.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c2",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "declared-runtime-entrypoint"
+          ],
+          "rationale": "The manifest and complete main module support the scoped absence of executable, HTTP, and CLI declarations.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c3",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "business-entry-function"
+          ],
+          "rationale": "create_order is the documented orchestration function and is appropriately characterized as the likely business entry.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c4",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "service-construction"
+          ],
+          "rationale": "The cited function constructs OrderRepository and passes it to OrderService.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c5",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "order-flow"
+          ],
+          "rationale": "The cited spans establish create_order, service creation, and delegation to repository.save.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c6",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "repository-behavior"
+          ],
+          "rationale": "save returns its argument and has no stateful operation.",
+          "verdict": "correct"
+        }
+      ],
+      "contract_version": "0.1",
+      "criterion_judgments": [
+        {
+          "criterion_id": "explain-purpose",
+          "rationale": "Purpose is accurate and evidenced.",
+          "value": 1
+        },
+        {
+          "criterion_id": "distinguish-entrypoint",
+          "rationale": "It clearly separates the likely business entry from absent runtime adapters.",
+          "value": 1
+        },
+        {
+          "criterion_id": "trace-order-flow",
+          "rationale": "The construction and full delegation path are complete.",
+          "value": 1
+        },
+        {
+          "criterion_id": "recommend-reading-order",
+          "rationale": "The order proceeds coherently from documentation to orchestration, service, and repository.",
+          "value": 1
+        }
+      ],
+      "decision_judgments": [],
+      "human_audit": {
+        "notes": null,
+        "reviewer": null,
+        "status": "not_reviewed"
+      },
+      "metrics": {
+        "claim_precision": 1,
+        "correct_abstention_rate": 1,
+        "decision_precision": null,
+        "decision_recall": null,
+        "evidence_precision": 1,
+        "false_abstention_rate": 0,
+        "relation_precision": 1,
+        "relation_recall": 0.36363636363636365,
+        "required_fact_recall": 1,
+        "task_success": 1,
+        "unsupported_claim_rate": 0
+      },
+      "relation_judgments": [
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|function:shop.main.build_service",
+          "rationale": "create_order directly calls build_service.",
+          "relation_id": "r1",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|method:shop.service.OrderService.create",
+          "rationale": "create_order directly calls service.create.",
+          "relation_id": "r2",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "method:shop.service.OrderService.create|CALLS|method:shop.repository.OrderRepository.save",
+          "rationale": "OrderService.create directly calls repository.save.",
+          "relation_id": "r3",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.service.OrderService",
+          "rationale": "The construction-and-injection wording accurately describes the OrderService constructor call.",
+          "relation_id": "r4",
+          "verdict": "correct"
+        }
+      ],
+      "run_id": "native-r1-4e6f5c32",
+      "score_id": "score.blind-c.native-r1-4e6f5c32",
+      "scorer": {
+        "blinded_to_condition": true,
+        "blinded_to_harness": true,
+        "configuration": {
+          "rubric_contract_version": "0.1",
+          "scoring_basis": "authorized-oracle-and-source-only"
+        },
+        "kind": "llm",
+        "name": "context-free-blind-scorer-c",
+        "version": "1"
+      },
+      "validity": {
+        "evidence_resolvable": true,
+        "output_schema_valid": true,
+        "snapshot_match": true
+      }
+    },
+    {
+      "case_id": "tiny_python.repository_understanding.v1",
+      "claim_judgments": [
+        {
+          "claim_id": "c1",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "purpose"
+          ],
+          "rationale": "README and metadata support the purpose and Python requirement.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c2",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "declared-runtime-entrypoint"
+          ],
+          "rationale": "Manifest and main-module references support the scoped absence.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c3",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "business-entry-function"
+          ],
+          "rationale": "create_order is the documented start of the order flow.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c4",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "service-construction"
+          ],
+          "rationale": "The referenced build function and initializer support fresh construction and injection.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c5",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "order-flow"
+          ],
+          "rationale": "The service and repository method references establish delegation.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c6",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "repository-behavior"
+          ],
+          "rationale": "The save method returns its argument and stores no state.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c7",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "order-flow",
+            "repository-behavior"
+          ],
+          "rationale": "The complete call chain returns the original order_id.",
+          "verdict": "correct"
+        }
+      ],
+      "contract_version": "0.1",
+      "criterion_judgments": [
+        {
+          "criterion_id": "explain-purpose",
+          "rationale": "Purpose is accurate.",
+          "value": 1
+        },
+        {
+          "criterion_id": "distinguish-entrypoint",
+          "rationale": "Business and runtime entry status are clearly separated.",
+          "value": 1
+        },
+        {
+          "criterion_id": "trace-order-flow",
+          "rationale": "The full flow is correctly traced.",
+          "value": 1
+        },
+        {
+          "criterion_id": "recommend-reading-order",
+          "rationale": "The order is coherent.",
+          "value": 1
+        }
+      ],
+      "decision_judgments": [],
+      "human_audit": {
+        "notes": null,
+        "reviewer": null,
+        "status": "not_reviewed"
+      },
+      "metrics": {
+        "claim_precision": 1,
+        "correct_abstention_rate": 1,
+        "decision_precision": null,
+        "decision_recall": null,
+        "evidence_precision": 1,
+        "false_abstention_rate": 0,
+        "relation_precision": 1,
+        "relation_recall": 0.36363636363636365,
+        "required_fact_recall": 1,
+        "task_success": 1,
+        "unsupported_claim_rate": 0
+      },
+      "relation_judgments": [
+        {
+          "evidence_verdict": "partial",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.service.OrderService",
+          "rationale": "The relation is correct, but import references alone establish dependency visibility rather than the constructor call; source resolution supplies the missing confirmation.",
+          "relation_id": "r1",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|function:shop.main.build_service",
+          "rationale": "Direct call.",
+          "relation_id": "r2",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|method:shop.service.OrderService.create",
+          "rationale": "Direct call.",
+          "relation_id": "r3",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "method:shop.service.OrderService.create|CALLS|method:shop.repository.OrderRepository.save",
+          "rationale": "Delegation corresponds to the direct call.",
+          "relation_id": "r4",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": null,
+          "rationale": "The value-return relation is true in source but outside the selected non-exhaustive graph.",
+          "relation_id": "r5",
+          "verdict": "correct"
+        }
+      ],
+      "run_id": "logiclens-r2-b30f5f31",
+      "score_id": "score.blind-c.logiclens-r2-b30f5f31",
+      "scorer": {
+        "blinded_to_condition": true,
+        "blinded_to_harness": true,
+        "configuration": {
+          "rubric_contract_version": "0.1",
+          "scoring_basis": "authorized-oracle-and-source-only"
+        },
+        "kind": "llm",
+        "name": "context-free-blind-scorer-c",
+        "version": "1"
+      },
+      "validity": {
+        "evidence_resolvable": true,
+        "output_schema_valid": true,
+        "snapshot_match": true
+      }
+    },
+    {
+      "case_id": "tiny_python.repository_understanding.v1",
+      "claim_judgments": [
+        {
+          "claim_id": "c1",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "purpose"
+          ],
+          "rationale": "The README states this purpose.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c2",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [],
+          "rationale": "The package name, version, and Python requirement exactly match pyproject.toml.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c3",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "declared-runtime-entrypoint"
+          ],
+          "rationale": "The cited manifest and complete main module support the scoped absence claim.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c4",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "business-entry-function"
+          ],
+          "rationale": "The README and create_order body support the business-entry interpretation.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c5",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "service-construction"
+          ],
+          "rationale": "build_service constructs and injects the two objects.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c6",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "order-flow"
+          ],
+          "rationale": "OrderService stores the dependency and calls save.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c7",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "repository-behavior"
+          ],
+          "rationale": "save returns the supplied identifier.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c8",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "repository-behavior"
+          ],
+          "rationale": "The implementation visibly retains no state despite the README wording.",
+          "verdict": "correct"
+        }
+      ],
+      "contract_version": "0.1",
+      "criterion_judgments": [
+        {
+          "criterion_id": "explain-purpose",
+          "rationale": "Purpose is accurate.",
+          "value": 1
+        },
+        {
+          "criterion_id": "distinguish-entrypoint",
+          "rationale": "Business and runtime entry status are clearly separated.",
+          "value": 1
+        },
+        {
+          "criterion_id": "trace-order-flow",
+          "rationale": "The complete flow and repository behavior are traced.",
+          "value": 1
+        },
+        {
+          "criterion_id": "recommend-reading-order",
+          "rationale": "The order is coherent.",
+          "value": 1
+        }
+      ],
+      "decision_judgments": [],
+      "human_audit": {
+        "notes": null,
+        "reviewer": null,
+        "status": "not_reviewed"
+      },
+      "metrics": {
+        "claim_precision": 1,
+        "correct_abstention_rate": 1,
+        "decision_precision": null,
+        "decision_recall": null,
+        "evidence_precision": 1,
+        "false_abstention_rate": 0,
+        "relation_precision": 1,
+        "relation_recall": 0.36363636363636365,
+        "required_fact_recall": 1,
+        "task_success": 1,
+        "unsupported_claim_rate": 0
+      },
+      "relation_judgments": [
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|function:shop.main.build_service",
+          "rationale": "Direct call established.",
+          "relation_id": "r1",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|method:shop.service.OrderService.create",
+          "rationale": "Direct call established.",
+          "relation_id": "r2",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.service.OrderService",
+          "rationale": "The constructor expression creates OrderService with OrderRepository as its argument.",
+          "relation_id": "r3",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "method:shop.service.OrderService.create|CALLS|method:shop.repository.OrderRepository.save",
+          "rationale": "Delegation corresponds to the direct call.",
+          "relation_id": "r4",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": null,
+          "rationale": "This true return relation is directly shown by source, although the selected oracle graph is explicitly non-exhaustive and contains no value node.",
+          "relation_id": "r5",
+          "verdict": "correct"
+        }
+      ],
+      "run_id": "native-r2-5da4286a",
+      "score_id": "score.blind-c.native-r2-5da4286a",
+      "scorer": {
+        "blinded_to_condition": true,
+        "blinded_to_harness": true,
+        "configuration": {
+          "rubric_contract_version": "0.1",
+          "scoring_basis": "authorized-oracle-and-source-only"
+        },
+        "kind": "llm",
+        "name": "context-free-blind-scorer-c",
+        "version": "1"
+      },
+      "validity": {
+        "evidence_resolvable": true,
+        "output_schema_valid": true,
+        "snapshot_match": true
+      }
+    },
+    {
+      "case_id": "tiny_python.repository_understanding.v1",
+      "claim_judgments": [
+        {
+          "claim_id": "c1",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "purpose"
+          ],
+          "rationale": "The README and manifest support the purpose and Python version.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c2",
+          "evidence_verdict": "partial",
+          "matched_fact_ids": [
+            "declared-runtime-entrypoint"
+          ],
+          "rationale": "The absence conclusion is correct, but the cited function references do not directly support the stated pyproject scripts check.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c3",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "business-entry-function"
+          ],
+          "rationale": "create_order is the documented orchestration function.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c4",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "service-construction"
+          ],
+          "rationale": "build_service constructs and injects the repository.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c5",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "order-flow"
+          ],
+          "rationale": "create_order builds the service and calls its create method.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c6",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "order-flow",
+            "repository-behavior"
+          ],
+          "rationale": "The method references support delegation and the returned identifier.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c7",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "repository-behavior"
+          ],
+          "rationale": "The implementation has no state and only returns its argument.",
+          "verdict": "correct"
+        }
+      ],
+      "contract_version": "0.1",
+      "criterion_judgments": [
+        {
+          "criterion_id": "explain-purpose",
+          "rationale": "Purpose is accurate.",
+          "value": 1
+        },
+        {
+          "criterion_id": "distinguish-entrypoint",
+          "rationale": "The business/runtime distinction is correct.",
+          "value": 1
+        },
+        {
+          "criterion_id": "trace-order-flow",
+          "rationale": "The flow is complete.",
+          "value": 1
+        },
+        {
+          "criterion_id": "recommend-reading-order",
+          "rationale": "The order is coherent.",
+          "value": 1
+        }
+      ],
+      "decision_judgments": [],
+      "human_audit": {
+        "notes": null,
+        "reviewer": null,
+        "status": "not_reviewed"
+      },
+      "metrics": {
+        "claim_precision": 1,
+        "correct_abstention_rate": 1,
+        "decision_precision": null,
+        "decision_recall": null,
+        "evidence_precision": 0.9285714285714286,
+        "false_abstention_rate": 0,
+        "relation_precision": 1,
+        "relation_recall": 0.45454545454545453,
+        "required_fact_recall": 1,
+        "task_success": 1,
+        "unsupported_claim_rate": 0
+      },
+      "relation_judgments": [
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|function:shop.main.build_service",
+          "rationale": "Direct oracle call.",
+          "relation_id": "r1",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.repository.OrderRepository",
+          "rationale": "Constructor call.",
+          "relation_id": "r2",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.service.OrderService",
+          "rationale": "Constructor call with repository dependency.",
+          "relation_id": "r3",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|method:shop.service.OrderService.create",
+          "rationale": "Direct oracle call.",
+          "relation_id": "r4",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "method:shop.service.OrderService.create|CALLS|method:shop.repository.OrderRepository.save",
+          "rationale": "Delegation corresponds to the direct call.",
+          "relation_id": "r5",
+          "verdict": "correct"
+        }
+      ],
+      "run_id": "logiclens-r3-bb554c90",
+      "score_id": "score.blind-c.logiclens-r3-bb554c90",
+      "scorer": {
+        "blinded_to_condition": true,
+        "blinded_to_harness": true,
+        "configuration": {
+          "rubric_contract_version": "0.1",
+          "scoring_basis": "authorized-oracle-and-source-only"
+        },
+        "kind": "llm",
+        "name": "context-free-blind-scorer-c",
+        "version": "1"
+      },
+      "validity": {
+        "evidence_resolvable": true,
+        "output_schema_valid": true,
+        "snapshot_match": true
+      }
+    },
+    {
+      "case_id": "tiny_python.repository_understanding.v1",
+      "claim_judgments": [
+        {
+          "claim_id": "c1",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "purpose"
+          ],
+          "rationale": "The fixture and README support this description.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c2",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [],
+          "rationale": "Manifest details are exact.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c3",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "business-entry-function"
+          ],
+          "rationale": "create_order is accurately identified as the documented callable entry into the flow.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c4",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "business-entry-function"
+          ],
+          "rationale": "OrderService.create is the service use-case method, but calling it the likely business-entry function conflicts with the oracle's requested characterization of create_order and makes the answer ambiguous.",
+          "verdict": "partial"
+        },
+        {
+          "claim_id": "c5",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "service-construction",
+            "order-flow"
+          ],
+          "rationale": "The main module constructs the dependencies and invokes service.create.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c6",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "order-flow",
+            "repository-behavior"
+          ],
+          "rationale": "The service and repository spans prove delegation and unchanged return.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c7",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "repository-behavior"
+          ],
+          "rationale": "The no-state interpretation is directly supported.",
+          "verdict": "correct"
+        }
+      ],
+      "contract_version": "0.1",
+      "criterion_judgments": [
+        {
+          "criterion_id": "explain-purpose",
+          "rationale": "Purpose is accurate.",
+          "value": 1
+        },
+        {
+          "criterion_id": "distinguish-entrypoint",
+          "rationale": "Runtime absence and create_order's callable role are identified, but the answer also labels OrderService.create as the likely business entry.",
+          "value": 0.75
+        },
+        {
+          "criterion_id": "trace-order-flow",
+          "rationale": "The order path is complete and correct.",
+          "value": 1
+        },
+        {
+          "criterion_id": "recommend-reading-order",
+          "rationale": "The order is coherent.",
+          "value": 1
+        }
+      ],
+      "decision_judgments": [],
+      "human_audit": {
+        "notes": null,
+        "reviewer": null,
+        "status": "not_reviewed"
+      },
+      "metrics": {
+        "claim_precision": 0.9285714285714286,
+        "correct_abstention_rate": 1,
+        "decision_precision": null,
+        "decision_recall": null,
+        "evidence_precision": 1,
+        "false_abstention_rate": 0,
+        "relation_precision": 1,
+        "relation_recall": 0.36363636363636365,
+        "required_fact_recall": 1,
+        "task_success": 0.95,
+        "unsupported_claim_rate": 0
+      },
+      "relation_judgments": [
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|function:shop.main.build_service",
+          "rationale": "Direct call.",
+          "relation_id": "r1",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.service.OrderService",
+          "rationale": "The target expression accurately conveys service construction with the repository argument.",
+          "relation_id": "r2",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|method:shop.service.OrderService.create",
+          "rationale": "Direct call.",
+          "relation_id": "r3",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "method:shop.service.OrderService.create|CALLS|method:shop.repository.OrderRepository.save",
+          "rationale": "Delegation corresponds to the direct call.",
+          "relation_id": "r4",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": null,
+          "rationale": "The true return relation is outside the selected non-exhaustive graph.",
+          "relation_id": "r5",
+          "verdict": "correct"
+        }
+      ],
+      "run_id": "native-r3-dfbc4252",
+      "score_id": "score.blind-c.native-r3-dfbc4252",
+      "scorer": {
+        "blinded_to_condition": true,
+        "blinded_to_harness": true,
+        "configuration": {
+          "rubric_contract_version": "0.1",
+          "scoring_basis": "authorized-oracle-and-source-only"
+        },
+        "kind": "llm",
+        "name": "context-free-blind-scorer-c",
+        "version": "1"
+      },
+      "validity": {
+        "evidence_resolvable": true,
+        "output_schema_valid": true,
+        "snapshot_match": true
+      }
+    },
+    {
+      "case_id": "tiny_python.repository_understanding.v1",
+      "claim_judgments": [
+        {
+          "claim_id": "c1",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "purpose"
+          ],
+          "rationale": "The README supports the three-layer purpose and repository description.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c2",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [],
+          "rationale": "Manifest details are exact.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c3",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "business-entry-function"
+          ],
+          "rationale": "create_order is a callable entry into the documented flow; later text correctly avoids treating it as a runtime adapter.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c4",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "business-entry-function"
+          ],
+          "rationale": "create_order is correctly characterized as the likely business entry and build_service as composition support.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c5",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "service-construction"
+          ],
+          "rationale": "build_service constructs and injects the repository.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c6",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "order-flow"
+          ],
+          "rationale": "OrderService.create directly forwards the identifier to save.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c7",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "repository-behavior"
+          ],
+          "rationale": "save returns the supplied identifier and has no state.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c8",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "declared-runtime-entrypoint"
+          ],
+          "rationale": "The manifest and main module support the scoped absence of runtime entry declarations.",
+          "verdict": "correct"
+        }
+      ],
+      "contract_version": "0.1",
+      "criterion_judgments": [
+        {
+          "criterion_id": "explain-purpose",
+          "rationale": "Purpose is accurate.",
+          "value": 1
+        },
+        {
+          "criterion_id": "distinguish-entrypoint",
+          "rationale": "Business and runtime entry status are clearly separated.",
+          "value": 1
+        },
+        {
+          "criterion_id": "trace-order-flow",
+          "rationale": "The full construction and delegation flow is explained.",
+          "value": 1
+        },
+        {
+          "criterion_id": "recommend-reading-order",
+          "rationale": "The order is coherent.",
+          "value": 1
+        }
+      ],
+      "decision_judgments": [],
+      "human_audit": {
+        "notes": null,
+        "reviewer": null,
+        "status": "not_reviewed"
+      },
+      "metrics": {
+        "claim_precision": 1,
+        "correct_abstention_rate": 1,
+        "decision_precision": null,
+        "decision_recall": null,
+        "evidence_precision": 1,
+        "false_abstention_rate": 0,
+        "relation_precision": 1,
+        "relation_recall": 0.45454545454545453,
+        "required_fact_recall": 1,
+        "task_success": 1,
+        "unsupported_claim_rate": 0
+      },
+      "relation_judgments": [
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|function:shop.main.build_service",
+          "rationale": "Direct call.",
+          "relation_id": "r1",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|method:shop.service.OrderService.create",
+          "rationale": "Delegation corresponds to the direct call.",
+          "relation_id": "r2",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.repository.OrderRepository",
+          "rationale": "Constructor call.",
+          "relation_id": "r3",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.service.OrderService",
+          "rationale": "Constructor call.",
+          "relation_id": "r4",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "method:shop.service.OrderService.create|CALLS|method:shop.repository.OrderRepository.save",
+          "rationale": "Direct call.",
+          "relation_id": "r5",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": null,
+          "rationale": "The return relation is true in source but outside the selected non-exhaustive graph.",
+          "relation_id": "r6",
+          "verdict": "correct"
+        }
+      ],
+      "run_id": "logiclens-r4-5d42d81d",
+      "score_id": "score.blind-c.logiclens-r4-5d42d81d",
+      "scorer": {
+        "blinded_to_condition": true,
+        "blinded_to_harness": true,
+        "configuration": {
+          "rubric_contract_version": "0.1",
+          "scoring_basis": "authorized-oracle-and-source-only"
+        },
+        "kind": "llm",
+        "name": "context-free-blind-scorer-c",
+        "version": "1"
+      },
+      "validity": {
+        "evidence_resolvable": true,
+        "output_schema_valid": true,
+        "snapshot_match": true
+      }
+    },
+    {
+      "case_id": "tiny_python.repository_understanding.v1",
+      "claim_judgments": [
+        {
+          "claim_id": "c1",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "purpose"
+          ],
+          "rationale": "The README states this purpose.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c2",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "declared-runtime-entrypoint"
+          ],
+          "rationale": "The manifest and main module establish the scoped absence.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c3",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "business-entry-function"
+          ],
+          "rationale": "create_order is correctly identified as the likely business entry.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c4",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "service-construction"
+          ],
+          "rationale": "build_service creates and injects the repository.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c5",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "order-flow"
+          ],
+          "rationale": "The cited main and service spans prove both delegation steps.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c6",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "repository-behavior"
+          ],
+          "rationale": "save only returns the supplied identifier.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c7",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "repository-behavior"
+          ],
+          "rationale": "The distinction between README wording and observable implementation is accurate.",
+          "verdict": "correct"
+        }
+      ],
+      "contract_version": "0.1",
+      "criterion_judgments": [
+        {
+          "criterion_id": "explain-purpose",
+          "rationale": "Purpose is accurate.",
+          "value": 1
+        },
+        {
+          "criterion_id": "distinguish-entrypoint",
+          "rationale": "Business and runtime entry status are clearly separated.",
+          "value": 1
+        },
+        {
+          "criterion_id": "trace-order-flow",
+          "rationale": "Claims provide the full construction and delegation trace.",
+          "value": 1
+        },
+        {
+          "criterion_id": "recommend-reading-order",
+          "rationale": "The order is coherent.",
+          "value": 1
+        }
+      ],
+      "decision_judgments": [],
+      "human_audit": {
+        "notes": null,
+        "reviewer": null,
+        "status": "not_reviewed"
+      },
+      "metrics": {
+        "claim_precision": 1,
+        "correct_abstention_rate": 1,
+        "decision_precision": null,
+        "decision_recall": null,
+        "evidence_precision": 1,
+        "false_abstention_rate": 0,
+        "relation_precision": 1,
+        "relation_recall": 0.2727272727272727,
+        "required_fact_recall": 1,
+        "task_success": 1,
+        "unsupported_claim_rate": 0
+      },
+      "relation_judgments": [
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.service.OrderService",
+          "rationale": "The constructor relation is directly shown.",
+          "relation_id": "r1",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|method:shop.service.OrderService.create",
+          "rationale": "Delegation corresponds to the direct call.",
+          "relation_id": "r2",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "method:shop.service.OrderService.create|CALLS|method:shop.repository.OrderRepository.save",
+          "rationale": "Delegation corresponds to the direct call.",
+          "relation_id": "r3",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": null,
+          "rationale": "The value-return relation is true in source but outside the selected non-exhaustive graph.",
+          "relation_id": "r4",
+          "verdict": "correct"
+        }
+      ],
+      "run_id": "native-r4-ce9d6b27",
+      "score_id": "score.blind-c.native-r4-ce9d6b27",
+      "scorer": {
+        "blinded_to_condition": true,
+        "blinded_to_harness": true,
+        "configuration": {
+          "rubric_contract_version": "0.1",
+          "scoring_basis": "authorized-oracle-and-source-only"
+        },
+        "kind": "llm",
+        "name": "context-free-blind-scorer-c",
+        "version": "1"
+      },
+      "validity": {
+        "evidence_resolvable": true,
+        "output_schema_valid": true,
+        "snapshot_match": true
+      }
+    },
+    {
+      "case_id": "tiny_python.repository_understanding.v1",
+      "claim_judgments": [
+        {
+          "claim_id": "tiny_shop_purpose",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "purpose"
+          ],
+          "rationale": "The README and metadata support the purpose and Python version.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "package_identity",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [],
+          "rationale": "The package identity agrees with the manifest and package source.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "no_runtime_entrypoint",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "declared-runtime-entrypoint"
+          ],
+          "rationale": "The manifest and main module references resolve to the scoped files needed for this absence claim.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "business_entry",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "business-entry-function"
+          ],
+          "rationale": "create_order is the documented orchestration function.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "service_construction",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "service-construction"
+          ],
+          "rationale": "build_service constructs OrderRepository and OrderService.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "order_flow",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "order-flow"
+          ],
+          "rationale": "The cited functions establish the order_id delegation path.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "repository_behavior",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "repository-behavior"
+          ],
+          "rationale": "save returns the identifier and retains no state.",
+          "verdict": "correct"
+        }
+      ],
+      "contract_version": "0.1",
+      "criterion_judgments": [
+        {
+          "criterion_id": "explain-purpose",
+          "rationale": "Purpose is accurate.",
+          "value": 1
+        },
+        {
+          "criterion_id": "distinguish-entrypoint",
+          "rationale": "Business and runtime entry status are clearly distinguished.",
+          "value": 1
+        },
+        {
+          "criterion_id": "trace-order-flow",
+          "rationale": "All expected flow steps are present.",
+          "value": 1
+        },
+        {
+          "criterion_id": "recommend-reading-order",
+          "rationale": "The reading order is coherent.",
+          "value": 1
+        }
+      ],
+      "decision_judgments": [],
+      "human_audit": {
+        "notes": null,
+        "reviewer": null,
+        "status": "not_reviewed"
+      },
+      "metrics": {
+        "claim_precision": 1,
+        "correct_abstention_rate": 1,
+        "decision_precision": null,
+        "decision_recall": null,
+        "evidence_precision": 1,
+        "false_abstention_rate": 0,
+        "relation_precision": 1,
+        "relation_recall": 0.45454545454545453,
+        "required_fact_recall": 1,
+        "task_success": 1,
+        "unsupported_claim_rate": 0
+      },
+      "relation_judgments": [
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|function:shop.main.build_service",
+          "rationale": "Direct oracle call.",
+          "relation_id": "create_order_calls_build_service",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.repository.OrderRepository",
+          "rationale": "Constructor call matches the oracle edge.",
+          "relation_id": "build_service_constructs_repository",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.service.OrderService",
+          "rationale": "Constructor call matches the oracle edge.",
+          "relation_id": "build_service_constructs_service",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|method:shop.service.OrderService.create",
+          "rationale": "Direct oracle call.",
+          "relation_id": "create_order_calls_service_create",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "method:shop.service.OrderService.create|CALLS|method:shop.repository.OrderRepository.save",
+          "rationale": "Delegation corresponds to the oracle call.",
+          "relation_id": "service_create_delegates_save",
+          "verdict": "correct"
+        }
+      ],
+      "run_id": "logiclens-r5-8aed77c5",
+      "score_id": "score.blind-c.logiclens-r5-8aed77c5",
+      "scorer": {
+        "blinded_to_condition": true,
+        "blinded_to_harness": true,
+        "configuration": {
+          "rubric_contract_version": "0.1",
+          "scoring_basis": "authorized-oracle-and-source-only"
+        },
+        "kind": "llm",
+        "name": "context-free-blind-scorer-c",
+        "version": "1"
+      },
+      "validity": {
+        "evidence_resolvable": true,
+        "output_schema_valid": true,
+        "snapshot_match": true
+      }
+    },
+    {
+      "case_id": "tiny_python.repository_understanding.v1",
+      "claim_judgments": [
+        {
+          "claim_id": "c1",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "purpose"
+          ],
+          "rationale": "The README states this purpose.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c2",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [],
+          "rationale": "Manifest details are exact.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c3",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "business-entry-function"
+          ],
+          "rationale": "create_order is the documented orchestration function.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c4",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "service-construction"
+          ],
+          "rationale": "The build_service span directly supports construction and injection.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c5",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "order-flow"
+          ],
+          "rationale": "The service span shows storage of the dependency and delegation.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c6",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "repository-behavior"
+          ],
+          "rationale": "The repository span proves the unchanged return and absence of storage operations.",
+          "verdict": "correct"
+        },
+        {
+          "claim_id": "c7",
+          "evidence_verdict": "valid",
+          "matched_fact_ids": [
+            "declared-runtime-entrypoint"
+          ],
+          "rationale": "The scoped manifest and complete main module establish no declared runtime entry.",
+          "verdict": "correct"
+        }
+      ],
+      "contract_version": "0.1",
+      "criterion_judgments": [
+        {
+          "criterion_id": "explain-purpose",
+          "rationale": "Purpose is accurate.",
+          "value": 1
+        },
+        {
+          "criterion_id": "distinguish-entrypoint",
+          "rationale": "Entry-point distinction is clear.",
+          "value": 1
+        },
+        {
+          "criterion_id": "trace-order-flow",
+          "rationale": "The full order path is explained.",
+          "value": 1
+        },
+        {
+          "criterion_id": "recommend-reading-order",
+          "rationale": "The order is coherent.",
+          "value": 1
+        }
+      ],
+      "decision_judgments": [],
+      "human_audit": {
+        "notes": null,
+        "reviewer": null,
+        "status": "not_reviewed"
+      },
+      "metrics": {
+        "claim_precision": 1,
+        "correct_abstention_rate": 1,
+        "decision_precision": null,
+        "decision_recall": null,
+        "evidence_precision": 1,
+        "false_abstention_rate": 0,
+        "relation_precision": 1,
+        "relation_recall": 0.36363636363636365,
+        "required_fact_recall": 1,
+        "task_success": 1,
+        "unsupported_claim_rate": 0
+      },
+      "relation_judgments": [
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|function:shop.main.build_service",
+          "rationale": "Direct call.",
+          "relation_id": "r1",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|method:shop.service.OrderService.create",
+          "rationale": "Direct call.",
+          "relation_id": "r2",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.service.OrderService",
+          "rationale": "The constructor expression establishes the service creation with repository injection.",
+          "relation_id": "r3",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": "method:shop.service.OrderService.create|CALLS|method:shop.repository.OrderRepository.save",
+          "rationale": "Delegation corresponds to the direct call.",
+          "relation_id": "r4",
+          "verdict": "correct"
+        },
+        {
+          "evidence_verdict": "valid",
+          "matched_oracle_edge": null,
+          "rationale": "The return relation is true in source but outside the selected non-exhaustive graph.",
+          "relation_id": "r5",
+          "verdict": "correct"
+        }
+      ],
+      "run_id": "native-r5-a09e4031",
+      "score_id": "score.blind-c.native-r5-a09e4031",
+      "scorer": {
+        "blinded_to_condition": true,
+        "blinded_to_harness": true,
+        "configuration": {
+          "rubric_contract_version": "0.1",
+          "scoring_basis": "authorized-oracle-and-source-only"
+        },
+        "kind": "llm",
+        "name": "context-free-blind-scorer-c",
+        "version": "1"
+      },
+      "validity": {
+        "evidence_resolvable": true,
+        "output_schema_valid": true,
+        "snapshot_match": true
+      }
+    }
+  ]
+}

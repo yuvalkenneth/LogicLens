@@ -11,7 +11,7 @@ with and without LogicLens on the frozen Tiny Shop snapshot.
 - Schema validation: 10/10 run records and answers
 - Evidence resolution: 100% of cited source spans and LogicLens references
 
-## Unscored efficiency telemetry
+## Efficiency telemetry
 
 | Condition | Wall time, mean ± SD | Input tokens, mean ± SD | Output tokens, mean ± SD | Tool calls, mean |
 | --- | ---: | ---: | ---: | ---: |
@@ -24,7 +24,8 @@ from the additional indexed context presented to the agent rather than indexing.
 
 ## Scoring status
 
-Semantic quality is intentionally not scored here. `scoring-packet.blind.json`
-contains condition-blind answers for a human or rubric-based scorer;
-`scoring-key.private.json` must be withheld until judgments are complete. Do not
-claim a quality improvement from this baseline until those judgments are recorded.
+Three context-free LLM subagents independently scored the condition-blind answers.
+LogicLens improved relation recall from 0.76 to 0.96, reduced evidence precision
+from 1.00 to 0.91, and produced no clear task-success improvement (0.99 versus
+1.00). See `scoring/README.md` and `scoring/comparison-result.json` for the complete
+results and limitations. The judgments have not received human audit.

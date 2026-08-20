@@ -1,0 +1,181 @@
+{
+  "case_id": "tiny_python.repository_understanding.v1",
+  "comparison_id": "tiny-python.codex.gpt-5.6-sol.20260820",
+  "contract_version": "0.1",
+  "harness": "Codex CLI 0.148.0",
+  "logiclens_run_ids": [
+    "logiclens-r1-f1cf3c32",
+    "logiclens-r2-b30f5f31",
+    "logiclens-r3-bb554c90",
+    "logiclens-r4-5d42d81d",
+    "logiclens-r5-8aed77c5"
+  ],
+  "metrics": {
+    "claim_precision": {
+      "confidence_interval_95": {
+        "lower": -0.025371428561280003,
+        "method": "paired t interval, df=4",
+        "upper": 0.05394285712128002
+      },
+      "logiclens_mean": 1,
+      "logiclens_stddev": 0.0,
+      "native_mean": 0.98571428572,
+      "native_stddev": 0.03194382823721948,
+      "paired_delta": 0.014285714280000006
+    },
+    "correct_abstention_rate": {
+      "confidence_interval_95": {
+        "lower": 0,
+        "method": "paired t interval, df=4",
+        "upper": 0
+      },
+      "logiclens_mean": 1,
+      "logiclens_stddev": 0.0,
+      "native_mean": 1,
+      "native_stddev": 0.0,
+      "paired_delta": 0
+    },
+    "evidence_precision": {
+      "confidence_interval_95": {
+        "lower": -0.1724982239391859,
+        "method": "paired t interval, df=4",
+        "upper": -0.008454157020814104
+      },
+      "logiclens_mean": 0.90952380952,
+      "logiclens_stddev": 0.06606874728656409,
+      "native_mean": 1,
+      "native_stddev": 0.0,
+      "paired_delta": -0.09047619048
+    },
+    "false_abstention_rate": {
+      "confidence_interval_95": {
+        "lower": 0,
+        "method": "paired t interval, df=4",
+        "upper": 0
+      },
+      "logiclens_mean": 0,
+      "logiclens_stddev": 0.0,
+      "native_mean": 0,
+      "native_stddev": 0.0,
+      "paired_delta": 0
+    },
+    "input_tokens": {
+      "confidence_interval_95": {
+        "lower": 2548.0777614700755,
+        "method": "paired t interval, df=4",
+        "upper": 2788.322238529924
+      },
+      "logiclens_mean": 49445.4,
+      "logiclens_stddev": 64.28296819531593,
+      "native_mean": 46777.2,
+      "native_stddev": 131.5606324095472,
+      "paired_delta": 2668.2
+    },
+    "output_tokens": {
+      "confidence_interval_95": {
+        "lower": -112.97727846825596,
+        "method": "paired t interval, df=4",
+        "upper": 171.37727846825595
+      },
+      "logiclens_mean": 1523.2,
+      "logiclens_stddev": 85.82074341323315,
+      "native_mean": 1494,
+      "native_stddev": 81.64557550780079,
+      "paired_delta": 29.2
+    },
+    "relation_precision": {
+      "confidence_interval_95": {
+        "lower": 0,
+        "method": "paired t interval, df=4",
+        "upper": 0
+      },
+      "logiclens_mean": 1,
+      "logiclens_stddev": 0.0,
+      "native_mean": 1,
+      "native_stddev": 0.0,
+      "paired_delta": 0
+    },
+    "relation_recall": {
+      "confidence_interval_95": {
+        "lower": 0.024430344307451585,
+        "method": "paired t interval, df=4",
+        "upper": 0.3755696556925484
+      },
+      "logiclens_mean": 0.96,
+      "logiclens_stddev": 0.08944271909999157,
+      "native_mean": 0.76,
+      "native_stddev": 0.08944271909999162,
+      "paired_delta": 0.19999999999999998
+    },
+    "required_fact_recall": {
+      "confidence_interval_95": {
+        "lower": 0,
+        "method": "paired t interval, df=4",
+        "upper": 0
+      },
+      "logiclens_mean": 1,
+      "logiclens_stddev": 0.0,
+      "native_mean": 1,
+      "native_stddev": 0.0,
+      "paired_delta": 0
+    },
+    "task_success": {
+      "confidence_interval_95": {
+        "lower": -0.017760000000000012,
+        "method": "paired t interval, df=4",
+        "upper": 0.03776000000000003
+      },
+      "logiclens_mean": 1,
+      "logiclens_stddev": 0.0,
+      "native_mean": 0.99,
+      "native_stddev": 0.022360679774997918,
+      "paired_delta": 0.010000000000000009
+    },
+    "tool_calls": {
+      "confidence_interval_95": {
+        "lower": 0,
+        "method": "paired t interval, df=4",
+        "upper": 0
+      },
+      "logiclens_mean": 2,
+      "logiclens_stddev": 0.0,
+      "native_mean": 2,
+      "native_stddev": 0.0,
+      "paired_delta": 0
+    },
+    "unsupported_claim_rate": {
+      "confidence_interval_95": {
+        "lower": 0,
+        "method": "paired t interval, df=4",
+        "upper": 0
+      },
+      "logiclens_mean": 0,
+      "logiclens_stddev": 0.0,
+      "native_mean": 0,
+      "native_stddev": 0.0,
+      "paired_delta": 0
+    },
+    "wall_seconds": {
+      "confidence_interval_95": {
+        "lower": -4.16845338897772,
+        "method": "paired t interval, df=4",
+        "upper": 12.06685338897772
+      },
+      "logiclens_mean": 39.9468,
+      "logiclens_stddev": 4.566256584993884,
+      "native_mean": 35.9976,
+      "native_stddev": 2.2378730526998187,
+      "paired_delta": 3.9492000000000003
+    }
+  },
+  "model": "gpt-5.6-sol",
+  "native_run_ids": [
+    "native-r1-4e6f5c32",
+    "native-r2-5da4286a",
+    "native-r3-dfbc4252",
+    "native-r4-ce9d6b27",
+    "native-r5-a09e4031"
+  ],
+  "repetitions": 5,
+  "track": "controlled_model"
+}
