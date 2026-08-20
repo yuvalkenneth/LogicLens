@@ -54,7 +54,7 @@ def test_event_telemetry_uses_last_usage_and_completed_tools() -> None:
 
 def test_codex_schema_uses_supported_composition() -> None:
     case = json.loads(CASE.read_text(encoding="utf-8"))
-    schema = _codex_answer_schema(ROOT, case)
+    schema = _codex_answer_schema(ROOT, case, "logiclens")
     encoded = json.dumps(schema)
 
     assert '"allOf"' not in encoded
@@ -63,6 +63,13 @@ def test_codex_schema_uses_supported_composition() -> None:
     assert '"uniqueItems"' not in encoded
     assert "evidence.schema.json" not in encoded
     assert schema["properties"]["contract_version"]["type"] == "string"
+    assert schema["properties"]["case_id"]["const"] == case["case_id"]
+    assert schema["$defs"]["turnAnswer"]["properties"]["turn_id"]["enum"] == [
+        "onboarding"
+    ]
+
+    native = json.dumps(_codex_answer_schema(ROOT, case, "native"))
+    assert "logiclens_ref" not in native
 
 
 def test_strict_claim_evidence_postcondition() -> None:

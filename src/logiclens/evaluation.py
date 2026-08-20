@@ -57,9 +57,11 @@ def run_codex_evaluation(
         f"{case['case_id']}-{timestamp}-{uuid4().hex[:6]}"
     )
     session.mkdir(parents=True, exist_ok=False)
-    output_schema = _codex_answer_schema(root, case)
-    schema_path = session / "answer.schema.json"
-    _write_json(schema_path, output_schema)
+    schema_paths = {}
+    for condition in conditions:
+        schema_path = session / f"answer.{condition}.schema.json"
+        _write_json(schema_path, _codex_answer_schema(root, case, condition))
+        schema_paths[condition] = schema_path
 
     run_paths: list[str] = []
     statuses: list[str] = []
@@ -75,7 +77,7 @@ def run_codex_evaluation(
             executable=executable,
             harness_version=harness_version,
             model=model,
-            output_schema=schema_path,
+            output_schema=schema_paths[condition],
             session=session,
             dry_run=dry_run,
         )
@@ -281,12 +283,13 @@ def _build_prompt(case: dict[str, Any], condition: str) -> tuple[str, str]:
             "Begin with .logiclens/repository-context.json, which contains a deterministic "
             "LogicLens file/module/import/symbol map. Treat it as the primary evidence map. "
             "Then make only targeted source reads needed to confirm behavior. LogicLens "
-            "references use IDs from that context; source spans use repository-relative paths."
+            "references must be exactly file:<path>, module:<name>, a symbol id, or "
+            "import:<source>-><target> from that context. Use source spans otherwise."
         )
     else:
         method = (
             "LogicLens is unavailable. Use the coding harness's normal local "
-            "repository tools."
+            "repository tools. Emit source_span evidence only, never logiclens_ref."
         )
     wrapper = (
         "Fresh snapshot; no network or repository history; condition-specific investigation; "
@@ -305,6 +308,9 @@ Rules:
 - Cite exact source spans for source claims. A source span uses 1-based line numbers.
 - Return only JSON matching the supplied output schema.
 - Set contract_version to \"0.1\" and case_id to \"{case['case_id']}\".
+- Use exactly these turn_id values: {', '.join(turn['turn_id'] for turn in case['agent_input']['turns'])}.
+- reading_order contains repository-relative file paths, not claim IDs.
+- Be concise: at most 8 claims, 6 relations, and 2 evidence items per claim or relation.
 
 Investigation method:
 {method}
@@ -382,9 +388,13 @@ def _resolve_codex(explicit: Path | None) -> tuple[Path, str | None]:
     raise FileNotFoundError("No working Codex CLI found; pass --codex with its path")
 
 
-def _codex_answer_schema(root: Path, case: dict[str, Any]) -> dict[str, Any]:
+def _codex_answer_schema(
+    root: Path, case: dict[str, Any], condition: str
+) -> dict[str, Any]:
     schema = _read_json(root / case["agent_input"]["output_schema"])
     evidence = _read_json(root / "evals" / "schemas" / "evidence.schema.json")
+    if condition == "native":
+        evidence = evidence["oneOf"][0]
 
     def replace(value: Any) -> Any:
         if isinstance(value, dict):
@@ -402,7 +412,19 @@ def _codex_answer_schema(root: Path, case: dict[str, Any]) -> dict[str, Any]:
             return [replace(item) for item in value]
         return value
 
-    return replace(schema)
+    converted = replace(schema)
+    turn_ids = [turn["turn_id"] for turn in case["agent_input"]["turns"]]
+    converted["properties"]["case_id"] = {
+        "type": "string",
+        "const": case["case_id"],
+    }
+    converted["properties"]["turns"]["minItems"] = len(turn_ids)
+    converted["properties"]["turns"]["maxItems"] = len(turn_ids)
+    converted["$defs"]["turnAnswer"]["properties"]["turn_id"] = {
+        "type": "string",
+        "enum": turn_ids,
+    }
+    return converted
 
 
 def _json_type(value: Any) -> str:
