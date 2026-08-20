@@ -10,6 +10,7 @@ from logiclens.database import (
     read_imports,
     read_modules,
     read_repository_brief_context,
+    read_symbols,
 )
 from logiclens.inventory import build_inventory
 from logiclens.python_modules import analyze_python_modules
@@ -55,6 +56,11 @@ def test_python_structure_round_trip(tmp_path: Path) -> None:
         ("shop.main", "shop.service"),
         ("shop.service", "shop.repository"),
     ]
+    assert read_symbols(database) == structure.symbols
+
+    context = read_repository_brief_context(database)
+    assert context["symbols"][0]["id"] == "function:shop.main.build_service"
+    assert context["symbols"][0]["evidence"]["line"] == 5
 
 
 def test_reads_hash_verified_file_content(tmp_path: Path) -> None:

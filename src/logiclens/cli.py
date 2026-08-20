@@ -13,6 +13,7 @@ from logiclens.database import (
     read_imports,
     read_modules,
     read_repository_brief_context,
+    read_symbols,
 )
 from logiclens.brief import validate_repository_brief
 from logiclens.inventory import build_inventory
@@ -38,6 +39,11 @@ def build_parser() -> argparse.ArgumentParser:
         "modules", help="List saved Python modules and import relationships."
     )
     modules_parser.add_argument("--db", required=True, type=Path)
+
+    symbols_parser = commands.add_parser(
+        "symbols", help="List saved functions, classes, and methods."
+    )
+    symbols_parser.add_argument("--db", required=True, type=Path)
 
     context_parser = commands.add_parser(
         "context", help="Build bounded context from the saved mapping."
@@ -67,7 +73,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(f"Mapped {len(inventory.files)} files")
             print(
                 f"Python modules: {len(structure.modules)}; "
-                f"imports: {len(structure.imports)}"
+                f"imports: {len(structure.imports)}; "
+                f"symbols: {len(structure.symbols)}"
             )
             print(f"Snapshot: {inventory.snapshot_hash}")
             print(f"Saved to: {arguments.db}")
@@ -98,6 +105,19 @@ def main(argv: Sequence[str] | None = None) -> int:
             errors = validate_repository_brief(brief, arguments.db, expectations)
             print(json.dumps({"valid": not errors, "errors": errors}, indent=2))
             return 1 if errors else 0
+
+        if arguments.command == "symbols":
+            print("ID\tKIND\tFILE\tLOCATION\tSIGNATURE")
+            for record in read_symbols(arguments.db):
+                location = (
+                    f"{record.start_line}:{record.start_column}-"
+                    f"{record.end_line}:{record.end_column}"
+                )
+                print(
+                    f"{record.kind}:{record.qualified_name}\t{record.kind}\t"
+                    f"{record.file_path}\t{location}\t{record.signature or '-'}"
+                )
+            return 0
 
         print("MODULE\tKIND\tFILE")
         for module in read_modules(arguments.db):

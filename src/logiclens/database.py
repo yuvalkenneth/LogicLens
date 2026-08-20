@@ -10,7 +10,12 @@ from pathlib import Path
 import sqlite3
 
 from logiclens.inventory import FileRecord, Inventory, build_inventory
-from logiclens.python_modules import ImportRecord, ModuleRecord, PythonStructure
+from logiclens.python_modules import (
+    ImportRecord,
+    ModuleRecord,
+    PythonStructure,
+)
+from logiclens.symbols import SymbolRecord
 
 
 @dataclass(frozen=True)
@@ -111,6 +116,49 @@ def _write_python_structure(
             for record in structure.imports
         ),
     )
+    top_level_symbols = [
+        record for record in structure.symbols if record.parent_qualified_name is None
+    ]
+    _insert_symbols(connection, module_ids, {}, top_level_symbols)
+    parent_ids = dict(connection.execute("SELECT qualified_name, id FROM symbols"))
+    _insert_symbols(
+        connection,
+        module_ids,
+        parent_ids,
+        [record for record in structure.symbols if record.parent_qualified_name],
+    )
+
+
+def _insert_symbols(
+    connection: sqlite3.Connection,
+    module_ids: dict[str, int],
+    parent_ids: dict[str, int],
+    symbols: list[SymbolRecord],
+) -> None:
+    connection.executemany(
+        """
+        INSERT INTO symbols (
+            module_id, parent_symbol_id, qualified_name, name, kind,
+            signature, docstring, start_line, start_column, end_line, end_column
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        (
+            (
+                module_ids[record.file_path],
+                parent_ids.get(record.parent_qualified_name),
+                record.qualified_name,
+                record.name,
+                record.kind,
+                record.signature,
+                record.docstring,
+                record.start_line,
+                record.start_column,
+                record.end_line,
+                record.end_column,
+            )
+            for record in symbols
+        ),
+    )
 
 
 def read_files(database_path: Path) -> tuple[FileRecord, ...]:
@@ -166,6 +214,33 @@ def read_imports(database_path: Path) -> tuple[ModuleImportView, ...]:
     return tuple(ModuleImportView(*row) for row in rows)
 
 
+def read_symbols(database_path: Path) -> tuple[SymbolRecord, ...]:
+    source = _existing_database(database_path)
+    with sqlite3.connect(source) as connection:
+        rows = connection.execute(
+            """
+            SELECT
+                files.path,
+                symbols.qualified_name,
+                symbols.name,
+                symbols.kind,
+                parent.qualified_name,
+                symbols.signature,
+                symbols.docstring,
+                symbols.start_line,
+                symbols.start_column,
+                symbols.end_line,
+                symbols.end_column
+            FROM symbols
+            JOIN modules ON modules.id = symbols.module_id
+            JOIN files ON files.id = modules.file_id
+            LEFT JOIN symbols AS parent ON parent.id = symbols.parent_symbol_id
+            ORDER BY files.path, symbols.start_line, symbols.start_column
+            """
+        ).fetchall()
+    return tuple(SymbolRecord(*row) for row in rows)
+
+
 def read_file_content(database_path: Path, file_path: str) -> str:
     source = _existing_database(database_path)
     with sqlite3.connect(source) as connection:
@@ -208,6 +283,7 @@ def read_repository_brief_context(database_path: Path) -> dict[str, object]:
     file_records = read_files(source)
     modules = read_modules(source)
     imports = read_imports(source)
+    symbols = read_symbols(source)
     readable_files = [
         record
         for record in file_records
@@ -251,6 +327,24 @@ def read_repository_brief_context(database_path: Path) -> dict[str, object]:
                 },
             }
             for record in imports
+        ],
+        "symbols": [
+            {
+                "id": f"{record.kind}:{record.qualified_name}",
+                "name": record.name,
+                "kind": record.kind,
+                "file": record.file_path,
+                "parent": record.parent_qualified_name,
+                "signature": record.signature,
+                "docstring": record.docstring,
+                "evidence": {
+                    "line": record.start_line,
+                    "column": record.start_column,
+                    "end_line": record.end_line,
+                    "end_column": record.end_column,
+                },
+            }
+            for record in symbols
         ],
     }
 

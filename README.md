@@ -14,9 +14,10 @@ answer to:
 
 ## Current status
 
-The first deterministic vertical slice inventories a local repository into SQLite.
-It records relative paths, file classifications, languages, sizes, and content hashes.
-There is deliberately no AST extraction, agent, API, or user interface yet.
+The deterministic vertical slice inventories a local repository into SQLite. It
+records files and content hashes, then uses Tree-sitter to extract Python modules,
+imports, functions, classes, and methods. There is deliberately no call resolution,
+API, or user interface yet.
 
 From the project root:
 
@@ -24,18 +25,19 @@ From the project root:
 uv run logiclens map tests/fixtures/tiny_python --db .logiclens/tiny.sqlite
 uv run logiclens files --db .logiclens/tiny.sqlite
 uv run logiclens modules --db .logiclens/tiny.sqlite
+uv run logiclens symbols --db .logiclens/tiny.sqlite
 uv run logiclens context repository-brief --db .logiclens/tiny.sqlite --json
 uv run logiclens validate-brief evals/tiny_python/repository-brief.example.json \
   --db .logiclens/tiny.sqlite \
   --expectations evals/tiny_python/repository-brief.expectations.json
 ```
 
-`map` reads the repository once, inventories its files, and extracts Python modules
-and imports with Tree-sitter. `files` and `modules` read the saved result. `context`
-returns hash-verified documentation, manifests, and module structure for the first
-agent enrichment. `validate-brief` checks an agent proposal against its schema,
-snapshot, evidence references, and optional evaluation expectations. Mapping refuses
-to overwrite an existing database.
+`map` reads the repository once, inventories its files, and extracts Python modules,
+imports, and symbols with Tree-sitter. `files`, `modules`, and `symbols` read the
+saved result. `context` returns hash-verified documentation, manifests, module
+structure, and symbols for agent enrichment. `validate-brief` checks an agent
+proposal against its schema, snapshot, evidence references, and optional evaluation
+expectations. Mapping refuses to overwrite an existing database.
 
 The portable Codex skill is in `skills/logiclens`. It uses the host coding agent as
 the runtime and keeps classifier and verifier roles in versioned reference files.

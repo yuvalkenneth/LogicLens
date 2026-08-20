@@ -102,7 +102,8 @@ def validate_repository_brief(
         for item in context["imports"]
         if item["target"] is not None
     }
-    entity_refs = file_refs | module_refs
+    symbol_refs = {item["id"] for item in context["symbols"]}
+    entity_refs = file_refs | module_refs | symbol_refs
     evidence_refs = entity_refs | import_refs
 
     claimed_evidence = list(brief.purpose.evidence)

@@ -48,9 +48,9 @@ repository exploration.
 
 ## Evidence rules
 
-- Cite only identifiers present in the context: `file:...`, `module:...`, or
-  `import:source->target`.
+- Cite only identifiers present in the context: `file:...`, `module:...`,
+  `function:...`, `class:...`, `method:...`, or `import:source->target`.
 - Treat documentation as evidence of documented intent, not proof of runtime behavior.
 - Treat unresolved imports and missing entry points as unknowns.
 - Keep confirmed facts, candidate interpretations, and unknowns distinct.
-- Do not add flows until their transitions can be supported by the deterministic map.
+- Do not add flows until their transitions can be supported by deterministic calls.

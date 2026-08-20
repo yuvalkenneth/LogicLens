@@ -29,6 +29,24 @@ CREATE TABLE modules (
 
 CREATE INDEX modules_name_index ON modules (name);
 
+CREATE TABLE symbols (
+    id INTEGER PRIMARY KEY,
+    module_id INTEGER NOT NULL REFERENCES modules (id),
+    parent_symbol_id INTEGER REFERENCES symbols (id),
+    qualified_name TEXT NOT NULL UNIQUE,
+    name TEXT NOT NULL,
+    kind TEXT NOT NULL CHECK (kind IN ('class', 'function', 'method')),
+    signature TEXT,
+    docstring TEXT,
+    start_line INTEGER NOT NULL,
+    start_column INTEGER NOT NULL,
+    end_line INTEGER NOT NULL,
+    end_column INTEGER NOT NULL
+);
+
+CREATE INDEX symbols_module_index ON symbols (module_id);
+CREATE INDEX symbols_parent_index ON symbols (parent_symbol_id);
+
 CREATE TABLE imports (
     id INTEGER PRIMARY KEY,
     source_module_id INTEGER NOT NULL REFERENCES modules (id),

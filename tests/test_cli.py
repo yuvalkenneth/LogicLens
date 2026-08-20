@@ -14,7 +14,7 @@ def test_map_then_list_files(tmp_path: Path, capsys) -> None:
     assert main(["map", str(FIXTURE), "--db", str(database)]) == 0
     map_output = capsys.readouterr().out
     assert "Mapped 6 files" in map_output
-    assert "Python modules: 4; imports: 3" in map_output
+    assert "Python modules: 4; imports: 3; symbols: 7" in map_output
 
     assert main(["files", "--db", str(database)]) == 0
     files_output = capsys.readouterr().out
@@ -24,7 +24,18 @@ def test_map_then_list_files(tmp_path: Path, capsys) -> None:
     assert main(["modules", "--db", str(database)]) == 0
     modules_output = capsys.readouterr().out
     assert "shop\tpackage\tsrc/shop/__init__.py" in modules_output
-    assert "shop.main\t.repository\tshop.repository\tsrc/shop/main.py:1:1" in modules_output
+    assert (
+        "shop.main\t.repository\tshop.repository\tsrc/shop/main.py:1:1"
+        in modules_output
+    )
+
+    assert main(["symbols", "--db", str(database)]) == 0
+    symbols_output = capsys.readouterr().out
+    assert (
+        "function:shop.main.create_order\tfunction\tsrc/shop/main.py"
+        in symbols_output
+    )
+    assert "method:shop.service.OrderService.create\tmethod" in symbols_output
 
     assert (
         main(
@@ -41,6 +52,7 @@ def test_map_then_list_files(tmp_path: Path, capsys) -> None:
     context = json.loads(capsys.readouterr().out)
     assert context["documents"][0]["content"].startswith("# Tiny Shop")
     assert context["imports"][0]["target"] == "shop.repository"
+    assert context["symbols"][0]["id"] == "function:shop.main.build_service"
 
     brief = ROOT / "evals" / "tiny_python" / "repository-brief.example.json"
     expectations = (

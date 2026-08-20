@@ -53,6 +53,20 @@ def test_rejects_unknown_evidence_and_confirmed_entry_point(tmp_path: Path) -> N
     assert any("confirmed entry point lacks deterministic support" in item for item in errors)
 
 
+def test_accepts_symbol_evidence_for_candidate_entry_point(tmp_path: Path) -> None:
+    brief = json.loads(EXAMPLE.read_text(encoding="utf-8"))
+    brief["entry_points"] = [
+        {
+            "target": "function:shop.main.create_order",
+            "status": "candidate",
+            "reason": "Its name matches the documented use case.",
+            "evidence": ["file:README.md", "function:shop.main.create_order"],
+        }
+    ]
+
+    assert validate_repository_brief(brief, mapped_database(tmp_path)) == []
+
+
 def test_repository_brief_schema_is_valid_json() -> None:
     schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
 
