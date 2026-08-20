@@ -60,6 +60,7 @@ def test_codex_schema_uses_supported_composition() -> None:
     assert '"allOf"' not in encoded
     assert '"oneOf"' not in encoded
     assert '"anyOf"' in encoded
+    assert '"uniqueItems"' not in encoded
     assert "evidence.schema.json" not in encoded
     assert schema["properties"]["contract_version"]["type"] == "string"
 
@@ -72,6 +73,8 @@ def test_strict_claim_evidence_postcondition() -> None:
         "turns": [
             {
                 "turn_id": "onboarding",
+                "reading_order": [],
+                "unknowns": [],
                 "claims": [
                     {"stance": "confirmed", "evidence": []},
                 ],

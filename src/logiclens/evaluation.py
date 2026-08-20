@@ -393,7 +393,7 @@ def _codex_answer_schema(root: Path, case: dict[str, Any]) -> dict[str, Any]:
             converted = {
                 ("anyOf" if key == "oneOf" else key): replace(item)
                 for key, item in value.items()
-                if key not in {"$schema", "$id", "allOf"}
+                if key not in {"$schema", "$id", "allOf", "uniqueItems"}
             }
             if "const" in converted and "type" not in converted:
                 converted["type"] = _json_type(converted["const"])
@@ -447,6 +447,10 @@ def _check_answer(answer: Any, case: dict[str, Any]) -> None:
     if actual_turns != expected_turns:
         raise ValueError("Codex answer does not contain exactly the requested turns")
     for turn in answer["turns"]:
+        for field in ("reading_order", "unknowns"):
+            values = turn[field]
+            if len(values) != len(set(values)):
+                raise ValueError(f"{field} entries must be unique")
         for claim in turn["claims"]:
             if claim["stance"] in {"confirmed", "inferred"} and not claim["evidence"]:
                 raise ValueError("confirmed and inferred claims require evidence")
