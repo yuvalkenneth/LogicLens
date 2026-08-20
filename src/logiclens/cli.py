@@ -58,6 +58,17 @@ def build_parser() -> argparse.ArgumentParser:
     validate_parser.add_argument("brief", type=Path)
     validate_parser.add_argument("--db", required=True, type=Path)
     validate_parser.add_argument("--expectations", type=Path)
+
+    eval_parser = commands.add_parser(
+        "eval", help="Run a paired native-versus-LogicLens Codex evaluation."
+    )
+    eval_parser.add_argument("case", type=Path)
+    eval_parser.add_argument("--results", required=True, type=Path)
+    eval_parser.add_argument("--model", default="gpt-5.6-sol")
+    eval_parser.add_argument("--repetitions", type=int)
+    eval_parser.add_argument("--seed", type=int, default=0)
+    eval_parser.add_argument("--codex", type=Path)
+    eval_parser.add_argument("--dry-run", action="store_true")
     return parser
 
 
@@ -66,6 +77,24 @@ def main(argv: Sequence[str] | None = None) -> int:
     arguments = parser.parse_args(argv)
 
     try:
+        if arguments.command == "eval":
+            from logiclens.evaluation import run_codex_evaluation
+
+            session = run_codex_evaluation(
+                arguments.case,
+                arguments.results,
+                model=arguments.model,
+                repetitions=arguments.repetitions,
+                seed=arguments.seed,
+                codex_executable=arguments.codex,
+                dry_run=arguments.dry_run,
+            )
+            print(f"Saved evaluation session to: {session}")
+            manifest = json.loads(
+                (session / "manifest.json").read_text(encoding="utf-8")
+            )
+            return 1 if manifest["failed_runs"] and not arguments.dry_run else 0
+
         if arguments.command == "map":
             inventory = build_inventory(arguments.repository)
             structure = analyze_python_modules(inventory)

@@ -165,6 +165,19 @@ This case is intentionally useful before call resolution: LogicLens should absta
 where its current deterministic evidence is insufficient. Future changes should
 improve coverage without increasing unsupported claims.
 
+Run the paired Codex case with:
+
+```console
+logiclens eval evals/benchmarks/tiny_python/repository-understanding.case.json \
+  --results evals/results --model gpt-5.6-sol
+```
+
+The runner creates a fresh, history-free fixture copy for every condition and
+repetition. LogicLens indexing happens inside its copy and is included in wall time.
+Each session contains raw Codex events, structured run results, a condition-blind
+scoring packet, and a separate private key. Outputs remain unscored until the blind
+packet receives structured human or rubric-based judgments.
+
 ## Versioning
 
 Case, schema, prompt, role, adapter, harness, model, and LogicLens versions are part
