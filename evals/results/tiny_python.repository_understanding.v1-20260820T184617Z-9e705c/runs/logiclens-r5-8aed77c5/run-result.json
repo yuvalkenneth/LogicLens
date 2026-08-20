@@ -1,0 +1,258 @@
+{
+  "artifacts": [
+    "runs/logiclens-r5-8aed77c5/prompt.txt",
+    "runs/logiclens-r5-8aed77c5/events.jsonl",
+    "runs/logiclens-r5-8aed77c5/stderr.txt"
+  ],
+  "case_id": "tiny_python.repository_understanding.v1",
+  "condition": "logiclens",
+  "contract_version": "0.1",
+  "environment": {
+    "clean_workspace": true,
+    "history_access": false,
+    "logiclens": {
+      "commit": "36992976635c74305cdb609b606af94b2689ee9e",
+      "index_wall_ms": 12,
+      "version": "0.0.0"
+    },
+    "network_access": false,
+    "prompt_wrapper": "Fresh snapshot; no network or repository history; condition-specific investigation; JSON answer constrained by the case output schema.",
+    "repository_snapshot_id": "dcdad6f9ef1eb8581fffb1b66fb34f3b4f8bb3de8e60f1a04d51946d32c611cf"
+  },
+  "error": null,
+  "harness": {
+    "adapter_id": "codex-cli",
+    "adapter_version": "0.1",
+    "name": "Codex CLI",
+    "version": "codex-cli 0.148.0"
+  },
+  "model": {
+    "configuration": {},
+    "name": "gpt-5.6-sol",
+    "provider": "openai",
+    "version": null
+  },
+  "output": {
+    "raw_output_path": "runs/logiclens-r5-8aed77c5/answer.json",
+    "schema": "evals/schemas/answer.schema.json",
+    "value": {
+      "case_id": "tiny_python.repository_understanding.v1",
+      "contract_version": "0.1",
+      "turns": [
+        {
+          "claims": [
+            {
+              "claim_id": "tiny_shop_purpose",
+              "confidence": 1,
+              "evidence": [
+                {
+                  "kind": "logiclens_ref",
+                  "reference": "file:README.md"
+                },
+                {
+                  "kind": "logiclens_ref",
+                  "reference": "module:shop.main"
+                }
+              ],
+              "stance": "confirmed",
+              "statement": "Tiny Shop is a Python 3.12+ demonstration of a three-layer order-creation flow."
+            },
+            {
+              "claim_id": "package_identity",
+              "confidence": 1,
+              "evidence": [
+                {
+                  "kind": "logiclens_ref",
+                  "reference": "file:pyproject.toml"
+                },
+                {
+                  "kind": "logiclens_ref",
+                  "reference": "module:shop"
+                }
+              ],
+              "stance": "confirmed",
+              "statement": "The project is packaged as tiny-shop version 0.1.0, and its Python package is shop."
+            },
+            {
+              "claim_id": "no_runtime_entrypoint",
+              "confidence": 0.98,
+              "evidence": [
+                {
+                  "kind": "logiclens_ref",
+                  "reference": "file:pyproject.toml"
+                },
+                {
+                  "kind": "logiclens_ref",
+                  "reference": "file:src/shop/main.py"
+                }
+              ],
+              "stance": "confirmed",
+              "statement": "No executable, HTTP, or CLI entry point is declared: the manifest has no project scripts, and main.py contains functions but no direct-execution block or web framework setup."
+            },
+            {
+              "claim_id": "business_entry",
+              "confidence": 0.95,
+              "evidence": [
+                {
+                  "kind": "logiclens_ref",
+                  "reference": "function:shop.main.create_order"
+                },
+                {
+                  "kind": "logiclens_ref",
+                  "reference": "function:shop.main.build_service"
+                }
+              ],
+              "stance": "inferred",
+              "statement": "shop.main.create_order(order_id) is the likely business-facing entry function because it constructs the service and initiates the order use case."
+            },
+            {
+              "claim_id": "service_construction",
+              "confidence": 1,
+              "evidence": [
+                {
+                  "kind": "logiclens_ref",
+                  "reference": "function:shop.main.build_service"
+                },
+                {
+                  "kind": "logiclens_ref",
+                  "reference": "import:shop.main->shop.repository"
+                }
+              ],
+              "stance": "confirmed",
+              "statement": "build_service creates a fresh OrderRepository and injects it into a new OrderService."
+            },
+            {
+              "claim_id": "order_flow",
+              "confidence": 1,
+              "evidence": [
+                {
+                  "kind": "logiclens_ref",
+                  "reference": "function:shop.main.create_order"
+                },
+                {
+                  "kind": "logiclens_ref",
+                  "reference": "method:shop.service.OrderService.create"
+                }
+              ],
+              "stance": "confirmed",
+              "statement": "Order creation passes the supplied order_id from create_order to OrderService.create, which delegates to repository.save."
+            },
+            {
+              "claim_id": "repository_behavior",
+              "confidence": 1,
+              "evidence": [
+                {
+                  "kind": "logiclens_ref",
+                  "reference": "method:shop.repository.OrderRepository.save"
+                },
+                {
+                  "kind": "logiclens_ref",
+                  "reference": "file:README.md"
+                }
+              ],
+              "stance": "confirmed",
+              "statement": "The implemented repository save method only returns the order_id; despite the README's persistence wording, no state storage is present in this snapshot."
+            }
+          ],
+          "reading_order": [
+            "README.md",
+            "pyproject.toml",
+            "src/shop/main.py",
+            "src/shop/service.py",
+            "src/shop/repository.py",
+            "src/shop/__init__.py"
+          ],
+          "relations": [
+            {
+              "confidence": 1,
+              "evidence": [
+                {
+                  "kind": "logiclens_ref",
+                  "reference": "function:shop.main.create_order"
+                }
+              ],
+              "kind": "calls",
+              "relation_id": "create_order_calls_build_service",
+              "source": "function:shop.main.create_order",
+              "target": "function:shop.main.build_service"
+            },
+            {
+              "confidence": 1,
+              "evidence": [
+                {
+                  "kind": "logiclens_ref",
+                  "reference": "function:shop.main.build_service"
+                }
+              ],
+              "kind": "constructs",
+              "relation_id": "build_service_constructs_repository",
+              "source": "function:shop.main.build_service",
+              "target": "class:shop.repository.OrderRepository"
+            },
+            {
+              "confidence": 1,
+              "evidence": [
+                {
+                  "kind": "logiclens_ref",
+                  "reference": "function:shop.main.build_service"
+                }
+              ],
+              "kind": "constructs_with_repository",
+              "relation_id": "build_service_constructs_service",
+              "source": "function:shop.main.build_service",
+              "target": "class:shop.service.OrderService"
+            },
+            {
+              "confidence": 1,
+              "evidence": [
+                {
+                  "kind": "logiclens_ref",
+                  "reference": "function:shop.main.create_order"
+                }
+              ],
+              "kind": "calls",
+              "relation_id": "create_order_calls_service_create",
+              "source": "function:shop.main.create_order",
+              "target": "method:shop.service.OrderService.create"
+            },
+            {
+              "confidence": 1,
+              "evidence": [
+                {
+                  "kind": "logiclens_ref",
+                  "reference": "method:shop.service.OrderService.create"
+                }
+              ],
+              "kind": "delegates_to",
+              "relation_id": "service_create_delegates_save",
+              "source": "method:shop.service.OrderService.create",
+              "target": "method:shop.repository.OrderRepository.save"
+            }
+          ],
+          "summary": "Tiny Shop is a minimal layered Python fixture. Its likely business entry is shop.main.create_order, but there is no confirmed executable, HTTP, or CLI entry point. Each call creates a repository and service, forwards the order identifier through the service to save, and ultimately returns that identifier without actually retaining it.",
+          "turn_id": "onboarding",
+          "unknowns": [
+            "How callers are expected to invoke create_order is not specified because no CLI, HTTP adapter, executable block, or declared script exists.",
+            "Whether real persistence, validation, richer order data, or duplicate handling is intended cannot be determined from this snapshot."
+          ]
+        }
+      ]
+    }
+  },
+  "repetition": 5,
+  "run_id": "logiclens-r5-8aed77c5",
+  "sequence_index": 4,
+  "status": "completed",
+  "timing": {
+    "started_at": "2026-08-20T18:48:11.478998+00:00",
+    "wall_ms": 46935
+  },
+  "track": "controlled_model",
+  "usage": {
+    "cost_usd": null,
+    "input_tokens": 49483,
+    "output_tokens": 1503,
+    "raw_files_read": null,
+    "tool_calls": 2
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "$defs": {
+    "claim": {
+      "additionalProperties": false,
+      "properties": {
+        "claim_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "evidence": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "end_line": {
+                "minimum": 1,
+                "type": "integer"
+              },
+              "kind": {
+                "const": "source_span",
+                "type": "string"
+              },
+              "path": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "start_line": {
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "kind",
+              "path",
+              "start_line",
+              "end_line"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "stance": {
+          "enum": [
+            "confirmed",
+            "inferred",
+            "unknown"
+          ]
+        },
+        "statement": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "claim_id",
+        "statement",
+        "stance",
+        "confidence",
+        "evidence"
+      ],
+      "type": "object"
+    },
+    "relation": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "evidence": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "end_line": {
+                "minimum": 1,
+                "type": "integer"
+              },
+              "kind": {
+                "const": "source_span",
+                "type": "string"
+              },
+              "path": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "start_line": {
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "kind",
+              "path",
+              "start_line",
+              "end_line"
+            ],
+            "type": "object"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "kind": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "relation_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "source": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "target": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "relation_id",
+        "source",
+        "kind",
+        "target",
+        "confidence",
+        "evidence"
+      ],
+      "type": "object"
+    },
+    "turnAnswer": {
+      "additionalProperties": false,
+      "properties": {
+        "claims": {
+          "items": {
+            "$ref": "#/$defs/claim"
+          },
+          "type": "array"
+        },
+        "reading_order": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "relations": {
+          "items": {
+            "$ref": "#/$defs/relation"
+          },
+          "type": "array"
+        },
+        "summary": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "turn_id": {
+          "enum": [
+            "onboarding"
+          ],
+          "type": "string"
+        },
+        "unknowns": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "turn_id",
+        "summary",
+        "claims",
+        "relations",
+        "reading_order",
+        "unknowns"
+      ],
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "case_id": {
+      "const": "tiny_python.repository_understanding.v1",
+      "type": "string"
+    },
+    "contract_version": {
+      "const": "0.1",
+      "type": "string"
+    },
+    "turns": {
+      "items": {
+        "$ref": "#/$defs/turnAnswer"
+      },
+      "maxItems": 1,
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "contract_version",
+    "case_id",
+    "turns"
+  ],
+  "title": "LogicLens Harness-Neutral Answer 0.1",
+  "type": "object"
+}

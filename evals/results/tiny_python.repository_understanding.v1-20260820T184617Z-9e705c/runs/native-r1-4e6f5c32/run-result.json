@@ -1,0 +1,239 @@
+{
+  "artifacts": [
+    "runs/native-r1-4e6f5c32/prompt.txt",
+    "runs/native-r1-4e6f5c32/events.jsonl",
+    "runs/native-r1-4e6f5c32/stderr.txt"
+  ],
+  "case_id": "tiny_python.repository_understanding.v1",
+  "condition": "native",
+  "contract_version": "0.1",
+  "environment": {
+    "clean_workspace": true,
+    "history_access": false,
+    "logiclens": null,
+    "network_access": false,
+    "prompt_wrapper": "Fresh snapshot; no network or repository history; condition-specific investigation; JSON answer constrained by the case output schema.",
+    "repository_snapshot_id": "dcdad6f9ef1eb8581fffb1b66fb34f3b4f8bb3de8e60f1a04d51946d32c611cf"
+  },
+  "error": null,
+  "harness": {
+    "adapter_id": "codex-cli",
+    "adapter_version": "0.1",
+    "name": "Codex CLI",
+    "version": "codex-cli 0.148.0"
+  },
+  "model": {
+    "configuration": {},
+    "name": "gpt-5.6-sol",
+    "provider": "openai",
+    "version": null
+  },
+  "output": {
+    "raw_output_path": "runs/native-r1-4e6f5c32/answer.json",
+    "schema": "evals/schemas/answer.schema.json",
+    "value": {
+      "case_id": "tiny_python.repository_understanding.v1",
+      "contract_version": "0.1",
+      "turns": [
+        {
+          "claims": [
+            {
+              "claim_id": "c1",
+              "confidence": 1,
+              "evidence": [
+                {
+                  "end_line": 5,
+                  "kind": "source_span",
+                  "path": "README.md",
+                  "start_line": 1
+                }
+              ],
+              "stance": "confirmed",
+              "statement": "Tiny Shop is a small demonstration of a three-layer order-creation flow."
+            },
+            {
+              "claim_id": "c2",
+              "confidence": 0.99,
+              "evidence": [
+                {
+                  "end_line": 4,
+                  "kind": "source_span",
+                  "path": "pyproject.toml",
+                  "start_line": 1
+                },
+                {
+                  "end_line": 12,
+                  "kind": "source_span",
+                  "path": "src/shop/main.py",
+                  "start_line": 1
+                }
+              ],
+              "stance": "confirmed",
+              "statement": "No executable, HTTP route, or CLI entry point is declared; the package metadata contains no script entry, and main.py only defines callable functions."
+            },
+            {
+              "claim_id": "c3",
+              "confidence": 0.95,
+              "evidence": [
+                {
+                  "end_line": 12,
+                  "kind": "source_span",
+                  "path": "src/shop/main.py",
+                  "start_line": 10
+                },
+                {
+                  "end_line": 5,
+                  "kind": "source_span",
+                  "path": "README.md",
+                  "start_line": 3
+                }
+              ],
+              "stance": "inferred",
+              "statement": "shop.main.create_order is the likely business-entry function: the README names it as the start of the flow, and it accepts an order identifier and delegates creation."
+            },
+            {
+              "claim_id": "c4",
+              "confidence": 1,
+              "evidence": [
+                {
+                  "end_line": 7,
+                  "kind": "source_span",
+                  "path": "src/shop/main.py",
+                  "start_line": 5
+                }
+              ],
+              "stance": "confirmed",
+              "statement": "build_service constructs a fresh OrderRepository and injects it into a fresh OrderService."
+            },
+            {
+              "claim_id": "c5",
+              "confidence": 1,
+              "evidence": [
+                {
+                  "end_line": 12,
+                  "kind": "source_span",
+                  "path": "src/shop/main.py",
+                  "start_line": 10
+                },
+                {
+                  "end_line": 9,
+                  "kind": "source_span",
+                  "path": "src/shop/service.py",
+                  "start_line": 4
+                }
+              ],
+              "stance": "confirmed",
+              "statement": "Order creation calls create_order(order_id), builds the service, then OrderService.create forwards the same identifier to repository.save."
+            },
+            {
+              "claim_id": "c6",
+              "confidence": 1,
+              "evidence": [
+                {
+                  "end_line": 3,
+                  "kind": "source_span",
+                  "path": "src/shop/repository.py",
+                  "start_line": 1
+                }
+              ],
+              "stance": "confirmed",
+              "statement": "OrderRepository.save simply returns the supplied identifier; it stores no observable state despite the README's persistence wording."
+            }
+          ],
+          "reading_order": [
+            "README.md",
+            "src/shop/main.py",
+            "src/shop/service.py",
+            "src/shop/repository.py",
+            "pyproject.toml",
+            "src/shop/__init__.py"
+          ],
+          "relations": [
+            {
+              "confidence": 1,
+              "evidence": [
+                {
+                  "end_line": 12,
+                  "kind": "source_span",
+                  "path": "src/shop/main.py",
+                  "start_line": 10
+                }
+              ],
+              "kind": "calls",
+              "relation_id": "r1",
+              "source": "shop.main.create_order",
+              "target": "shop.main.build_service"
+            },
+            {
+              "confidence": 1,
+              "evidence": [
+                {
+                  "end_line": 12,
+                  "kind": "source_span",
+                  "path": "src/shop/main.py",
+                  "start_line": 10
+                }
+              ],
+              "kind": "calls",
+              "relation_id": "r2",
+              "source": "shop.main.create_order",
+              "target": "OrderService.create"
+            },
+            {
+              "confidence": 1,
+              "evidence": [
+                {
+                  "end_line": 9,
+                  "kind": "source_span",
+                  "path": "src/shop/service.py",
+                  "start_line": 8
+                }
+              ],
+              "kind": "calls",
+              "relation_id": "r3",
+              "source": "OrderService.create",
+              "target": "OrderRepository.save"
+            },
+            {
+              "confidence": 1,
+              "evidence": [
+                {
+                  "end_line": 7,
+                  "kind": "source_span",
+                  "path": "src/shop/main.py",
+                  "start_line": 5
+                }
+              ],
+              "kind": "constructs_and_injects",
+              "relation_id": "r4",
+              "source": "shop.main.build_service",
+              "target": "OrderService"
+            }
+          ],
+          "summary": "Tiny Shop is a minimal layered Python example. Its likely business entry is create_order, which constructs an OrderService and OrderRepository, forwards the order ID through them, and returns it unchanged. No executable, HTTP, or CLI adapter is present.",
+          "turn_id": "onboarding",
+          "unknowns": [
+            "How create_order is intended to be invoked by a real application is not specified.",
+            "No validation, order model, durable storage, failure behavior, or side effects are defined."
+          ]
+        }
+      ]
+    }
+  },
+  "repetition": 1,
+  "run_id": "native-r1-4e6f5c32",
+  "sequence_index": 1,
+  "status": "completed",
+  "timing": {
+    "started_at": "2026-08-20T18:46:17.510335+00:00",
+    "wall_ms": 36027
+  },
+  "track": "controlled_model",
+  "usage": {
+    "cost_usd": null,
+    "input_tokens": 46887,
+    "output_tokens": 1473,
+    "raw_files_read": null,
+    "tool_calls": 2
+  }
+}

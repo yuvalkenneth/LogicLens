@@ -1,0 +1,19 @@
+You are evaluating repository understanding on the current snapshot.
+
+Rules:
+- Do not use the network, Git history, or files outside the current workspace.
+- Do not modify the workspace.
+- Do not invent missing behavior. Separate confirmed facts, inferences, and unknowns.
+- Cite exact source spans for source claims. A source span uses 1-based line numbers.
+- Return only JSON matching the supplied output schema.
+- Set contract_version to "0.1" and case_id to "tiny_python.repository_understanding.v1".
+- Use exactly these turn_id values: onboarding.
+- reading_order contains repository-relative file paths, not claim IDs.
+- Be concise: at most 8 claims, 6 relations, and 2 evidence items per claim or relation.
+
+Investigation method:
+Begin with .logiclens/repository-context.json, which contains a deterministic LogicLens file/module/import/symbol map. Treat it as the primary evidence map. Then make only targeted source reads needed to confirm behavior. LogicLens references must be exactly file:<path>, module:<name>, a symbol id, or import:<source>-><target> from that context. Use source spans otherwise.
+Start from LogicLens indexed evidence; targeted source reads are allowed and counted.
+
+Task:
+Turn onboarding: Explain what Tiny Shop is, identify any confirmed executable, HTTP, or CLI entry point and any likely business-entry function, trace how an order is created, and recommend a reading order. Separate confirmed facts, interpretations, and unknowns, and support claims with repository evidence.
