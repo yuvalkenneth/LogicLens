@@ -1,0 +1,72 @@
+{
+  "contract_version": "0.1",
+  "case_id": "tiny_python.repository_understanding.v1",
+  "turns": [
+    {
+      "turn_id": "onboarding",
+      "summary": "Tiny Shop is a three-layer Python example for creating and saving an order identifier.",
+      "claims": [
+        {
+          "claim_id": "claim-purpose",
+          "statement": "Tiny Shop demonstrates a three-layer order-creation flow.",
+          "stance": "confirmed",
+          "confidence": 1.0,
+          "evidence": [
+            {"kind": "source_span", "path": "README.md", "start_line": 3, "end_line": 5}
+          ]
+        },
+        {
+          "claim_id": "claim-entry",
+          "statement": "create_order is the likely business-entry function, but no executable, HTTP, or CLI entry point is declared.",
+          "stance": "inferred",
+          "confidence": 0.9,
+          "evidence": [
+            {"kind": "source_span", "path": "src/shop/main.py", "start_line": 10, "end_line": 12},
+            {"kind": "source_span", "path": "pyproject.toml", "start_line": 1, "end_line": 4}
+          ]
+        }
+      ],
+      "relations": [
+        {
+          "relation_id": "call-build-service",
+          "source": "function:shop.main.create_order",
+          "kind": "CALLS",
+          "target": "function:shop.main.build_service",
+          "confidence": 1.0,
+          "evidence": [
+            {"kind": "source_span", "path": "src/shop/main.py", "start_line": 11, "end_line": 11}
+          ]
+        },
+        {
+          "relation_id": "call-create",
+          "source": "function:shop.main.create_order",
+          "kind": "CALLS",
+          "target": "method:shop.service.OrderService.create",
+          "confidence": 1.0,
+          "evidence": [
+            {"kind": "source_span", "path": "src/shop/main.py", "start_line": 12, "end_line": 12}
+          ]
+        },
+        {
+          "relation_id": "call-save",
+          "source": "method:shop.service.OrderService.create",
+          "kind": "CALLS",
+          "target": "method:shop.repository.OrderRepository.save",
+          "confidence": 1.0,
+          "evidence": [
+            {"kind": "source_span", "path": "src/shop/service.py", "start_line": 9, "end_line": 9}
+          ]
+        }
+      ],
+      "reading_order": [
+        "README.md",
+        "src/shop/main.py",
+        "src/shop/service.py",
+        "src/shop/repository.py"
+      ],
+      "unknowns": [
+        "The snapshot does not declare an executable, HTTP, or CLI entry point."
+      ]
+    }
+  ]
+}

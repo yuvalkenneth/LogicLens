@@ -1,0 +1,121 @@
+{
+  "documents": [
+    {
+      "category": "documentation",
+      "content": "# Tiny Shop\n\nTiny Shop demonstrates a three-layer order-creation flow. `shop.main.create_order`\nconstructs an order service, the service applies the use case, and an in-memory\nrepository persists the order identifier.\n\n",
+      "path": "README.md"
+    },
+    {
+      "category": "manifest",
+      "content": "[project]\nname = \"tiny-shop\"\nversion = \"0.1.0\"\nrequires-python = \">=3.12\"\n\n",
+      "path": "pyproject.toml"
+    }
+  ],
+  "files": [
+    {"category": "documentation", "language": "markdown", "path": "README.md"},
+    {"category": "manifest", "language": "toml", "path": "pyproject.toml"},
+    {"category": "source", "language": "python", "path": "src/shop/__init__.py"},
+    {"category": "source", "language": "python", "path": "src/shop/main.py"},
+    {"category": "source", "language": "python", "path": "src/shop/repository.py"},
+    {"category": "source", "language": "python", "path": "src/shop/service.py"}
+  ],
+  "imports": [
+    {
+      "evidence": {"column": 1, "file": "src/shop/main.py", "line": 1},
+      "imported_text": ".repository",
+      "source": "shop.main",
+      "target": "shop.repository"
+    },
+    {
+      "evidence": {"column": 1, "file": "src/shop/main.py", "line": 2},
+      "imported_text": ".service",
+      "source": "shop.main",
+      "target": "shop.service"
+    },
+    {
+      "evidence": {"column": 1, "file": "src/shop/service.py", "line": 1},
+      "imported_text": ".repository",
+      "source": "shop.service",
+      "target": "shop.repository"
+    }
+  ],
+  "modules": [
+    {"file": "src/shop/__init__.py", "kind": "package", "name": "shop"},
+    {"file": "src/shop/main.py", "kind": "module", "name": "shop.main"},
+    {"file": "src/shop/repository.py", "kind": "module", "name": "shop.repository"},
+    {"file": "src/shop/service.py", "kind": "module", "name": "shop.service"}
+  ],
+  "snapshot_id": "dcdad6f9ef1eb8581fffb1b66fb34f3b4f8bb3de8e60f1a04d51946d32c611cf",
+  "symbols": [
+    {
+      "docstring": null,
+      "evidence": {"column": 1, "end_column": 36, "end_line": 7, "line": 5},
+      "file": "src/shop/main.py",
+      "id": "function:shop.main.build_service",
+      "kind": "function",
+      "name": "build_service",
+      "parent": null,
+      "signature": "build_service() -> OrderService"
+    },
+    {
+      "docstring": null,
+      "evidence": {"column": 1, "end_column": 36, "end_line": 12, "line": 10},
+      "file": "src/shop/main.py",
+      "id": "function:shop.main.create_order",
+      "kind": "function",
+      "name": "create_order",
+      "parent": null,
+      "signature": "create_order(order_id: str) -> str"
+    },
+    {
+      "docstring": null,
+      "evidence": {"column": 1, "end_column": 24, "end_line": 3, "line": 1},
+      "file": "src/shop/repository.py",
+      "id": "class:shop.repository.OrderRepository",
+      "kind": "class",
+      "name": "OrderRepository",
+      "parent": null,
+      "signature": null
+    },
+    {
+      "docstring": null,
+      "evidence": {"column": 5, "end_column": 24, "end_line": 3, "line": 2},
+      "file": "src/shop/repository.py",
+      "id": "method:shop.repository.OrderRepository.save",
+      "kind": "method",
+      "name": "save",
+      "parent": "shop.repository.OrderRepository",
+      "signature": "save(self, order_id: str) -> str"
+    },
+    {
+      "docstring": null,
+      "evidence": {"column": 1, "end_column": 46, "end_line": 9, "line": 4},
+      "file": "src/shop/service.py",
+      "id": "class:shop.service.OrderService",
+      "kind": "class",
+      "name": "OrderService",
+      "parent": null,
+      "signature": null
+    },
+    {
+      "docstring": null,
+      "evidence": {"column": 5, "end_column": 37, "end_line": 6, "line": 5},
+      "file": "src/shop/service.py",
+      "id": "method:shop.service.OrderService.__init__",
+      "kind": "method",
+      "name": "__init__",
+      "parent": "shop.service.OrderService",
+      "signature": "__init__(self, repository: OrderRepository) -> None"
+    },
+    {
+      "docstring": null,
+      "evidence": {"column": 5, "end_column": 46, "end_line": 9, "line": 8},
+      "file": "src/shop/service.py",
+      "id": "method:shop.service.OrderService.create",
+      "kind": "method",
+      "name": "create",
+      "parent": "shop.service.OrderService",
+      "signature": "create(self, order_id: str) -> str"
+    }
+  ]
+}

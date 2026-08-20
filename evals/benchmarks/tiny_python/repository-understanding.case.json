@@ -1,0 +1,138 @@
+{
+  "contract_version": "0.1",
+  "case_id": "tiny_python.repository_understanding.v1",
+  "target": {
+    "kind": "end_to_end",
+    "name": "repository_understanding"
+  },
+  "repository": {
+    "fixture_path": "tests/fixtures/tiny_python",
+    "snapshot_id": "dcdad6f9ef1eb8581fffb1b66fb34f3b4f8bb3de8e60f1a04d51946d32c611cf",
+    "current_snapshot_only": true,
+    "languages": ["python"]
+  },
+  "agent_input": {
+    "turns": [
+      {
+        "turn_id": "onboarding",
+        "category": "repository_overview",
+        "prompt": "Explain what Tiny Shop is, identify any confirmed executable, HTTP, or CLI entry point and any likely business-entry function, trace how an order is created, and recommend a reading order. Separate confirmed facts, interpretations, and unknowns, and support claims with repository evidence."
+      }
+    ],
+    "artifacts": [],
+    "output_schema": "evals/schemas/answer.schema.json"
+  },
+  "oracle": {
+    "facts": [
+      {
+        "fact_id": "purpose",
+        "statement": "Tiny Shop demonstrates a three-layer order-creation flow.",
+        "importance": "required",
+        "applies_to_turns": ["onboarding"],
+        "evidence": [
+          {"kind": "source_span", "path": "README.md", "start_line": 3, "end_line": 5}
+        ]
+      },
+      {
+        "fact_id": "business-entry-function",
+        "statement": "shop.main.create_order is the function that orchestrates the documented order-creation use case.",
+        "importance": "required",
+        "applies_to_turns": ["onboarding"],
+        "evidence": [
+          {"kind": "source_span", "path": "src/shop/main.py", "start_line": 10, "end_line": 12}
+        ]
+      },
+      {
+        "fact_id": "service-construction",
+        "statement": "build_service constructs an OrderRepository and injects it into OrderService.",
+        "importance": "required",
+        "applies_to_turns": ["onboarding"],
+        "evidence": [
+          {"kind": "source_span", "path": "src/shop/main.py", "start_line": 5, "end_line": 7}
+        ]
+      },
+      {
+        "fact_id": "order-flow",
+        "statement": "create_order builds the service, calls OrderService.create, and the service delegates to OrderRepository.save.",
+        "importance": "required",
+        "applies_to_turns": ["onboarding"],
+        "evidence": [
+          {"kind": "source_span", "path": "src/shop/main.py", "start_line": 10, "end_line": 12},
+          {"kind": "source_span", "path": "src/shop/service.py", "start_line": 8, "end_line": 9}
+        ]
+      },
+      {
+        "fact_id": "repository-behavior",
+        "statement": "OrderRepository.save returns the supplied order identifier.",
+        "importance": "optional",
+        "applies_to_turns": ["onboarding"],
+        "evidence": [
+          {"kind": "source_span", "path": "src/shop/repository.py", "start_line": 1, "end_line": 3}
+        ]
+      }
+    ],
+    "expected_unknowns": [
+      {
+        "unknown_id": "declared-runtime-entrypoint",
+        "statement": "The snapshot declares no executable, HTTP, or CLI entry point.",
+        "applies_to_turns": ["onboarding"],
+        "search_scope": ["pyproject.toml", "src/shop"]
+      }
+    ],
+    "expected_decisions": [],
+    "success_criteria": [
+      {
+        "criterion_id": "explain-purpose",
+        "description": "Correctly explain the repository's purpose.",
+        "weight": 0.2,
+        "oracle_ids": ["purpose"]
+      },
+      {
+        "criterion_id": "distinguish-entrypoint",
+        "description": "Distinguish the business-entry function from a declared runtime entry point.",
+        "weight": 0.2,
+        "oracle_ids": ["business-entry-function", "declared-runtime-entrypoint"]
+      },
+      {
+        "criterion_id": "trace-order-flow",
+        "description": "Trace order creation through service construction, service.create, and repository.save.",
+        "weight": 0.4,
+        "oracle_ids": ["service-construction", "order-flow", "repository-behavior"]
+      },
+      {
+        "criterion_id": "recommend-reading-order",
+        "description": "Recommend a coherent reading order from documentation through orchestration, service, and repository.",
+        "weight": 0.2,
+        "oracle_ids": []
+      }
+    ],
+    "relation_oracle_path": "tests/expected/tiny_python.graph.json"
+  },
+  "protocol": {
+    "conditions": [
+      {
+        "condition_id": "native",
+        "logiclens_enabled": false,
+        "instructions": "Use the harness's normal repository-understanding tools without LogicLens."
+      },
+      {
+        "condition_id": "logiclens",
+        "logiclens_enabled": true,
+        "instructions": "Start from LogicLens indexed evidence; targeted source reads are allowed and counted."
+      }
+    ],
+    "tracks": ["controlled_model", "native_default"],
+    "repetitions": 5,
+    "network_access": false,
+    "history_access": false,
+    "clean_workspace": true,
+    "randomize_condition_order": true,
+    "allow_targeted_source_reads": true,
+    "count_indexing_cost": true,
+    "budget": {
+      "wall_seconds": 600,
+      "input_tokens": null,
+      "output_tokens": null
+    }
+  }
+}

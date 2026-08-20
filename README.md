@@ -42,6 +42,12 @@ expectations. Mapping refuses to overwrite an existing database.
 The portable Codex skill is in `skills/logiclens`. It uses the host coding agent as
 the runtime and keeps classifier and verifier roles in versioned reference files.
 
+## Evaluation
+
+The harness-neutral [evaluation contract](docs/evaluation-contract.md) defines
+per-role tests and paired native-versus-LogicLens runs. Versioned JSON Schemas,
+examples, and the first Tiny Shop cases live in `evals`.
+
 ## First experiment
 
 `tests/fixtures/tiny_python` is a controlled Python repository. Its selected expected
@@ -57,4 +63,5 @@ decide what LogicLens should reuse or implement.
 2. `docs/scope.md`
 3. `docs/glossary.md`
 4. `docs/research/graphify.md`
-5. `tests/expected/tiny_python.graph.json`
+5. `docs/evaluation-contract.md`
+6. `tests/expected/tiny_python.graph.json`

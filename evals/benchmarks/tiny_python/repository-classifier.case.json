@@ -1,0 +1,101 @@
+{
+  "contract_version": "0.1",
+  "case_id": "tiny_python.repository_classifier.v1",
+  "target": {
+    "kind": "role",
+    "name": "repository_classifier",
+    "role_definition": "skills/logiclens/references/repository-classifier.md"
+  },
+  "repository": {
+    "fixture_path": "tests/fixtures/tiny_python",
+    "snapshot_id": "dcdad6f9ef1eb8581fffb1b66fb34f3b4f8bb3de8e60f1a04d51946d32c611cf",
+    "current_snapshot_only": true,
+    "languages": ["python"]
+  },
+  "agent_input": {
+    "turns": [
+      {
+        "turn_id": "classify",
+        "category": "role_task",
+        "prompt": "Produce a Repository Brief from only the supplied bounded context and role definition."
+      }
+    ],
+    "artifacts": [
+      "evals/benchmarks/tiny_python/inputs/repository-brief-context.json"
+    ],
+    "output_schema": "skills/logiclens/references/repository-brief.schema.json"
+  },
+  "oracle": {
+    "facts": [
+      {
+        "fact_id": "purpose",
+        "statement": "Tiny Shop demonstrates a three-layer order-creation flow.",
+        "importance": "required",
+        "applies_to_turns": ["classify"],
+        "evidence": [
+          {"kind": "logiclens_ref", "reference": "file:README.md"}
+        ]
+      },
+      {
+        "fact_id": "technology",
+        "statement": "The repository is a Python package requiring Python 3.12 or newer.",
+        "importance": "required",
+        "applies_to_turns": ["classify"],
+        "evidence": [
+          {"kind": "logiclens_ref", "reference": "file:pyproject.toml"}
+        ]
+      }
+    ],
+    "expected_unknowns": [
+      {
+        "unknown_id": "call-flow",
+        "statement": "The bounded context cannot confirm runtime call transitions.",
+        "applies_to_turns": ["classify"],
+        "search_scope": ["symbols", "imports"]
+      }
+    ],
+    "expected_decisions": [],
+    "success_criteria": [
+      {
+        "criterion_id": "classify-purpose",
+        "description": "Identify the documented repository purpose.",
+        "weight": 0.4,
+        "oracle_ids": ["purpose"]
+      },
+      {
+        "criterion_id": "classify-technology",
+        "description": "Identify Python and its declared minimum version.",
+        "weight": 0.3,
+        "oracle_ids": ["technology"]
+      },
+      {
+        "criterion_id": "preserve-call-unknown",
+        "description": "Do not claim runtime flows without call evidence.",
+        "weight": 0.3,
+        "oracle_ids": ["call-flow"]
+      }
+    ]
+  },
+  "protocol": {
+    "conditions": [
+      {
+        "condition_id": "role",
+        "logiclens_enabled": true,
+        "instructions": "Pass only the declared role definition, task turn, and frozen input artifact."
+      }
+    ],
+    "tracks": ["controlled_model"],
+    "repetitions": 5,
+    "network_access": false,
+    "history_access": false,
+    "clean_workspace": true,
+    "randomize_condition_order": false,
+    "allow_targeted_source_reads": false,
+    "count_indexing_cost": false,
+    "budget": {
+      "wall_seconds": 300,
+      "input_tokens": null,
+      "output_tokens": null
+    }
+  }
+}

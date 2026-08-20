@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/yuvalkenneth/LogicLens/evals/schemas/comparison-result.schema.json",
+  "title": "LogicLens Paired Comparison Result 0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "comparison_id",
+    "case_id",
+    "track",
+    "harness",
+    "model",
+    "repetitions",
+    "native_run_ids",
+    "logiclens_run_ids",
+    "metrics"
+  ],
+  "properties": {
+    "contract_version": {"const": "0.1"},
+    "comparison_id": {"type": "string", "minLength": 1},
+    "case_id": {"type": "string", "minLength": 1},
+    "track": {"enum": ["controlled_model", "native_default"]},
+    "harness": {"type": "string", "minLength": 1},
+    "model": {"type": "string", "minLength": 1},
+    "repetitions": {"type": "integer", "minimum": 3},
+    "native_run_ids": {
+      "type": "array",
+      "minItems": 3,
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "logiclens_run_ids": {
+      "type": "array",
+      "minItems": 3,
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "metrics": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"$ref": "#/$defs/pairedMetric"}
+    }
+  },
+  "$defs": {
+    "pairedMetric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "native_mean",
+        "native_stddev",
+        "logiclens_mean",
+        "logiclens_stddev",
+        "paired_delta",
+        "confidence_interval_95"
+      ],
+      "properties": {
+        "native_mean": {"type": "number"},
+        "native_stddev": {"type": "number", "minimum": 0},
+        "logiclens_mean": {"type": "number"},
+        "logiclens_stddev": {"type": "number", "minimum": 0},
+        "paired_delta": {"type": "number"},
+        "confidence_interval_95": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["lower", "upper", "method"],
+          "properties": {
+            "lower": {"type": "number"},
+            "upper": {"type": "number"},
+            "method": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    }
+  }
+}

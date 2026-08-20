@@ -1,0 +1,37 @@
+{
+  "contract_version": "0.1",
+  "comparison_id": "comparison.example.codex.controlled",
+  "case_id": "tiny_python.repository_understanding.v1",
+  "track": "controlled_model",
+  "harness": "Codex",
+  "model": "example-model",
+  "repetitions": 5,
+  "native_run_ids": [
+    "native.1",
+    "native.2",
+    "native.3",
+    "native.4",
+    "native.5"
+  ],
+  "logiclens_run_ids": [
+    "logiclens.1",
+    "logiclens.2",
+    "logiclens.3",
+    "logiclens.4",
+    "logiclens.5"
+  ],
+  "metrics": {
+    "unsupported_claim_rate": {
+      "native_mean": 0.2,
+      "native_stddev": 0.1,
+      "logiclens_mean": 0.1,
+      "logiclens_stddev": 0.05,
+      "paired_delta": -0.1,
+      "confidence_interval_95": {
+        "lower": -0.18,
+        "upper": -0.02,
+        "method": "paired bootstrap"
+      }
+    }
+  }
+}

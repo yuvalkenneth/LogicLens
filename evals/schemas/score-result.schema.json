@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/yuvalkenneth/LogicLens/evals/schemas/score-result.schema.json",
+  "title": "LogicLens Evaluation Score Result 0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "score_id",
+    "run_id",
+    "case_id",
+    "scorer",
+    "validity",
+    "claim_judgments",
+    "relation_judgments",
+    "decision_judgments",
+    "criterion_judgments",
+    "metrics",
+    "human_audit"
+  ],
+  "properties": {
+    "contract_version": {"const": "0.1"},
+    "score_id": {"type": "string", "minLength": 1},
+    "run_id": {"type": "string", "minLength": 1},
+    "case_id": {"type": "string", "minLength": 1},
+    "scorer": {"$ref": "#/$defs/scorer"},
+    "validity": {"$ref": "#/$defs/validity"},
+    "claim_judgments": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/claimJudgment"}
+    },
+    "relation_judgments": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/relationJudgment"}
+    },
+    "decision_judgments": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/decisionJudgment"}
+    },
+    "criterion_judgments": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/criterionJudgment"}
+    },
+    "metrics": {"$ref": "#/$defs/metrics"},
+    "human_audit": {"$ref": "#/$defs/humanAudit"}
+  },
+  "$defs": {
+    "scorer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "name",
+        "version",
+        "configuration",
+        "blinded_to_harness",
+        "blinded_to_condition"
+      ],
+      "properties": {
+        "kind": {"enum": ["deterministic", "llm", "human", "hybrid"]},
+        "name": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "configuration": {"type": "object"},
+        "blinded_to_harness": {"const": true},
+        "blinded_to_condition": {"const": true}
+      }
+    },
+    "validity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["output_schema_valid", "snapshot_match", "evidence_resolvable"],
+      "properties": {
+        "output_schema_valid": {"type": "boolean"},
+        "snapshot_match": {"type": "boolean"},
+        "evidence_resolvable": {"type": "boolean"}
+      }
+    },
+    "claimJudgment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim_id", "matched_fact_ids", "verdict", "evidence_verdict", "rationale"],
+      "properties": {
+        "claim_id": {"type": "string", "minLength": 1},
+        "matched_fact_ids": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "verdict": {"enum": ["correct", "partial", "incorrect", "unsupported"]},
+        "evidence_verdict": {"enum": ["valid", "partial", "invalid", "missing"]},
+        "rationale": {"type": "string", "minLength": 1}
+      }
+    },
+    "relationJudgment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["relation_id", "matched_oracle_edge", "verdict", "evidence_verdict", "rationale"],
+      "properties": {
+        "relation_id": {"type": "string", "minLength": 1},
+        "matched_oracle_edge": {"type": ["string", "null"]},
+        "verdict": {"enum": ["correct", "partial", "incorrect", "unsupported"]},
+        "evidence_verdict": {"enum": ["valid", "partial", "invalid", "missing"]},
+        "rationale": {"type": "string", "minLength": 1}
+      }
+    },
+    "decisionJudgment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subject_id", "expected", "actual", "correct", "rationale"],
+      "properties": {
+        "subject_id": {"type": "string", "minLength": 1},
+        "expected": {"type": "string", "minLength": 1},
+        "actual": {"type": "string", "minLength": 1},
+        "correct": {"type": "boolean"},
+        "rationale": {"type": "string", "minLength": 1}
+      }
+    },
+    "criterionJudgment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["criterion_id", "value", "rationale"],
+      "properties": {
+        "criterion_id": {"type": "string", "minLength": 1},
+        "value": {"type": "number", "minimum": 0, "maximum": 1},
+        "rationale": {"type": "string", "minLength": 1}
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_success",
+        "claim_precision",
+        "required_fact_recall",
+        "evidence_precision",
+        "unsupported_claim_rate",
+        "correct_abstention_rate",
+        "false_abstention_rate",
+        "relation_precision",
+        "relation_recall",
+        "decision_precision",
+        "decision_recall"
+      ],
+      "properties": {
+        "task_success": {"type": "number", "minimum": 0, "maximum": 1},
+        "claim_precision": {"$ref": "#/$defs/metric"},
+        "required_fact_recall": {"$ref": "#/$defs/metric"},
+        "evidence_precision": {"$ref": "#/$defs/metric"},
+        "unsupported_claim_rate": {"$ref": "#/$defs/metric"},
+        "correct_abstention_rate": {"$ref": "#/$defs/metric"},
+        "false_abstention_rate": {"$ref": "#/$defs/metric"},
+        "relation_precision": {"$ref": "#/$defs/metric"},
+        "relation_recall": {"$ref": "#/$defs/metric"},
+        "decision_precision": {"$ref": "#/$defs/metric"},
+        "decision_recall": {"$ref": "#/$defs/metric"}
+      }
+    },
+    "metric": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+    "humanAudit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reviewer", "notes"],
+      "properties": {
+        "status": {"enum": ["not_reviewed", "accepted", "corrected"]},
+        "reviewer": {"type": ["string", "null"]},
+        "notes": {"type": ["string", "null"]}
+      }
+    }
+  }
+}

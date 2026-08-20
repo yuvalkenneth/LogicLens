@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/yuvalkenneth/LogicLens/evals/schemas/evidence.schema.json",
+  "title": "LogicLens Evaluation Evidence 0.1",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "path", "start_line", "end_line"],
+      "properties": {
+        "kind": {"const": "source_span"},
+        "path": {"type": "string", "minLength": 1},
+        "start_line": {"type": "integer", "minimum": 1},
+        "end_line": {"type": "integer", "minimum": 1}
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "reference"],
+      "properties": {
+        "kind": {"const": "logiclens_ref"},
+        "reference": {"type": "string", "minLength": 1}
+      }
+    }
+  ]
+}

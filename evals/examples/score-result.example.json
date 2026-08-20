@@ -1,0 +1,70 @@
+{
+  "contract_version": "0.1",
+  "score_id": "score.example.codex.native.1",
+  "run_id": "example.codex.native.1",
+  "case_id": "tiny_python.repository_understanding.v1",
+  "scorer": {
+    "kind": "deterministic",
+    "name": "example-rubric-scorer",
+    "version": "0.1",
+    "configuration": {},
+    "blinded_to_harness": true,
+    "blinded_to_condition": true
+  },
+  "validity": {
+    "output_schema_valid": true,
+    "snapshot_match": true,
+    "evidence_resolvable": true
+  },
+  "claim_judgments": [
+    {
+      "claim_id": "claim-purpose",
+      "matched_fact_ids": ["purpose"],
+      "verdict": "correct",
+      "evidence_verdict": "valid",
+      "rationale": "The statement and cited README span match the oracle."
+    }
+  ],
+  "relation_judgments": [],
+  "decision_judgments": [],
+  "criterion_judgments": [
+    {
+      "criterion_id": "explain-purpose",
+      "value": 1.0,
+      "rationale": "The answer correctly states the repository purpose."
+    },
+    {
+      "criterion_id": "distinguish-entrypoint",
+      "value": 0.0,
+      "rationale": "The answer does not discuss entry-point status."
+    },
+    {
+      "criterion_id": "trace-order-flow",
+      "value": 0.0,
+      "rationale": "The answer does not trace order creation."
+    },
+    {
+      "criterion_id": "recommend-reading-order",
+      "value": 0.0,
+      "rationale": "The answer gives only one file rather than a useful reading path."
+    }
+  ],
+  "metrics": {
+    "task_success": 0.2,
+    "claim_precision": 1.0,
+    "required_fact_recall": 0.25,
+    "evidence_precision": 1.0,
+    "unsupported_claim_rate": 0.0,
+    "correct_abstention_rate": 0.0,
+    "false_abstention_rate": 0.0,
+    "relation_precision": null,
+    "relation_recall": 0.0,
+    "decision_precision": null,
+    "decision_recall": null
+  },
+  "human_audit": {
+    "status": "not_reviewed",
+    "reviewer": null,
+    "notes": null
+  }
+}

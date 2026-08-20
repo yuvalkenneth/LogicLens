@@ -1,0 +1,15 @@
+{
+  "contract_version": "0.1",
+  "adapter_id": "example-harness-adapter",
+  "adapter_version": "0.1",
+  "harness_name": "Example Harness",
+  "supported_tracks": ["controlled_model", "native_default"],
+  "capabilities": {
+    "model_override": false,
+    "structured_output": false,
+    "token_usage": false,
+    "cost_usage": false,
+    "tool_trace": false,
+    "raw_file_trace": false
+  }
+}

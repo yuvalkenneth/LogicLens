@@ -19,7 +19,7 @@ dependencies = [
 logiclens = "logiclens.cli:main"
 
 [dependency-groups]
-dev = ["pytest>=8.3"]
+dev = ["jsonschema>=4.25", "pytest>=8.3"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/logiclens"]

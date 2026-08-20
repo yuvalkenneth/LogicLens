@@ -1,0 +1,71 @@
+{
+  "contract_version": "0.1",
+  "run_id": "example.codex.native.1",
+  "case_id": "tiny_python.repository_understanding.v1",
+  "track": "controlled_model",
+  "condition": "native",
+  "repetition": 1,
+  "sequence_index": 1,
+  "harness": {
+    "adapter_id": "example-codex-adapter",
+    "adapter_version": "0.1",
+    "name": "Codex",
+    "version": null
+  },
+  "model": {
+    "provider": "OpenAI",
+    "name": "example-model",
+    "version": null,
+    "configuration": {}
+  },
+  "environment": {
+    "repository_snapshot_id": "dcdad6f9ef1eb8581fffb1b66fb34f3b4f8bb3de8e60f1a04d51946d32c611cf",
+    "network_access": false,
+    "history_access": false,
+    "clean_workspace": true,
+    "prompt_wrapper": "Return JSON matching the declared output schema.",
+    "logiclens": null
+  },
+  "timing": {
+    "started_at": "2026-08-20T12:00:00Z",
+    "wall_ms": 1000
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "cost_usd": null,
+    "tool_calls": null,
+    "raw_files_read": null
+  },
+  "status": "completed",
+  "output": {
+    "schema": "evals/schemas/answer.schema.json",
+    "value": {
+      "contract_version": "0.1",
+      "case_id": "tiny_python.repository_understanding.v1",
+      "turns": [
+        {
+          "turn_id": "onboarding",
+          "summary": "Tiny Shop demonstrates a three-layer order-creation flow.",
+          "claims": [
+            {
+              "claim_id": "claim-purpose",
+              "statement": "Tiny Shop demonstrates a three-layer order-creation flow.",
+              "stance": "confirmed",
+              "confidence": 1.0,
+              "evidence": [
+                {"kind": "source_span", "path": "README.md", "start_line": 3, "end_line": 5}
+              ]
+            }
+          ],
+          "relations": [],
+          "reading_order": ["README.md"],
+          "unknowns": []
+        }
+      ]
+    },
+    "raw_output_path": null
+  },
+  "artifacts": [],
+  "error": null
+}
