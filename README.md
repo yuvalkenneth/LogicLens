@@ -14,10 +14,20 @@ answer to:
 
 ## Current status
 
-The project is in its mapping-laboratory phase. There is deliberately no mapper,
-agent, database, API, or user interface yet. The first task is to define and verify
-the mapping contract using a tiny repository whose correct graph can be inspected by
-hand.
+The first deterministic vertical slice inventories a local repository into SQLite.
+It records relative paths, file classifications, languages, sizes, and content hashes.
+There is deliberately no AST extraction, agent, API, or user interface yet.
+
+From the project root:
+
+```bash
+uv run logiclens map tests/fixtures/tiny_python --db .logiclens/tiny.sqlite
+uv run logiclens files --db .logiclens/tiny.sqlite
+```
+
+`map` reads the repository once and creates the database. `files` reads the saved
+inventory without rescanning the repository. Mapping refuses to overwrite an existing
+database.
 
 ## First experiment
 
@@ -35,4 +45,3 @@ decide what LogicLens should reuse or implement.
 3. `docs/glossary.md`
 4. `docs/research/graphify.md`
 5. `tests/expected/tiny_python.graph.json`
-

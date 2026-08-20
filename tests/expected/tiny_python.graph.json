@@ -58,14 +58,14 @@
     {
       "source": "function:shop.main.build_service",
       "target": "class:shop.repository.OrderRepository",
-      "kind": "CONSTRUCTS",
+      "kind": "CALLS",
       "origin": "RESOLVED",
       "evidence": {"file": "src/shop/main.py", "start_line": 6, "start_column": 18, "end_line": 6, "end_column": 35}
     },
     {
       "source": "function:shop.main.build_service",
       "target": "class:shop.service.OrderService",
-      "kind": "CONSTRUCTS",
+      "kind": "CALLS",
       "origin": "RESOLVED",
       "evidence": {"file": "src/shop/main.py", "start_line": 7, "start_column": 12, "end_line": 7, "end_column": 36}
     },

@@ -26,12 +26,12 @@ Each run produced 12 nodes and 22 edges. The two `graph.json` files had the
 same SHA-256 hash, so this small extraction was byte-for-byte repeatable.
 
 The golden file contains selected facts rather than an exhaustive graph. After
-mapping equivalent vocabulary (`contains`/`method` to `DEFINES`, and class
-`calls` to `CONSTRUCTS`), Graphify recovered:
+mapping equivalent vocabulary (`contains`/`method` to `DEFINES`), Graphify
+recovered:
 
 - all 9 selected nodes;
 - all 6 selected definition relationships;
-- both selected constructor relationships;
+- both selected calls targeting classes;
 - the direct `create_order -> build_service` call;
 - 9 of the 11 selected relationships overall.
 
@@ -46,8 +46,8 @@ It did not resolve these attribute calls to their method declarations:
    `__init__` method, `uses` edges, and a module-docstring rationale node.
 2. Its evidence points to a source file and a single line. The LogicLens golden
    contract records exact start and end positions.
-3. Graphify labels constructor calls as `calls`. LogicLens currently separates
-   `CONSTRUCTS` from `CALLS`.
+3. Both Graphify and LogicLens represent calls targeting classes as `CALLS`.
+   The target node's kind preserves the fact that the call invokes a class.
 4. Graphify marks directly extracted call edges as `EXTRACTED`, including calls
    whose target was resolved across files. LogicLens separates the fact that a
    call expression exists from the resolution of its target by using
