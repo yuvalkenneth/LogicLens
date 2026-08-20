@@ -1,0 +1,2247 @@
+{
+  "answers": [
+    {
+      "answer": {
+        "case_id": "tiny_python.repository_understanding.v1",
+        "contract_version": "0.1",
+        "turns": [
+          {
+            "claims": [
+              {
+                "claim_id": "c1",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 5,
+                    "kind": "source_span",
+                    "path": "README.md",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "Tiny Shop is a Python demonstration of a three-layer order-creation flow comprising a main function, service, and repository."
+              },
+              {
+                "claim_id": "c2",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 4,
+                    "kind": "source_span",
+                    "path": "pyproject.toml",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "The package is named tiny-shop, has version 0.1.0, and requires Python 3.12 or newer."
+              },
+              {
+                "claim_id": "c3",
+                "confidence": 0.99,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  },
+                  {
+                    "end_line": 5,
+                    "kind": "source_span",
+                    "path": "README.md",
+                    "start_line": 3
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "shop.main.create_order(order_id) is the confirmed public callable and likely business-entry function for creating an order."
+              },
+              {
+                "claim_id": "c4",
+                "confidence": 0.99,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "Each create_order call constructs a new OrderRepository and OrderService, then delegates the supplied order identifier to OrderService.create."
+              },
+              {
+                "claim_id": "c5",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 4
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "OrderService stores its repository dependency and implements creation by calling repository.save(order_id)."
+              },
+              {
+                "claim_id": "c6",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "OrderRepository.save returns the given identifier unchanged; the implementation contains no state or collection that retains orders."
+              },
+              {
+                "claim_id": "c7",
+                "confidence": 0.98,
+                "evidence": [
+                  {
+                    "end_line": 4,
+                    "kind": "source_span",
+                    "path": "pyproject.toml",
+                    "start_line": 1
+                  },
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "No executable script, HTTP route/application, CLI parser, or __main__ launcher is declared in the inspected project configuration or main module."
+              },
+              {
+                "claim_id": "c8",
+                "confidence": 0.97,
+                "evidence": [
+                  {
+                    "end_line": 5,
+                    "kind": "source_span",
+                    "path": "README.md",
+                    "start_line": 3
+                  },
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "inferred",
+                "statement": "The README's use of \u201cpersists\u201d is conceptual: the current repository behaves as an identity-returning boundary rather than durable or observable storage."
+              }
+            ],
+            "reading_order": [
+              "README.md",
+              "pyproject.toml",
+              "src/shop/main.py",
+              "src/shop/service.py",
+              "src/shop/repository.py",
+              "src/shop/__init__.py"
+            ],
+            "relations": [
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  }
+                ],
+                "kind": "delegates_to",
+                "relation_id": "r1",
+                "source": "shop.main.create_order",
+                "target": "OrderService.create"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "kind": "constructs",
+                "relation_id": "r2",
+                "source": "shop.main.build_service",
+                "target": "OrderRepository"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "kind": "injects_into",
+                "relation_id": "r3",
+                "source": "shop.main.build_service",
+                "target": "OrderService"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 5
+                  }
+                ],
+                "kind": "delegates_to",
+                "relation_id": "r4",
+                "source": "OrderService.create",
+                "target": "OrderRepository.save"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 2
+                  }
+                ],
+                "kind": "returns_unchanged",
+                "relation_id": "r5",
+                "source": "OrderRepository.save",
+                "target": "order_id"
+              }
+            ],
+            "summary": "Tiny Shop is a minimal layered Python example. Its callable order flow is create_order(order_id) \u2192 build_service() \u2192 OrderService.create(order_id) \u2192 OrderRepository.save(order_id) \u2192 the same identifier. create_order is the likely business entry, but there is no confirmed process-level executable, HTTP endpoint, or CLI entry point.",
+            "turn_id": "onboarding",
+            "unknowns": [
+              "How callers invoke create_order in a real application is unspecified; no tests or adapters are present.",
+              "The intended persistence semantics, validation rules, duplicate handling, and order model are unspecified."
+            ]
+          }
+        ]
+      },
+      "blind_id": "answer-22a68ef7b77d"
+    },
+    {
+      "answer": {
+        "case_id": "tiny_python.repository_understanding.v1",
+        "contract_version": "0.1",
+        "turns": [
+          {
+            "claims": [
+              {
+                "claim_id": "c1",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 5,
+                    "kind": "source_span",
+                    "path": "README.md",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "Tiny Shop is documented as a demonstration of a three-layer order-creation flow."
+              },
+              {
+                "claim_id": "c2",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 4,
+                    "kind": "source_span",
+                    "path": "pyproject.toml",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "It is a Python 3.12+ project named tiny-shop, version 0.1.0."
+              },
+              {
+                "claim_id": "c3",
+                "confidence": 0.9,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  },
+                  {
+                    "end_line": 4,
+                    "kind": "source_span",
+                    "path": "pyproject.toml",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "inferred",
+                "statement": "shop.main.create_order is the likely business-entry function, but no executable, HTTP, or CLI entry point is declared or invoked in the inspected snapshot."
+              },
+              {
+                "claim_id": "c4",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "build_service creates an OrderRepository and injects it into a new OrderService."
+              },
+              {
+                "claim_id": "c5",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  },
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 4
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "create_order builds the service and passes order_id to OrderService.create."
+              },
+              {
+                "claim_id": "c6",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 5
+                  },
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "OrderService.create delegates to its repository's save method, which returns the supplied identifier."
+              },
+              {
+                "claim_id": "c7",
+                "confidence": 0.99,
+                "evidence": [
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "The repository implementation has no visible stored collection or mutation; save only returns order_id."
+              }
+            ],
+            "reading_order": [
+              "README.md",
+              "pyproject.toml",
+              "src/shop/main.py",
+              "src/shop/service.py",
+              "src/shop/repository.py",
+              "src/shop/__init__.py"
+            ],
+            "relations": [
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  }
+                ],
+                "kind": "calls",
+                "relation_id": "r1",
+                "source": "shop.main.create_order",
+                "target": "shop.main.build_service"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  }
+                ],
+                "kind": "calls",
+                "relation_id": "r2",
+                "source": "shop.main.create_order",
+                "target": "shop.service.OrderService.create"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "kind": "constructs",
+                "relation_id": "r3",
+                "source": "shop.main.build_service",
+                "target": "shop.repository.OrderRepository"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "kind": "constructs_with_dependency",
+                "relation_id": "r4",
+                "source": "shop.main.build_service",
+                "target": "shop.service.OrderService"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 8
+                  }
+                ],
+                "kind": "calls",
+                "relation_id": "r5",
+                "source": "shop.service.OrderService.create",
+                "target": "shop.repository.OrderRepository.save"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "kind": "returns",
+                "relation_id": "r6",
+                "source": "shop.repository.OrderRepository.save",
+                "target": "order_id"
+              }
+            ],
+            "summary": "Tiny Shop is a minimal Python demonstration of layered order creation. The likely business boundary is shop.main.create_order: it builds a service backed by OrderRepository, delegates creation, and ultimately returns the input identifier. No executable, HTTP, or CLI adapter is confirmed.",
+            "turn_id": "onboarding",
+            "unknowns": [
+              "How create_order is invoked by an external process or user is not defined in this snapshot.",
+              "Whether orders are intended to survive beyond the returned identifier is unknown; the README describes in-memory persistence, but the repository implementation exposes no retained state."
+            ]
+          }
+        ]
+      },
+      "blind_id": "answer-f6edec0921d1"
+    },
+    {
+      "answer": {
+        "case_id": "tiny_python.repository_understanding.v1",
+        "contract_version": "0.1",
+        "turns": [
+          {
+            "claims": [
+              {
+                "claim_id": "c1",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 5,
+                    "kind": "source_span",
+                    "path": "README.md",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "Tiny Shop is a minimal demonstration of a three-layer order-creation flow: main constructs a service, the service applies the use case, and an in-memory repository handles the order identifier."
+              },
+              {
+                "claim_id": "c2",
+                "confidence": 0.99,
+                "evidence": [
+                  {
+                    "end_line": 4,
+                    "kind": "source_span",
+                    "path": "pyproject.toml",
+                    "start_line": 1
+                  },
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "No executable, HTTP, or CLI entry point is declared in the repository; pyproject.toml contains only project metadata, and main.py defines callable functions without a runner block or server setup."
+              },
+              {
+                "claim_id": "c3",
+                "confidence": 0.98,
+                "evidence": [
+                  {
+                    "end_line": 5,
+                    "kind": "source_span",
+                    "path": "README.md",
+                    "start_line": 3
+                  },
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  }
+                ],
+                "stance": "inferred",
+                "statement": "shop.main.create_order is the likely business-facing entry function because the README names it as the start of the flow and it accepts an order ID and returns the service result."
+              },
+              {
+                "claim_id": "c4",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "build_service creates a new OrderRepository and injects it into a new OrderService."
+              },
+              {
+                "claim_id": "c5",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  },
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 4
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "Order creation calls create_order(order_id), constructs a service, and delegates to OrderService.create(order_id), which delegates to repository.save(order_id)."
+              },
+              {
+                "claim_id": "c6",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "OrderRepository.save simply returns the supplied order ID; it stores no observable state."
+              },
+              {
+                "claim_id": "c7",
+                "confidence": 0.96,
+                "evidence": [
+                  {
+                    "end_line": 5,
+                    "kind": "source_span",
+                    "path": "README.md",
+                    "start_line": 3
+                  },
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "inferred",
+                "statement": "The README's use of \u201cpersists\u201d is conceptual: the current repository implementation performs identity passthrough rather than durable or in-memory stateful persistence."
+              }
+            ],
+            "reading_order": [
+              "README.md",
+              "pyproject.toml",
+              "src/shop/main.py",
+              "src/shop/service.py",
+              "src/shop/repository.py",
+              "src/shop/__init__.py"
+            ],
+            "relations": [
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  }
+                ],
+                "kind": "delegates_to",
+                "relation_id": "r1",
+                "source": "shop.main.create_order",
+                "target": "OrderService.create"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "kind": "constructs",
+                "relation_id": "r2",
+                "source": "shop.main.build_service",
+                "target": "OrderRepository"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "kind": "injects_into",
+                "relation_id": "r3",
+                "source": "OrderRepository",
+                "target": "OrderService"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 8
+                  }
+                ],
+                "kind": "delegates_to",
+                "relation_id": "r4",
+                "source": "OrderService.create",
+                "target": "OrderRepository.save"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "kind": "returns_unchanged",
+                "relation_id": "r5",
+                "source": "OrderRepository.save",
+                "target": "order_id"
+              }
+            ],
+            "summary": "Tiny Shop is a deliberately small layered Python example. Its likely business entry is create_order, but no executable, HTTP, or CLI entry point is configured. The call chain is create_order \u2192 build_service \u2192 OrderService.create \u2192 OrderRepository.save, ending with the unchanged order ID.",
+            "turn_id": "onboarding",
+            "unknowns": [
+              "How callers invoke create_order in a deployed or executable environment is not specified.",
+              "No tests or requirements describe validation, duplicate handling, failures, or real persistence semantics."
+            ]
+          }
+        ]
+      },
+      "blind_id": "answer-720641f51185"
+    },
+    {
+      "answer": {
+        "case_id": "tiny_python.repository_understanding.v1",
+        "contract_version": "0.1",
+        "turns": [
+          {
+            "claims": [
+              {
+                "claim_id": "c1",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 5,
+                    "kind": "source_span",
+                    "path": "README.md",
+                    "start_line": 1
+                  },
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "Tiny Shop is a minimal Python demonstration of a three-layer order-creation flow comprising composition, service, and repository layers."
+              },
+              {
+                "claim_id": "c2",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 4,
+                    "kind": "source_span",
+                    "path": "pyproject.toml",
+                    "start_line": 1
+                  },
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "No executable, HTTP, or CLI entry point is declared: the project metadata has no script declaration, and main.py only defines callable functions."
+              },
+              {
+                "claim_id": "c3",
+                "confidence": 0.95,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  },
+                  {
+                    "end_line": 5,
+                    "kind": "source_span",
+                    "path": "README.md",
+                    "start_line": 3
+                  }
+                ],
+                "stance": "inferred",
+                "statement": "shop.main.create_order is the likely business-entry function because it is the top-level function named for the use case and delegates order creation to the service."
+              },
+              {
+                "claim_id": "c4",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "Each create_order invocation obtains a newly constructed OrderService backed by a newly constructed OrderRepository."
+              },
+              {
+                "claim_id": "c5",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 4
+                  },
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "Order creation passes the supplied string identifier through OrderService.create to OrderRepository.save, which returns the same identifier."
+              },
+              {
+                "claim_id": "c6",
+                "confidence": 0.98,
+                "evidence": [
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "inferred",
+                "statement": "Despite the README's persistence wording, the repository implementation appears to be a pass-through stub: it has no stored state and only returns order_id."
+              }
+            ],
+            "reading_order": [
+              "README.md",
+              "src/shop/main.py",
+              "src/shop/service.py",
+              "src/shop/repository.py",
+              "pyproject.toml"
+            ],
+            "relations": [
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  }
+                ],
+                "kind": "calls",
+                "relation_id": "r1",
+                "source": "shop.main.create_order",
+                "target": "shop.main.build_service"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  }
+                ],
+                "kind": "calls",
+                "relation_id": "r2",
+                "source": "shop.main.create_order",
+                "target": "shop.service.OrderService.create"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "kind": "constructs",
+                "relation_id": "r3",
+                "source": "shop.main.build_service",
+                "target": "shop.repository.OrderRepository"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "kind": "constructs",
+                "relation_id": "r4",
+                "source": "shop.main.build_service",
+                "target": "shop.service.OrderService"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 8
+                  }
+                ],
+                "kind": "calls",
+                "relation_id": "r5",
+                "source": "shop.service.OrderService.create",
+                "target": "shop.repository.OrderRepository.save"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "kind": "returns_unchanged",
+                "relation_id": "r6",
+                "source": "shop.repository.OrderRepository.save",
+                "target": "order_id"
+              }
+            ],
+            "summary": "Tiny Shop is a Python 3.12+ teaching fixture for a composition \u2192 service \u2192 repository order flow. No runnable HTTP or CLI adapter is present; create_order is the likely business-facing entry. The implemented flow creates fresh service/repository objects and returns the submitted identifier without observable persistence.",
+            "turn_id": "onboarding",
+            "unknowns": [
+              "How create_order is intended to be invoked externally is not specified; there is no declared script, HTTP adapter, or __main__ block.",
+              "No tests or requirements define whether persistence, validation, duplicate handling, or an order domain object should exist."
+            ]
+          }
+        ]
+      },
+      "blind_id": "answer-df6a8f7188b0"
+    },
+    {
+      "answer": {
+        "case_id": "tiny_python.repository_understanding.v1",
+        "contract_version": "0.1",
+        "turns": [
+          {
+            "claims": [
+              {
+                "claim_id": "tiny_shop_purpose",
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 5,
+                    "kind": "source_span",
+                    "path": "README.md",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "Tiny Shop is a small Python demonstration of a three-layer order-creation flow using main, service, and in-memory repository layers."
+              },
+              {
+                "claim_id": "public_entry",
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "The confirmed callable entry point is shop.main.create_order(order_id), which builds a service and delegates order creation to it."
+              },
+              {
+                "claim_id": "no_executable_entry",
+                "confidence": 0.98,
+                "evidence": [
+                  {
+                    "end_line": 4,
+                    "kind": "source_span",
+                    "path": "pyproject.toml",
+                    "start_line": 1
+                  },
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "No executable, HTTP, or CLI entry point is declared in the repository: pyproject.toml has no script declaration, and main.py only defines callable functions."
+              },
+              {
+                "claim_id": "business_entry",
+                "confidence": 0.94,
+                "evidence": [
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 4
+                  },
+                  {
+                    "end_line": 5,
+                    "kind": "source_span",
+                    "path": "README.md",
+                    "start_line": 3
+                  }
+                ],
+                "stance": "inferred",
+                "statement": "OrderService.create is the likely business-entry function because the service layer applies the documented order-creation use case."
+              },
+              {
+                "claim_id": "service_construction",
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "Each build_service call constructs a new OrderRepository and injects it into a new OrderService."
+              },
+              {
+                "claim_id": "order_creation_trace",
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  },
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 8
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "Order creation passes order_id from create_order to OrderService.create and then to OrderRepository.save."
+              },
+              {
+                "claim_id": "repository_behavior",
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "OrderRepository.save currently returns the supplied identifier unchanged and stores no visible state."
+              }
+            ],
+            "reading_order": [
+              "README.md",
+              "src/shop/main.py",
+              "src/shop/service.py",
+              "src/shop/repository.py",
+              "pyproject.toml",
+              "src/shop/__init__.py"
+            ],
+            "relations": [
+              {
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  }
+                ],
+                "kind": "delegates_to",
+                "relation_id": "create_order_to_service",
+                "source": "shop.main.create_order",
+                "target": "OrderService.create"
+              },
+              {
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 8
+                  }
+                ],
+                "kind": "delegates_to",
+                "relation_id": "service_to_repository",
+                "source": "OrderService.create",
+                "target": "OrderRepository.save"
+              },
+              {
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  },
+                  {
+                    "end_line": 6,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 4
+                  }
+                ],
+                "kind": "injects",
+                "relation_id": "builder_injects_repository",
+                "source": "shop.main.build_service",
+                "target": "OrderService.repository"
+              },
+              {
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "kind": "returns_unchanged",
+                "relation_id": "save_returns_identifier",
+                "source": "OrderRepository.save",
+                "target": "order_id"
+              }
+            ],
+            "summary": "Tiny Shop is a minimal layered order-flow example. Its only confirmed application-facing entry is the Python function shop.main.create_order; no executable, HTTP, or CLI launcher is declared. The call chain is create_order \u2192 OrderService.create \u2192 OrderRepository.save, which currently returns the identifier without observable persistence.",
+            "turn_id": "onboarding",
+            "unknowns": [
+              "It is unknown whether create_order is intended to be invoked by an external framework or consumer not present in this snapshot.",
+              "Validation, duplicate handling, durable persistence, and failure behavior are unspecified."
+            ]
+          }
+        ]
+      },
+      "blind_id": "answer-342c5e3ca609"
+    },
+    {
+      "answer": {
+        "case_id": "tiny_python.repository_understanding.v1",
+        "contract_version": "0.1",
+        "turns": [
+          {
+            "claims": [
+              {
+                "claim_id": "c1",
+                "confidence": 0.98,
+                "evidence": [
+                  {
+                    "end_line": 5,
+                    "kind": "source_span",
+                    "path": "README.md",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "Tiny Shop is documented as a three-layer demonstration of order creation: main wiring, a service use case, and a repository."
+              },
+              {
+                "claim_id": "c2",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 4,
+                    "kind": "source_span",
+                    "path": "pyproject.toml",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "It is a Python package named tiny-shop, version 0.1.0, requiring Python 3.12 or newer."
+              },
+              {
+                "claim_id": "c3",
+                "confidence": 0.94,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  },
+                  {
+                    "end_line": 5,
+                    "kind": "source_span",
+                    "path": "README.md",
+                    "start_line": 3
+                  }
+                ],
+                "stance": "inferred",
+                "statement": "shop.main.create_order is the likely business-entry function: it accepts an order identifier, builds the service, and invokes order creation."
+              },
+              {
+                "claim_id": "c4",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "build_service creates an OrderRepository and injects it into a new OrderService."
+              },
+              {
+                "claim_id": "c5",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 4
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "OrderService retains the injected repository, and its create method delegates the order identifier to repository.save."
+              },
+              {
+                "claim_id": "c6",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "OrderRepository.save returns the supplied order identifier; the implementation shows no retained collection or other state."
+              }
+            ],
+            "reading_order": [
+              "README.md",
+              "pyproject.toml",
+              "src/shop/main.py",
+              "src/shop/service.py",
+              "src/shop/repository.py"
+            ],
+            "relations": [
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 2,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 1
+                  }
+                ],
+                "kind": "imports",
+                "relation_id": "r1",
+                "source": "src/shop/main.py",
+                "target": "src/shop/service.py and src/shop/repository.py"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "kind": "constructs_with_dependency",
+                "relation_id": "r2",
+                "source": "build_service",
+                "target": "OrderService(OrderRepository)"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  }
+                ],
+                "kind": "calls",
+                "relation_id": "r3",
+                "source": "create_order",
+                "target": "build_service"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  }
+                ],
+                "kind": "calls",
+                "relation_id": "r4",
+                "source": "create_order",
+                "target": "OrderService.create"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 8
+                  }
+                ],
+                "kind": "calls",
+                "relation_id": "r5",
+                "source": "OrderService.create",
+                "target": "OrderRepository.save"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 2
+                  }
+                ],
+                "kind": "returns",
+                "relation_id": "r6",
+                "source": "OrderRepository.save",
+                "target": "order_id"
+              }
+            ],
+            "summary": "Order creation follows create_order \u2192 build_service \u2192 OrderService.create \u2192 OrderRepository.save, returning the original identifier. create_order is the likely business entry, but no executable, HTTP, or CLI adapter is confirmed.",
+            "turn_id": "onboarding",
+            "unknowns": [
+              "No executable script, console command, __main__ block, or HTTP route is confirmed in the snapshot.",
+              "The README describes in-memory persistence, but the repository implementation only returns the identifier; persistence semantics beyond that are unknown."
+            ]
+          }
+        ]
+      },
+      "blind_id": "answer-7ede4c24aa4e"
+    },
+    {
+      "answer": {
+        "case_id": "tiny_python.repository_understanding.v1",
+        "contract_version": "0.1",
+        "turns": [
+          {
+            "claims": [
+              {
+                "claim_id": "c1",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 5,
+                    "kind": "source_span",
+                    "path": "README.md",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "Tiny Shop is a demonstration of a three-layer order-creation flow using a service and an in-memory repository."
+              },
+              {
+                "claim_id": "c2",
+                "confidence": 0.99,
+                "evidence": [
+                  {
+                    "end_line": 4,
+                    "kind": "source_span",
+                    "path": "pyproject.toml",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "The package is named tiny-shop, is version 0.1.0, and requires Python 3.12 or newer."
+              },
+              {
+                "claim_id": "c3",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "shop.main.create_order(order_id) is a public callable entry point that constructs a service and delegates order creation."
+              },
+              {
+                "claim_id": "c4",
+                "confidence": 0.92,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  },
+                  {
+                    "end_line": 5,
+                    "kind": "source_span",
+                    "path": "README.md",
+                    "start_line": 3
+                  }
+                ],
+                "stance": "inferred",
+                "statement": "create_order is the likely business-entry function because it wires the layers and initiates the documented use case."
+              },
+              {
+                "claim_id": "c5",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "Each build_service call creates a new OrderRepository and injects it into a new OrderService."
+              },
+              {
+                "claim_id": "c6",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 4
+                  },
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "OrderService.create passes the order identifier to OrderRepository.save, which returns that identifier unchanged."
+              },
+              {
+                "claim_id": "c7",
+                "confidence": 0.99,
+                "evidence": [
+                  {
+                    "end_line": 4,
+                    "kind": "source_span",
+                    "path": "pyproject.toml",
+                    "start_line": 1
+                  },
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "No executable script declaration, HTTP handler, CLI parser, or module-level invocation is present in the inspected project metadata or main module."
+              }
+            ],
+            "reading_order": [
+              "README.md",
+              "src/shop/main.py",
+              "src/shop/service.py",
+              "src/shop/repository.py",
+              "pyproject.toml",
+              "src/shop/__init__.py"
+            ],
+            "relations": [
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "kind": "constructs_and_injects",
+                "relation_id": "r1",
+                "source": "build_service",
+                "target": "OrderService"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  }
+                ],
+                "kind": "delegates_to",
+                "relation_id": "r2",
+                "source": "create_order",
+                "target": "OrderService.create"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 8
+                  }
+                ],
+                "kind": "delegates_to",
+                "relation_id": "r3",
+                "source": "OrderService.create",
+                "target": "OrderRepository.save"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "kind": "returns_unchanged",
+                "relation_id": "r4",
+                "source": "OrderRepository.save",
+                "target": "order_id"
+              },
+              {
+                "confidence": 0.98,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  },
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "kind": "results_in",
+                "relation_id": "r5",
+                "source": "create_order(order_id)",
+                "target": "same order_id"
+              }
+            ],
+            "summary": "Tiny Shop is a minimal layered Python example. Calling create_order creates a repository-backed service, forwards the supplied order ID through OrderService.create to OrderRepository.save, and returns the same ID. No executable, HTTP, or CLI launcher is confirmed; create_order is the likely business boundary.",
+            "turn_id": "onboarding",
+            "unknowns": [
+              "How the package is launched or exposed to users is unknown because no script, HTTP, CLI, or __main__ entry point is defined in the inspected files.",
+              "Whether real persistence, validation, domain entities, or duplicate-order handling are intended is unknown; the repository only returns the supplied string."
+            ]
+          }
+        ]
+      },
+      "blind_id": "answer-466f35b65c08"
+    },
+    {
+      "answer": {
+        "case_id": "tiny_python.repository_understanding.v1",
+        "contract_version": "0.1",
+        "turns": [
+          {
+            "claims": [
+              {
+                "claim_id": "c1",
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 5,
+                    "kind": "source_span",
+                    "path": "README.md",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "Tiny Shop is a small demonstration of a three-layer order-creation flow comprising a main module, service, and in-memory repository."
+              },
+              {
+                "claim_id": "c2",
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 4,
+                    "kind": "source_span",
+                    "path": "pyproject.toml",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "The project is named tiny-shop, version 0.1.0, and requires Python 3.12 or later."
+              },
+              {
+                "claim_id": "c3",
+                "confidence": 0.99,
+                "evidence": [
+                  {
+                    "end_line": 4,
+                    "kind": "source_span",
+                    "path": "pyproject.toml",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "No executable or CLI script is declared in the project metadata."
+              },
+              {
+                "claim_id": "c4",
+                "confidence": 0.96,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  },
+                  {
+                    "end_line": 5,
+                    "kind": "source_span",
+                    "path": "README.md",
+                    "start_line": 3
+                  }
+                ],
+                "stance": "inferred",
+                "statement": "shop.main.create_order is the likely application/business-entry function: it accepts an order identifier, constructs the service, and invokes the use case."
+              },
+              {
+                "claim_id": "c5",
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "Each build_service call creates a new OrderRepository and injects it into a new OrderService."
+              },
+              {
+                "claim_id": "c6",
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 4
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "OrderService.create delegates order creation directly to repository.save."
+              },
+              {
+                "claim_id": "c7",
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "OrderRepository.save only returns the supplied order_id; it stores no visible state and constructs no order object."
+              },
+              {
+                "claim_id": "c8",
+                "confidence": 0.98,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  },
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "inferred",
+                "statement": "Calling create_order successfully returns the same string passed as order_id, with no durable persistence evident in this snapshot."
+              }
+            ],
+            "reading_order": [
+              "README.md",
+              "pyproject.toml",
+              "src/shop/main.py",
+              "src/shop/service.py",
+              "src/shop/repository.py",
+              "src/shop/__init__.py"
+            ],
+            "relations": [
+              {
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  }
+                ],
+                "kind": "calls",
+                "relation_id": "r1",
+                "source": "shop.main.create_order",
+                "target": "shop.main.build_service"
+              },
+              {
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  }
+                ],
+                "kind": "calls",
+                "relation_id": "r2",
+                "source": "shop.main.create_order",
+                "target": "OrderService.create"
+              },
+              {
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "kind": "constructs_and_injects",
+                "relation_id": "r3",
+                "source": "shop.main.build_service",
+                "target": "OrderService(OrderRepository)"
+              },
+              {
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 8
+                  }
+                ],
+                "kind": "delegates_to",
+                "relation_id": "r4",
+                "source": "OrderService.create",
+                "target": "OrderRepository.save"
+              },
+              {
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "kind": "returns_unchanged",
+                "relation_id": "r5",
+                "source": "OrderRepository.save",
+                "target": "order_id"
+              }
+            ],
+            "summary": "Tiny Shop demonstrates a minimal main \u2192 service \u2192 repository order flow. The likely business entry is shop.main.create_order, but no executable or CLI entry is configured. Order creation currently amounts to passing an identifier through the service and returning it unchanged from a stateless repository.",
+            "turn_id": "onboarding",
+            "unknowns": [
+              "No HTTP entry point, server framework, route, or transport mechanism is established by the available files.",
+              "The intended order model, validation rules, failure behavior, and meaning of persistence beyond this fixture are unspecified."
+            ]
+          }
+        ]
+      },
+      "blind_id": "answer-13ccbdc21d6b"
+    },
+    {
+      "answer": {
+        "case_id": "tiny_python.repository_understanding.v1",
+        "contract_version": "0.1",
+        "turns": [
+          {
+            "claims": [
+              {
+                "claim_id": "purpose",
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 5,
+                    "kind": "source_span",
+                    "path": "README.md",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "Tiny Shop is a Python demonstration of a three-layer order-creation flow using an entry-facing function, a service, and an in-memory-style repository."
+              },
+              {
+                "claim_id": "technology",
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 4,
+                    "kind": "source_span",
+                    "path": "pyproject.toml",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "The project is packaged as tiny-shop 0.1.0 and requires Python 3.12 or newer."
+              },
+              {
+                "claim_id": "no_runtime_entry",
+                "confidence": 0.99,
+                "evidence": [
+                  {
+                    "end_line": 4,
+                    "kind": "source_span",
+                    "path": "pyproject.toml",
+                    "start_line": 1
+                  },
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "No executable script, CLI command, HTTP route, server startup, or direct invocation is declared; therefore no executable, HTTP, or CLI entry point is confirmed."
+              },
+              {
+                "claim_id": "business_entry",
+                "confidence": 0.95,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  },
+                  {
+                    "end_line": 5,
+                    "kind": "source_span",
+                    "path": "README.md",
+                    "start_line": 3
+                  }
+                ],
+                "stance": "inferred",
+                "statement": "shop.main.create_order is the likely business-entry function: it accepts an order identifier, builds the service, and invokes the creation use case."
+              },
+              {
+                "claim_id": "service_construction",
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  },
+                  {
+                    "end_line": 6,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 4
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "build_service creates an OrderRepository and injects it into a new OrderService."
+              },
+              {
+                "claim_id": "order_flow",
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  },
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 8
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "Order creation delegates from create_order to OrderService.create, which delegates to the repository's save method."
+              },
+              {
+                "claim_id": "repository_behavior",
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "OrderRepository.save only returns the supplied order identifier; it does not store state in the implementation shown."
+              }
+            ],
+            "reading_order": [
+              "README.md",
+              "src/shop/main.py",
+              "src/shop/service.py",
+              "src/shop/repository.py",
+              "pyproject.toml",
+              "src/shop/__init__.py"
+            ],
+            "relations": [
+              {
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  }
+                ],
+                "kind": "calls",
+                "relation_id": "create_order_builds_service",
+                "source": "shop.main.create_order",
+                "target": "shop.main.build_service"
+              },
+              {
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  }
+                ],
+                "kind": "calls",
+                "relation_id": "create_order_calls_service",
+                "source": "shop.main.create_order",
+                "target": "shop.service.OrderService.create"
+              },
+              {
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "kind": "constructs",
+                "relation_id": "build_service_constructs_repository",
+                "source": "shop.main.build_service",
+                "target": "shop.repository.OrderRepository"
+              },
+              {
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "kind": "constructs_with_dependency",
+                "relation_id": "build_service_constructs_service",
+                "source": "shop.main.build_service",
+                "target": "shop.service.OrderService"
+              },
+              {
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 8
+                  }
+                ],
+                "kind": "calls",
+                "relation_id": "service_saves_order",
+                "source": "shop.service.OrderService.create",
+                "target": "shop.repository.OrderRepository.save"
+              },
+              {
+                "confidence": 1.0,
+                "evidence": [
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "kind": "returns",
+                "relation_id": "save_returns_identifier",
+                "source": "shop.repository.OrderRepository.save",
+                "target": "order_id"
+              }
+            ],
+            "summary": "Tiny Shop is a minimal layered Python order-creation example. Its likely business entry is create_order, but the snapshot declares no runnable CLI, HTTP, or executable entry point. The flow constructs a repository-backed service, delegates creation to save, and returns the unchanged identifier without observable persistence.",
+            "turn_id": "onboarding",
+            "unknowns": [
+              "How create_order is intended to be invoked in a real application\u2014CLI, HTTP, or another adapter\u2014is not specified.",
+              "No validation, richer order model, durable persistence, error handling, or tests are present, so their intended behavior is unknown."
+            ]
+          }
+        ]
+      },
+      "blind_id": "answer-0998183d5910"
+    },
+    {
+      "answer": {
+        "case_id": "tiny_python.repository_understanding.v1",
+        "contract_version": "0.1",
+        "turns": [
+          {
+            "claims": [
+              {
+                "claim_id": "c1",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 5,
+                    "kind": "source_span",
+                    "path": "README.md",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "Tiny Shop is documented as a demonstration of a three-layer order-creation flow comprising an entry function, service, and in-memory repository."
+              },
+              {
+                "claim_id": "c2",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 4,
+                    "kind": "source_span",
+                    "path": "pyproject.toml",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "It is a Python package named tiny-shop, version 0.1.0, requiring Python 3.12 or newer."
+              },
+              {
+                "claim_id": "c3",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 4,
+                    "kind": "source_span",
+                    "path": "pyproject.toml",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "The project metadata declares no CLI script or other executable entry point."
+              },
+              {
+                "claim_id": "c4",
+                "confidence": 0.95,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  },
+                  {
+                    "end_line": 5,
+                    "kind": "source_span",
+                    "path": "README.md",
+                    "start_line": 3
+                  }
+                ],
+                "stance": "inferred",
+                "statement": "shop.main.create_order is the likely business-entry function: documentation names it as the start of the flow, and it accepts an order identifier and invokes the service."
+              },
+              {
+                "claim_id": "c5",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "build_service constructs a new OrderRepository and injects it into a new OrderService for each call."
+              },
+              {
+                "claim_id": "c6",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 4
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "OrderService retains the injected repository and implements creation by passing the order identifier to repository.save."
+              },
+              {
+                "claim_id": "c7",
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "stance": "confirmed",
+                "statement": "OrderRepository.save only returns the supplied identifier; the implementation contains no collection, database operation, or other observable retained state."
+              }
+            ],
+            "reading_order": [
+              "README.md",
+              "pyproject.toml",
+              "src/shop/main.py",
+              "src/shop/service.py",
+              "src/shop/repository.py",
+              "src/shop/__init__.py"
+            ],
+            "relations": [
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  }
+                ],
+                "kind": "calls",
+                "relation_id": "r1",
+                "source": "shop.main.create_order",
+                "target": "shop.main.build_service"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 12,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 10
+                  }
+                ],
+                "kind": "calls",
+                "relation_id": "r2",
+                "source": "shop.main.create_order",
+                "target": "shop.service.OrderService.create"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 7,
+                    "kind": "source_span",
+                    "path": "src/shop/main.py",
+                    "start_line": 5
+                  }
+                ],
+                "kind": "constructs_and_injects",
+                "relation_id": "r3",
+                "source": "shop.main.build_service",
+                "target": "shop.service.OrderService"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 9,
+                    "kind": "source_span",
+                    "path": "src/shop/service.py",
+                    "start_line": 8
+                  }
+                ],
+                "kind": "delegates_to",
+                "relation_id": "r4",
+                "source": "shop.service.OrderService.create",
+                "target": "shop.repository.OrderRepository.save"
+              },
+              {
+                "confidence": 1,
+                "evidence": [
+                  {
+                    "end_line": 3,
+                    "kind": "source_span",
+                    "path": "src/shop/repository.py",
+                    "start_line": 1
+                  }
+                ],
+                "kind": "returns_unchanged",
+                "relation_id": "r5",
+                "source": "shop.repository.OrderRepository.save",
+                "target": "order_id"
+              }
+            ],
+            "summary": "Tiny Shop is a minimal Python example of layered order creation. The likely business flow is create_order \u2192 build_service \u2192 OrderService.create \u2192 OrderRepository.save \u2192 unchanged order_id. No executable, HTTP, or CLI entry point is confirmed; create_order is an inferred business entry rather than a runtime entry point.",
+            "turn_id": "onboarding",
+            "unknowns": [
+              "No HTTP server, route, CLI command, console script, or __main__ launcher is confirmed in the snapshot.",
+              "The README describes in-memory persistence, but whether persistence beyond returning the identifier was intended is unknown because OrderRepository retains no state."
+            ]
+          }
+        ]
+      },
+      "blind_id": "answer-e857e6cdfad6"
+    }
+  ]
+}

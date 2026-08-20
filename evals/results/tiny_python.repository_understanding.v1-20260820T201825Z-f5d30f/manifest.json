@@ -1,0 +1,22 @@
+{
+  "case_id": "tiny_python.repository_understanding.v1",
+  "completed_runs": 10,
+  "contract_version": "0.1",
+  "dry_run": false,
+  "failed_runs": 0,
+  "model": "gpt-5.6-sol",
+  "repetitions": 5,
+  "runs": [
+    "runs/native-r1-3df4dbde/run-result.json",
+    "runs/logiclens-r1-85fdfb38/run-result.json",
+    "runs/native-r2-63fb9bfa/run-result.json",
+    "runs/logiclens-r5-b593140e/run-result.json",
+    "runs/native-r5-ef44286e/run-result.json",
+    "runs/logiclens-r3-ffb923f3/run-result.json",
+    "runs/native-r3-e9efcedd/run-result.json",
+    "runs/native-r4-bfe1a4ae/run-result.json",
+    "runs/logiclens-r2-0a48bc1f/run-result.json",
+    "runs/logiclens-r4-adc3ff06/run-result.json"
+  ],
+  "seed": 20260820
+}

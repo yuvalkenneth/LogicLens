@@ -1,0 +1,1756 @@
+{
+  "scores": [
+    {
+      "contract_version": "0.1",
+      "score_id": "score-run-22a68ef7b77d-context-free-fair-blind-scorer-b-v1",
+      "run_id": "native-r1-3df4dbde",
+      "case_id": "tiny_python.repository_understanding.v1",
+      "scorer": {
+        "kind": "llm",
+        "name": "context-free-fair-blind-scorer-b",
+        "version": "1",
+        "configuration": {
+          "rubric_version": "evaluation-contract-0.1",
+          "oracle_inputs": [
+            "case oracle",
+            "fixture source",
+            "relation graph"
+          ],
+          "relation_recall_scope": "five call/dependency flow edges relevant to the requested order-creation trace",
+          "partial_credit": {
+            "correct_or_valid": 1,
+            "partial": 0.5,
+            "other": 0
+          }
+        },
+        "blinded_to_harness": true,
+        "blinded_to_condition": true
+      },
+      "validity": {
+        "output_schema_valid": true,
+        "snapshot_match": true,
+        "evidence_resolvable": true
+      },
+      "claim_judgments": [
+        {
+          "claim_id": "c1",
+          "matched_fact_ids": [
+            "purpose"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c2",
+          "matched_fact_ids": [],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c3",
+          "matched_fact_ids": [
+            "business-entry-function"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c4",
+          "matched_fact_ids": [
+            "order-flow"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c5",
+          "matched_fact_ids": [],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c6",
+          "matched_fact_ids": [
+            "repository-behavior"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c7",
+          "matched_fact_ids": [
+            "declared-runtime-entrypoint"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c8",
+          "matched_fact_ids": [],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        }
+      ],
+      "relation_judgments": [
+        {
+          "relation_id": "r1",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|method:shop.service.OrderService.create",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r2",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.repository.OrderRepository",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r3",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.service.OrderService",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r4",
+          "matched_oracle_edge": "method:shop.service.OrderService.create|CALLS|method:shop.repository.OrderRepository.save",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r5",
+          "matched_oracle_edge": null,
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is accurate and source-grounded, but it is not a separately canonicalized edge in the relation oracle."
+        }
+      ],
+      "decision_judgments": [],
+      "criterion_judgments": [
+        {
+          "criterion_id": "explain-purpose",
+          "value": 1,
+          "rationale": "Correctly identifies Tiny Shop as the documented three-layer order-creation demonstration."
+        },
+        {
+          "criterion_id": "distinguish-entrypoint",
+          "value": 1,
+          "rationale": "Correctly separates the likely business function create_order from the absence of any declared executable, HTTP, or CLI entry point."
+        },
+        {
+          "criterion_id": "trace-order-flow",
+          "value": 1,
+          "rationale": "Correctly covers service construction, delegation through OrderService.create, and repository save behavior."
+        },
+        {
+          "criterion_id": "recommend-reading-order",
+          "value": 1,
+          "rationale": "Provides a coherent documentation-to-orchestration-to-service-to-repository reading sequence."
+        }
+      ],
+      "metrics": {
+        "task_success": 1,
+        "claim_precision": 1,
+        "required_fact_recall": 1,
+        "evidence_precision": 1,
+        "unsupported_claim_rate": 0,
+        "correct_abstention_rate": 1,
+        "false_abstention_rate": 0,
+        "relation_precision": 1,
+        "relation_recall": 0.8,
+        "decision_precision": null,
+        "decision_recall": null
+      },
+      "human_audit": {
+        "status": "not_reviewed",
+        "reviewer": null,
+        "notes": null
+      }
+    },
+    {
+      "contract_version": "0.1",
+      "score_id": "score-run-f6edec0921d1-context-free-fair-blind-scorer-b-v1",
+      "run_id": "logiclens-r1-85fdfb38",
+      "case_id": "tiny_python.repository_understanding.v1",
+      "scorer": {
+        "kind": "llm",
+        "name": "context-free-fair-blind-scorer-b",
+        "version": "1",
+        "configuration": {
+          "rubric_version": "evaluation-contract-0.1",
+          "oracle_inputs": [
+            "case oracle",
+            "fixture source",
+            "relation graph"
+          ],
+          "relation_recall_scope": "five call/dependency flow edges relevant to the requested order-creation trace",
+          "partial_credit": {
+            "correct_or_valid": 1,
+            "partial": 0.5,
+            "other": 0
+          }
+        },
+        "blinded_to_harness": true,
+        "blinded_to_condition": true
+      },
+      "validity": {
+        "output_schema_valid": true,
+        "snapshot_match": true,
+        "evidence_resolvable": true
+      },
+      "claim_judgments": [
+        {
+          "claim_id": "c1",
+          "matched_fact_ids": [
+            "purpose"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c2",
+          "matched_fact_ids": [],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c3",
+          "matched_fact_ids": [
+            "business-entry-function",
+            "declared-runtime-entrypoint"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c4",
+          "matched_fact_ids": [
+            "service-construction"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c5",
+          "matched_fact_ids": [
+            "order-flow"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c6",
+          "matched_fact_ids": [
+            "order-flow"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c7",
+          "matched_fact_ids": [
+            "repository-behavior"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        }
+      ],
+      "relation_judgments": [
+        {
+          "relation_id": "r1",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|function:shop.main.build_service",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r2",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|method:shop.service.OrderService.create",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r3",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.repository.OrderRepository",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r4",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.service.OrderService",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r5",
+          "matched_oracle_edge": "method:shop.service.OrderService.create|CALLS|method:shop.repository.OrderRepository.save",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r6",
+          "matched_oracle_edge": null,
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is accurate and source-grounded, but it is not a separately canonicalized edge in the relation oracle."
+        }
+      ],
+      "decision_judgments": [],
+      "criterion_judgments": [
+        {
+          "criterion_id": "explain-purpose",
+          "value": 1,
+          "rationale": "Correctly identifies Tiny Shop as the documented three-layer order-creation demonstration."
+        },
+        {
+          "criterion_id": "distinguish-entrypoint",
+          "value": 1,
+          "rationale": "Correctly separates the likely business function create_order from the absence of any declared executable, HTTP, or CLI entry point."
+        },
+        {
+          "criterion_id": "trace-order-flow",
+          "value": 1,
+          "rationale": "Correctly covers service construction, delegation through OrderService.create, and repository save behavior."
+        },
+        {
+          "criterion_id": "recommend-reading-order",
+          "value": 1,
+          "rationale": "Provides a coherent documentation-to-orchestration-to-service-to-repository reading sequence."
+        }
+      ],
+      "metrics": {
+        "task_success": 1,
+        "claim_precision": 1,
+        "required_fact_recall": 1,
+        "evidence_precision": 1,
+        "unsupported_claim_rate": 0,
+        "correct_abstention_rate": 1,
+        "false_abstention_rate": 0,
+        "relation_precision": 1,
+        "relation_recall": 1,
+        "decision_precision": null,
+        "decision_recall": null
+      },
+      "human_audit": {
+        "status": "not_reviewed",
+        "reviewer": null,
+        "notes": null
+      }
+    },
+    {
+      "contract_version": "0.1",
+      "score_id": "score-run-720641f51185-context-free-fair-blind-scorer-b-v1",
+      "run_id": "native-r2-63fb9bfa",
+      "case_id": "tiny_python.repository_understanding.v1",
+      "scorer": {
+        "kind": "llm",
+        "name": "context-free-fair-blind-scorer-b",
+        "version": "1",
+        "configuration": {
+          "rubric_version": "evaluation-contract-0.1",
+          "oracle_inputs": [
+            "case oracle",
+            "fixture source",
+            "relation graph"
+          ],
+          "relation_recall_scope": "five call/dependency flow edges relevant to the requested order-creation trace",
+          "partial_credit": {
+            "correct_or_valid": 1,
+            "partial": 0.5,
+            "other": 0
+          }
+        },
+        "blinded_to_harness": true,
+        "blinded_to_condition": true
+      },
+      "validity": {
+        "output_schema_valid": true,
+        "snapshot_match": true,
+        "evidence_resolvable": true
+      },
+      "claim_judgments": [
+        {
+          "claim_id": "c1",
+          "matched_fact_ids": [
+            "purpose"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c2",
+          "matched_fact_ids": [
+            "declared-runtime-entrypoint"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c3",
+          "matched_fact_ids": [
+            "business-entry-function"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c4",
+          "matched_fact_ids": [
+            "service-construction"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c5",
+          "matched_fact_ids": [
+            "order-flow"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c6",
+          "matched_fact_ids": [
+            "repository-behavior"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c7",
+          "matched_fact_ids": [],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        }
+      ],
+      "relation_judgments": [
+        {
+          "relation_id": "r1",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|method:shop.service.OrderService.create",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r2",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.repository.OrderRepository",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r3",
+          "matched_oracle_edge": null,
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is accurate and source-grounded, but it is not a separately canonicalized edge in the relation oracle."
+        },
+        {
+          "relation_id": "r4",
+          "matched_oracle_edge": "method:shop.service.OrderService.create|CALLS|method:shop.repository.OrderRepository.save",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r5",
+          "matched_oracle_edge": null,
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is accurate and source-grounded, but it is not a separately canonicalized edge in the relation oracle."
+        }
+      ],
+      "decision_judgments": [],
+      "criterion_judgments": [
+        {
+          "criterion_id": "explain-purpose",
+          "value": 1,
+          "rationale": "Correctly identifies Tiny Shop as the documented three-layer order-creation demonstration."
+        },
+        {
+          "criterion_id": "distinguish-entrypoint",
+          "value": 1,
+          "rationale": "Correctly separates the likely business function create_order from the absence of any declared executable, HTTP, or CLI entry point."
+        },
+        {
+          "criterion_id": "trace-order-flow",
+          "value": 1,
+          "rationale": "Correctly covers service construction, delegation through OrderService.create, and repository save behavior."
+        },
+        {
+          "criterion_id": "recommend-reading-order",
+          "value": 1,
+          "rationale": "Provides a coherent documentation-to-orchestration-to-service-to-repository reading sequence."
+        }
+      ],
+      "metrics": {
+        "task_success": 1,
+        "claim_precision": 1,
+        "required_fact_recall": 1,
+        "evidence_precision": 1,
+        "unsupported_claim_rate": 0,
+        "correct_abstention_rate": 1,
+        "false_abstention_rate": 0,
+        "relation_precision": 1,
+        "relation_recall": 0.6,
+        "decision_precision": null,
+        "decision_recall": null
+      },
+      "human_audit": {
+        "status": "not_reviewed",
+        "reviewer": null,
+        "notes": null
+      }
+    },
+    {
+      "contract_version": "0.1",
+      "score_id": "score-run-df6a8f7188b0-context-free-fair-blind-scorer-b-v1",
+      "run_id": "logiclens-r5-b593140e",
+      "case_id": "tiny_python.repository_understanding.v1",
+      "scorer": {
+        "kind": "llm",
+        "name": "context-free-fair-blind-scorer-b",
+        "version": "1",
+        "configuration": {
+          "rubric_version": "evaluation-contract-0.1",
+          "oracle_inputs": [
+            "case oracle",
+            "fixture source",
+            "relation graph"
+          ],
+          "relation_recall_scope": "five call/dependency flow edges relevant to the requested order-creation trace",
+          "partial_credit": {
+            "correct_or_valid": 1,
+            "partial": 0.5,
+            "other": 0
+          }
+        },
+        "blinded_to_harness": true,
+        "blinded_to_condition": true
+      },
+      "validity": {
+        "output_schema_valid": true,
+        "snapshot_match": true,
+        "evidence_resolvable": true
+      },
+      "claim_judgments": [
+        {
+          "claim_id": "c1",
+          "matched_fact_ids": [
+            "purpose"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c2",
+          "matched_fact_ids": [
+            "declared-runtime-entrypoint"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c3",
+          "matched_fact_ids": [
+            "business-entry-function",
+            "order-flow"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c4",
+          "matched_fact_ids": [
+            "service-construction"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c5",
+          "matched_fact_ids": [
+            "order-flow",
+            "repository-behavior"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c6",
+          "matched_fact_ids": [],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        }
+      ],
+      "relation_judgments": [
+        {
+          "relation_id": "r1",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|function:shop.main.build_service",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r2",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|method:shop.service.OrderService.create",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r3",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.repository.OrderRepository",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r4",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.service.OrderService",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r5",
+          "matched_oracle_edge": "method:shop.service.OrderService.create|CALLS|method:shop.repository.OrderRepository.save",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r6",
+          "matched_oracle_edge": null,
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is accurate and source-grounded, but it is not a separately canonicalized edge in the relation oracle."
+        }
+      ],
+      "decision_judgments": [],
+      "criterion_judgments": [
+        {
+          "criterion_id": "explain-purpose",
+          "value": 1,
+          "rationale": "Correctly identifies Tiny Shop as the documented three-layer order-creation demonstration."
+        },
+        {
+          "criterion_id": "distinguish-entrypoint",
+          "value": 1,
+          "rationale": "Correctly separates the likely business function create_order from the absence of any declared executable, HTTP, or CLI entry point."
+        },
+        {
+          "criterion_id": "trace-order-flow",
+          "value": 1,
+          "rationale": "Correctly covers service construction, delegation through OrderService.create, and repository save behavior."
+        },
+        {
+          "criterion_id": "recommend-reading-order",
+          "value": 1,
+          "rationale": "Provides a coherent documentation-to-orchestration-to-service-to-repository reading sequence."
+        }
+      ],
+      "metrics": {
+        "task_success": 1,
+        "claim_precision": 1,
+        "required_fact_recall": 1,
+        "evidence_precision": 1,
+        "unsupported_claim_rate": 0,
+        "correct_abstention_rate": 1,
+        "false_abstention_rate": 0,
+        "relation_precision": 1,
+        "relation_recall": 1,
+        "decision_precision": null,
+        "decision_recall": null
+      },
+      "human_audit": {
+        "status": "not_reviewed",
+        "reviewer": null,
+        "notes": null
+      }
+    },
+    {
+      "contract_version": "0.1",
+      "score_id": "score-run-342c5e3ca609-context-free-fair-blind-scorer-b-v1",
+      "run_id": "native-r5-ef44286e",
+      "case_id": "tiny_python.repository_understanding.v1",
+      "scorer": {
+        "kind": "llm",
+        "name": "context-free-fair-blind-scorer-b",
+        "version": "1",
+        "configuration": {
+          "rubric_version": "evaluation-contract-0.1",
+          "oracle_inputs": [
+            "case oracle",
+            "fixture source",
+            "relation graph"
+          ],
+          "relation_recall_scope": "five call/dependency flow edges relevant to the requested order-creation trace",
+          "partial_credit": {
+            "correct_or_valid": 1,
+            "partial": 0.5,
+            "other": 0
+          }
+        },
+        "blinded_to_harness": true,
+        "blinded_to_condition": true
+      },
+      "validity": {
+        "output_schema_valid": true,
+        "snapshot_match": true,
+        "evidence_resolvable": true
+      },
+      "claim_judgments": [
+        {
+          "claim_id": "tiny_shop_purpose",
+          "matched_fact_ids": [
+            "purpose"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "public_entry",
+          "matched_fact_ids": [
+            "business-entry-function",
+            "order-flow"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "no_executable_entry",
+          "matched_fact_ids": [
+            "declared-runtime-entrypoint"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "business_entry",
+          "matched_fact_ids": [],
+          "verdict": "incorrect",
+          "evidence_verdict": "partial",
+          "rationale": "The cited code shows OrderService.create is the inner service operation, not the documented business-entry orchestrator; create_order has that role."
+        },
+        {
+          "claim_id": "service_construction",
+          "matched_fact_ids": [
+            "service-construction"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "order_creation_trace",
+          "matched_fact_ids": [
+            "order-flow"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "repository_behavior",
+          "matched_fact_ids": [
+            "repository-behavior"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        }
+      ],
+      "relation_judgments": [
+        {
+          "relation_id": "create_order_to_service",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|method:shop.service.OrderService.create",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "service_to_repository",
+          "matched_oracle_edge": "method:shop.service.OrderService.create|CALLS|method:shop.repository.OrderRepository.save",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "builder_injects_repository",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.service.OrderService",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "save_returns_identifier",
+          "matched_oracle_edge": null,
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is accurate and source-grounded, but it is not a separately canonicalized edge in the relation oracle."
+        }
+      ],
+      "decision_judgments": [],
+      "criterion_judgments": [
+        {
+          "criterion_id": "explain-purpose",
+          "value": 1,
+          "rationale": "Correctly identifies Tiny Shop as the documented three-layer order-creation demonstration."
+        },
+        {
+          "criterion_id": "distinguish-entrypoint",
+          "value": 0.5,
+          "rationale": "Correctly notes no declared runtime entry point, but incorrectly labels the inner service method rather than create_order as the likely business entry."
+        },
+        {
+          "criterion_id": "trace-order-flow",
+          "value": 1,
+          "rationale": "Correctly covers service construction, delegation through OrderService.create, and repository save behavior."
+        },
+        {
+          "criterion_id": "recommend-reading-order",
+          "value": 1,
+          "rationale": "Provides a coherent documentation-to-orchestration-to-service-to-repository reading sequence."
+        }
+      ],
+      "metrics": {
+        "task_success": 0.9,
+        "claim_precision": 0.8571428571428571,
+        "required_fact_recall": 1,
+        "evidence_precision": 0.9285714285714286,
+        "unsupported_claim_rate": 0,
+        "correct_abstention_rate": 1,
+        "false_abstention_rate": 0,
+        "relation_precision": 1,
+        "relation_recall": 0.6,
+        "decision_precision": null,
+        "decision_recall": null
+      },
+      "human_audit": {
+        "status": "not_reviewed",
+        "reviewer": null,
+        "notes": null
+      }
+    },
+    {
+      "contract_version": "0.1",
+      "score_id": "score-run-7ede4c24aa4e-context-free-fair-blind-scorer-b-v1",
+      "run_id": "logiclens-r3-ffb923f3",
+      "case_id": "tiny_python.repository_understanding.v1",
+      "scorer": {
+        "kind": "llm",
+        "name": "context-free-fair-blind-scorer-b",
+        "version": "1",
+        "configuration": {
+          "rubric_version": "evaluation-contract-0.1",
+          "oracle_inputs": [
+            "case oracle",
+            "fixture source",
+            "relation graph"
+          ],
+          "relation_recall_scope": "five call/dependency flow edges relevant to the requested order-creation trace",
+          "partial_credit": {
+            "correct_or_valid": 1,
+            "partial": 0.5,
+            "other": 0
+          }
+        },
+        "blinded_to_harness": true,
+        "blinded_to_condition": true
+      },
+      "validity": {
+        "output_schema_valid": true,
+        "snapshot_match": true,
+        "evidence_resolvable": true
+      },
+      "claim_judgments": [
+        {
+          "claim_id": "c1",
+          "matched_fact_ids": [
+            "purpose"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c2",
+          "matched_fact_ids": [],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c3",
+          "matched_fact_ids": [
+            "business-entry-function",
+            "order-flow"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c4",
+          "matched_fact_ids": [
+            "service-construction"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c5",
+          "matched_fact_ids": [],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c6",
+          "matched_fact_ids": [
+            "repository-behavior"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        }
+      ],
+      "relation_judgments": [
+        {
+          "relation_id": "r1",
+          "matched_oracle_edge": null,
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is accurate and source-grounded, but it is not a separately canonicalized edge in the relation oracle."
+        },
+        {
+          "relation_id": "r2",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.service.OrderService",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r3",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|function:shop.main.build_service",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r4",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|method:shop.service.OrderService.create",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r5",
+          "matched_oracle_edge": "method:shop.service.OrderService.create|CALLS|method:shop.repository.OrderRepository.save",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r6",
+          "matched_oracle_edge": null,
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is accurate and source-grounded, but it is not a separately canonicalized edge in the relation oracle."
+        }
+      ],
+      "decision_judgments": [],
+      "criterion_judgments": [
+        {
+          "criterion_id": "explain-purpose",
+          "value": 1,
+          "rationale": "Correctly identifies Tiny Shop as the documented three-layer order-creation demonstration."
+        },
+        {
+          "criterion_id": "distinguish-entrypoint",
+          "value": 1,
+          "rationale": "Correctly separates the likely business function create_order from the absence of any declared executable, HTTP, or CLI entry point."
+        },
+        {
+          "criterion_id": "trace-order-flow",
+          "value": 1,
+          "rationale": "Correctly covers service construction, delegation through OrderService.create, and repository save behavior."
+        },
+        {
+          "criterion_id": "recommend-reading-order",
+          "value": 1,
+          "rationale": "Provides a coherent documentation-to-orchestration-to-service-to-repository reading sequence."
+        }
+      ],
+      "metrics": {
+        "task_success": 1,
+        "claim_precision": 1,
+        "required_fact_recall": 1,
+        "evidence_precision": 1,
+        "unsupported_claim_rate": 0,
+        "correct_abstention_rate": 1,
+        "false_abstention_rate": 0,
+        "relation_precision": 1,
+        "relation_recall": 0.8,
+        "decision_precision": null,
+        "decision_recall": null
+      },
+      "human_audit": {
+        "status": "not_reviewed",
+        "reviewer": null,
+        "notes": null
+      }
+    },
+    {
+      "contract_version": "0.1",
+      "score_id": "score-run-466f35b65c08-context-free-fair-blind-scorer-b-v1",
+      "run_id": "native-r3-e9efcedd",
+      "case_id": "tiny_python.repository_understanding.v1",
+      "scorer": {
+        "kind": "llm",
+        "name": "context-free-fair-blind-scorer-b",
+        "version": "1",
+        "configuration": {
+          "rubric_version": "evaluation-contract-0.1",
+          "oracle_inputs": [
+            "case oracle",
+            "fixture source",
+            "relation graph"
+          ],
+          "relation_recall_scope": "five call/dependency flow edges relevant to the requested order-creation trace",
+          "partial_credit": {
+            "correct_or_valid": 1,
+            "partial": 0.5,
+            "other": 0
+          }
+        },
+        "blinded_to_harness": true,
+        "blinded_to_condition": true
+      },
+      "validity": {
+        "output_schema_valid": true,
+        "snapshot_match": true,
+        "evidence_resolvable": true
+      },
+      "claim_judgments": [
+        {
+          "claim_id": "c1",
+          "matched_fact_ids": [
+            "purpose"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c2",
+          "matched_fact_ids": [],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c3",
+          "matched_fact_ids": [
+            "order-flow"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c4",
+          "matched_fact_ids": [
+            "business-entry-function"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c5",
+          "matched_fact_ids": [
+            "service-construction"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c6",
+          "matched_fact_ids": [
+            "order-flow",
+            "repository-behavior"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c7",
+          "matched_fact_ids": [
+            "declared-runtime-entrypoint"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        }
+      ],
+      "relation_judgments": [
+        {
+          "relation_id": "r1",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.service.OrderService",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r2",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|method:shop.service.OrderService.create",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r3",
+          "matched_oracle_edge": "method:shop.service.OrderService.create|CALLS|method:shop.repository.OrderRepository.save",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r4",
+          "matched_oracle_edge": null,
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is accurate and source-grounded, but it is not a separately canonicalized edge in the relation oracle."
+        },
+        {
+          "relation_id": "r5",
+          "matched_oracle_edge": null,
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is accurate and source-grounded, but it is not a separately canonicalized edge in the relation oracle."
+        }
+      ],
+      "decision_judgments": [],
+      "criterion_judgments": [
+        {
+          "criterion_id": "explain-purpose",
+          "value": 1,
+          "rationale": "Correctly identifies Tiny Shop as the documented three-layer order-creation demonstration."
+        },
+        {
+          "criterion_id": "distinguish-entrypoint",
+          "value": 1,
+          "rationale": "Correctly separates the likely business function create_order from the absence of any declared executable, HTTP, or CLI entry point."
+        },
+        {
+          "criterion_id": "trace-order-flow",
+          "value": 1,
+          "rationale": "Correctly covers service construction, delegation through OrderService.create, and repository save behavior."
+        },
+        {
+          "criterion_id": "recommend-reading-order",
+          "value": 1,
+          "rationale": "Provides a coherent documentation-to-orchestration-to-service-to-repository reading sequence."
+        }
+      ],
+      "metrics": {
+        "task_success": 1,
+        "claim_precision": 1,
+        "required_fact_recall": 1,
+        "evidence_precision": 1,
+        "unsupported_claim_rate": 0,
+        "correct_abstention_rate": 1,
+        "false_abstention_rate": 0,
+        "relation_precision": 1,
+        "relation_recall": 0.6,
+        "decision_precision": null,
+        "decision_recall": null
+      },
+      "human_audit": {
+        "status": "not_reviewed",
+        "reviewer": null,
+        "notes": null
+      }
+    },
+    {
+      "contract_version": "0.1",
+      "score_id": "score-run-13ccbdc21d6b-context-free-fair-blind-scorer-b-v1",
+      "run_id": "native-r4-bfe1a4ae",
+      "case_id": "tiny_python.repository_understanding.v1",
+      "scorer": {
+        "kind": "llm",
+        "name": "context-free-fair-blind-scorer-b",
+        "version": "1",
+        "configuration": {
+          "rubric_version": "evaluation-contract-0.1",
+          "oracle_inputs": [
+            "case oracle",
+            "fixture source",
+            "relation graph"
+          ],
+          "relation_recall_scope": "five call/dependency flow edges relevant to the requested order-creation trace",
+          "partial_credit": {
+            "correct_or_valid": 1,
+            "partial": 0.5,
+            "other": 0
+          }
+        },
+        "blinded_to_harness": true,
+        "blinded_to_condition": true
+      },
+      "validity": {
+        "output_schema_valid": true,
+        "snapshot_match": true,
+        "evidence_resolvable": true
+      },
+      "claim_judgments": [
+        {
+          "claim_id": "c1",
+          "matched_fact_ids": [
+            "purpose"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c2",
+          "matched_fact_ids": [],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c3",
+          "matched_fact_ids": [
+            "declared-runtime-entrypoint"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c4",
+          "matched_fact_ids": [
+            "business-entry-function",
+            "order-flow"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c5",
+          "matched_fact_ids": [
+            "service-construction"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c6",
+          "matched_fact_ids": [
+            "order-flow"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c7",
+          "matched_fact_ids": [
+            "repository-behavior"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c8",
+          "matched_fact_ids": [
+            "order-flow"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        }
+      ],
+      "relation_judgments": [
+        {
+          "relation_id": "r1",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|function:shop.main.build_service",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r2",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|method:shop.service.OrderService.create",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r3",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.service.OrderService",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r4",
+          "matched_oracle_edge": "method:shop.service.OrderService.create|CALLS|method:shop.repository.OrderRepository.save",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r5",
+          "matched_oracle_edge": null,
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is accurate and source-grounded, but it is not a separately canonicalized edge in the relation oracle."
+        }
+      ],
+      "decision_judgments": [],
+      "criterion_judgments": [
+        {
+          "criterion_id": "explain-purpose",
+          "value": 1,
+          "rationale": "Correctly identifies Tiny Shop as the documented three-layer order-creation demonstration."
+        },
+        {
+          "criterion_id": "distinguish-entrypoint",
+          "value": 1,
+          "rationale": "Correctly separates the likely business function create_order from the absence of any declared executable, HTTP, or CLI entry point."
+        },
+        {
+          "criterion_id": "trace-order-flow",
+          "value": 1,
+          "rationale": "Correctly covers service construction, delegation through OrderService.create, and repository save behavior."
+        },
+        {
+          "criterion_id": "recommend-reading-order",
+          "value": 1,
+          "rationale": "Provides a coherent documentation-to-orchestration-to-service-to-repository reading sequence."
+        }
+      ],
+      "metrics": {
+        "task_success": 1,
+        "claim_precision": 1,
+        "required_fact_recall": 1,
+        "evidence_precision": 1,
+        "unsupported_claim_rate": 0,
+        "correct_abstention_rate": 1,
+        "false_abstention_rate": 0,
+        "relation_precision": 1,
+        "relation_recall": 0.8,
+        "decision_precision": null,
+        "decision_recall": null
+      },
+      "human_audit": {
+        "status": "not_reviewed",
+        "reviewer": null,
+        "notes": null
+      }
+    },
+    {
+      "contract_version": "0.1",
+      "score_id": "score-run-0998183d5910-context-free-fair-blind-scorer-b-v1",
+      "run_id": "logiclens-r2-0a48bc1f",
+      "case_id": "tiny_python.repository_understanding.v1",
+      "scorer": {
+        "kind": "llm",
+        "name": "context-free-fair-blind-scorer-b",
+        "version": "1",
+        "configuration": {
+          "rubric_version": "evaluation-contract-0.1",
+          "oracle_inputs": [
+            "case oracle",
+            "fixture source",
+            "relation graph"
+          ],
+          "relation_recall_scope": "five call/dependency flow edges relevant to the requested order-creation trace",
+          "partial_credit": {
+            "correct_or_valid": 1,
+            "partial": 0.5,
+            "other": 0
+          }
+        },
+        "blinded_to_harness": true,
+        "blinded_to_condition": true
+      },
+      "validity": {
+        "output_schema_valid": true,
+        "snapshot_match": true,
+        "evidence_resolvable": true
+      },
+      "claim_judgments": [
+        {
+          "claim_id": "purpose",
+          "matched_fact_ids": [
+            "purpose"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "technology",
+          "matched_fact_ids": [],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "no_runtime_entry",
+          "matched_fact_ids": [
+            "declared-runtime-entrypoint"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "business_entry",
+          "matched_fact_ids": [
+            "business-entry-function",
+            "order-flow"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "service_construction",
+          "matched_fact_ids": [
+            "service-construction"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "order_flow",
+          "matched_fact_ids": [
+            "order-flow"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "repository_behavior",
+          "matched_fact_ids": [
+            "repository-behavior"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        }
+      ],
+      "relation_judgments": [
+        {
+          "relation_id": "create_order_builds_service",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|function:shop.main.build_service",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "create_order_calls_service",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|method:shop.service.OrderService.create",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "build_service_constructs_repository",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.repository.OrderRepository",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "build_service_constructs_service",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.service.OrderService",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "service_saves_order",
+          "matched_oracle_edge": "method:shop.service.OrderService.create|CALLS|method:shop.repository.OrderRepository.save",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "save_returns_identifier",
+          "matched_oracle_edge": null,
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is accurate and source-grounded, but it is not a separately canonicalized edge in the relation oracle."
+        }
+      ],
+      "decision_judgments": [],
+      "criterion_judgments": [
+        {
+          "criterion_id": "explain-purpose",
+          "value": 1,
+          "rationale": "Correctly identifies Tiny Shop as the documented three-layer order-creation demonstration."
+        },
+        {
+          "criterion_id": "distinguish-entrypoint",
+          "value": 1,
+          "rationale": "Correctly separates the likely business function create_order from the absence of any declared executable, HTTP, or CLI entry point."
+        },
+        {
+          "criterion_id": "trace-order-flow",
+          "value": 1,
+          "rationale": "Correctly covers service construction, delegation through OrderService.create, and repository save behavior."
+        },
+        {
+          "criterion_id": "recommend-reading-order",
+          "value": 1,
+          "rationale": "Provides a coherent documentation-to-orchestration-to-service-to-repository reading sequence."
+        }
+      ],
+      "metrics": {
+        "task_success": 1,
+        "claim_precision": 1,
+        "required_fact_recall": 1,
+        "evidence_precision": 1,
+        "unsupported_claim_rate": 0,
+        "correct_abstention_rate": 1,
+        "false_abstention_rate": 0,
+        "relation_precision": 1,
+        "relation_recall": 1,
+        "decision_precision": null,
+        "decision_recall": null
+      },
+      "human_audit": {
+        "status": "not_reviewed",
+        "reviewer": null,
+        "notes": null
+      }
+    },
+    {
+      "contract_version": "0.1",
+      "score_id": "score-run-e857e6cdfad6-context-free-fair-blind-scorer-b-v1",
+      "run_id": "logiclens-r4-adc3ff06",
+      "case_id": "tiny_python.repository_understanding.v1",
+      "scorer": {
+        "kind": "llm",
+        "name": "context-free-fair-blind-scorer-b",
+        "version": "1",
+        "configuration": {
+          "rubric_version": "evaluation-contract-0.1",
+          "oracle_inputs": [
+            "case oracle",
+            "fixture source",
+            "relation graph"
+          ],
+          "relation_recall_scope": "five call/dependency flow edges relevant to the requested order-creation trace",
+          "partial_credit": {
+            "correct_or_valid": 1,
+            "partial": 0.5,
+            "other": 0
+          }
+        },
+        "blinded_to_harness": true,
+        "blinded_to_condition": true
+      },
+      "validity": {
+        "output_schema_valid": true,
+        "snapshot_match": true,
+        "evidence_resolvable": true
+      },
+      "claim_judgments": [
+        {
+          "claim_id": "c1",
+          "matched_fact_ids": [
+            "purpose"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c2",
+          "matched_fact_ids": [],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c3",
+          "matched_fact_ids": [
+            "declared-runtime-entrypoint"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c4",
+          "matched_fact_ids": [
+            "business-entry-function",
+            "order-flow"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c5",
+          "matched_fact_ids": [
+            "service-construction"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c6",
+          "matched_fact_ids": [],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        },
+        {
+          "claim_id": "c7",
+          "matched_fact_ids": [
+            "repository-behavior"
+          ],
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The statement is accurate and the cited fixture span directly supports it."
+        }
+      ],
+      "relation_judgments": [
+        {
+          "relation_id": "r1",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|function:shop.main.build_service",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r2",
+          "matched_oracle_edge": "function:shop.main.create_order|CALLS|method:shop.service.OrderService.create",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r3",
+          "matched_oracle_edge": "function:shop.main.build_service|CALLS|class:shop.service.OrderService",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r4",
+          "matched_oracle_edge": "method:shop.service.OrderService.create|CALLS|method:shop.repository.OrderRepository.save",
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is supported by the cited call/construction span and semantically matches this oracle flow edge."
+        },
+        {
+          "relation_id": "r5",
+          "matched_oracle_edge": null,
+          "verdict": "correct",
+          "evidence_verdict": "valid",
+          "rationale": "The stated relation is accurate and source-grounded, but it is not a separately canonicalized edge in the relation oracle."
+        }
+      ],
+      "decision_judgments": [],
+      "criterion_judgments": [
+        {
+          "criterion_id": "explain-purpose",
+          "value": 1,
+          "rationale": "Correctly identifies Tiny Shop as the documented three-layer order-creation demonstration."
+        },
+        {
+          "criterion_id": "distinguish-entrypoint",
+          "value": 1,
+          "rationale": "Correctly separates the likely business function create_order from the absence of any declared executable, HTTP, or CLI entry point."
+        },
+        {
+          "criterion_id": "trace-order-flow",
+          "value": 1,
+          "rationale": "Correctly covers service construction, delegation through OrderService.create, and repository save behavior."
+        },
+        {
+          "criterion_id": "recommend-reading-order",
+          "value": 1,
+          "rationale": "Provides a coherent documentation-to-orchestration-to-service-to-repository reading sequence."
+        }
+      ],
+      "metrics": {
+        "task_success": 1,
+        "claim_precision": 1,
+        "required_fact_recall": 1,
+        "evidence_precision": 1,
+        "unsupported_claim_rate": 0,
+        "correct_abstention_rate": 1,
+        "false_abstention_rate": 0,
+        "relation_precision": 1,
+        "relation_recall": 0.8,
+        "decision_precision": null,
+        "decision_recall": null
+      },
+      "human_audit": {
+        "status": "not_reviewed",
+        "reviewer": null,
+        "notes": null
+      }
+    }
+  ]
+}

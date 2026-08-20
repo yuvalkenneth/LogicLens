@@ -1,0 +1,64 @@
+{
+  "answers": [
+    {
+      "blind_id": "answer-22a68ef7b77d",
+      "condition": "native",
+      "repetition": 1,
+      "run_id": "native-r1-3df4dbde"
+    },
+    {
+      "blind_id": "answer-f6edec0921d1",
+      "condition": "logiclens",
+      "repetition": 1,
+      "run_id": "logiclens-r1-85fdfb38"
+    },
+    {
+      "blind_id": "answer-720641f51185",
+      "condition": "native",
+      "repetition": 2,
+      "run_id": "native-r2-63fb9bfa"
+    },
+    {
+      "blind_id": "answer-df6a8f7188b0",
+      "condition": "logiclens",
+      "repetition": 5,
+      "run_id": "logiclens-r5-b593140e"
+    },
+    {
+      "blind_id": "answer-342c5e3ca609",
+      "condition": "native",
+      "repetition": 5,
+      "run_id": "native-r5-ef44286e"
+    },
+    {
+      "blind_id": "answer-7ede4c24aa4e",
+      "condition": "logiclens",
+      "repetition": 3,
+      "run_id": "logiclens-r3-ffb923f3"
+    },
+    {
+      "blind_id": "answer-466f35b65c08",
+      "condition": "native",
+      "repetition": 3,
+      "run_id": "native-r3-e9efcedd"
+    },
+    {
+      "blind_id": "answer-13ccbdc21d6b",
+      "condition": "native",
+      "repetition": 4,
+      "run_id": "native-r4-bfe1a4ae"
+    },
+    {
+      "blind_id": "answer-0998183d5910",
+      "condition": "logiclens",
+      "repetition": 2,
+      "run_id": "logiclens-r2-0a48bc1f"
+    },
+    {
+      "blind_id": "answer-e857e6cdfad6",
+      "condition": "logiclens",
+      "repetition": 4,
+      "run_id": "logiclens-r4-adc3ff06"
+    }
+  ]
+}
