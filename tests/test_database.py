@@ -3,7 +3,14 @@ import sqlite3
 
 import pytest
 
-from logiclens.database import create_database, read_files, read_imports, read_modules
+from logiclens.database import (
+    create_database,
+    read_file_content,
+    read_files,
+    read_imports,
+    read_modules,
+    read_repository_brief_context,
+)
 from logiclens.inventory import build_inventory
 from logiclens.python_modules import analyze_python_modules
 
@@ -48,3 +55,24 @@ def test_python_structure_round_trip(tmp_path: Path) -> None:
         ("shop.main", "shop.service"),
         ("shop.service", "shop.repository"),
     ]
+
+
+def test_reads_hash_verified_file_content(tmp_path: Path) -> None:
+    inventory = build_inventory(FIXTURE)
+    database = tmp_path / "tiny.sqlite"
+    create_database(database, inventory)
+
+    assert read_file_content(database, "README.md").startswith("# Tiny Shop")
+
+
+def test_rejects_context_after_repository_changes(tmp_path: Path) -> None:
+    repository = tmp_path / "repository"
+    repository.mkdir()
+    readme = repository / "README.md"
+    readme.write_text("original", encoding="utf-8")
+    database = tmp_path / "tiny.sqlite"
+    create_database(database, build_inventory(repository))
+    readme.write_text("changed", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="no longer matches"):
+        read_repository_brief_context(database)

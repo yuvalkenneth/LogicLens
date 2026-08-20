@@ -3,10 +3,17 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 from typing import Sequence
 
-from logiclens.database import create_database, read_files, read_imports, read_modules
+from logiclens.database import (
+    create_database,
+    read_files,
+    read_imports,
+    read_modules,
+    read_repository_brief_context,
+)
 from logiclens.inventory import build_inventory
 from logiclens.python_modules import analyze_python_modules
 
@@ -30,6 +37,13 @@ def build_parser() -> argparse.ArgumentParser:
         "modules", help="List saved Python modules and import relationships."
     )
     modules_parser.add_argument("--db", required=True, type=Path)
+
+    context_parser = commands.add_parser(
+        "context", help="Build bounded context from the saved mapping."
+    )
+    context_parser.add_argument("kind", choices=["repository-brief"])
+    context_parser.add_argument("--db", required=True, type=Path)
+    context_parser.add_argument("--json", action="store_true")
     return parser
 
 
@@ -59,6 +73,11 @@ def main(argv: Sequence[str] | None = None) -> int:
                     f"{record.path}\t{record.category}\t{record.language or '-'}\t"
                     f"{record.size_bytes}\t{record.content_hash[:12]}"
                 )
+            return 0
+
+        if arguments.command == "context":
+            context = read_repository_brief_context(arguments.db)
+            print(json.dumps(context, indent=2, sort_keys=True))
             return 0
 
         print("MODULE\tKIND\tFILE")

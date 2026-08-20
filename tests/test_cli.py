@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 
 from logiclens.cli import main
 
@@ -23,3 +24,19 @@ def test_map_then_list_files(tmp_path: Path, capsys) -> None:
     modules_output = capsys.readouterr().out
     assert "shop\tpackage\tsrc/shop/__init__.py" in modules_output
     assert "shop.main\t.repository\tshop.repository\tsrc/shop/main.py:1:1" in modules_output
+
+    assert (
+        main(
+            [
+                "context",
+                "repository-brief",
+                "--db",
+                str(database),
+                "--json",
+            ]
+        )
+        == 0
+    )
+    context = json.loads(capsys.readouterr().out)
+    assert context["documents"][0]["content"].startswith("# Tiny Shop")
+    assert context["imports"][0]["target"] == "shop.repository"

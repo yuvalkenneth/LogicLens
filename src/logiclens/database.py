@@ -4,11 +4,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from hashlib import sha256
 from importlib.resources import files
 from pathlib import Path
 import sqlite3
 
-from logiclens.inventory import FileRecord, Inventory
+from logiclens.inventory import FileRecord, Inventory, build_inventory
 from logiclens.python_modules import ImportRecord, ModuleRecord, PythonStructure
 
 
@@ -163,6 +164,95 @@ def read_imports(database_path: Path) -> tuple[ModuleImportView, ...]:
             """
         ).fetchall()
     return tuple(ModuleImportView(*row) for row in rows)
+
+
+def read_file_content(database_path: Path, file_path: str) -> str:
+    source = _existing_database(database_path)
+    with sqlite3.connect(source) as connection:
+        row = connection.execute(
+            """
+            SELECT metadata.source_path, files.content_hash
+            FROM metadata, files
+            WHERE metadata.id = 1 AND files.path = ?
+            """,
+            (file_path,),
+        ).fetchone()
+    if row is None:
+        raise ValueError(f"File is not present in the mapped snapshot: {file_path}")
+
+    root = Path(row[0]).resolve()
+    target = (root / file_path).resolve()
+    if not target.is_relative_to(root) or not target.is_file():
+        raise ValueError(f"Mapped file is no longer available: {file_path}")
+
+    content = target.read_bytes()
+    if sha256(content).hexdigest() != row[1]:
+        raise ValueError(f"Mapped file has changed: {file_path}")
+    try:
+        return content.decode("utf-8")
+    except UnicodeDecodeError as error:
+        raise ValueError(f"Mapped file is not UTF-8 text: {file_path}") from error
+
+
+def read_repository_brief_context(database_path: Path) -> dict[str, object]:
+    source = _existing_database(database_path)
+    with sqlite3.connect(source) as connection:
+        source_path, snapshot_hash = connection.execute(
+            "SELECT source_path, snapshot_hash FROM metadata WHERE id = 1"
+        ).fetchone()
+
+    current_inventory = build_inventory(Path(source_path))
+    if current_inventory.snapshot_hash != snapshot_hash:
+        raise ValueError("Repository no longer matches the mapped snapshot")
+
+    file_records = read_files(source)
+    modules = read_modules(source)
+    imports = read_imports(source)
+    readable_files = [
+        record
+        for record in file_records
+        if record.category in {"documentation", "manifest"}
+    ]
+    return {
+        "snapshot_id": snapshot_hash,
+        "files": [
+            {
+                "path": record.path,
+                "category": record.category,
+                "language": record.language,
+            }
+            for record in file_records
+        ],
+        "documents": [
+            {
+                "path": record.path,
+                "category": record.category,
+                "content": read_file_content(source, record.path),
+            }
+            for record in readable_files
+        ],
+        "modules": [
+            {
+                "name": module.name,
+                "kind": module.kind,
+                "file": module.file_path,
+            }
+            for module in modules
+        ],
+        "imports": [
+            {
+                "source": record.source_module,
+                "imported_text": record.imported_name,
+                "target": record.target_module,
+                "evidence": {
+                    "file": record.file_path,
+                    "line": record.start_line,
+                    "column": record.start_column,
+                },
+            }
+            for record in imports
+        ],
+    }
 
 
 def _existing_database(database_path: Path) -> Path:
