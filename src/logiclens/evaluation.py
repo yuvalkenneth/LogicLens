@@ -395,12 +395,28 @@ def _codex_answer_schema(root: Path, case: dict[str, Any]) -> dict[str, Any]:
                 for key, item in value.items()
                 if key not in {"$schema", "$id", "allOf"}
             }
+            if "const" in converted and "type" not in converted:
+                converted["type"] = _json_type(converted["const"])
             return converted
         if isinstance(value, list):
             return [replace(item) for item in value]
         return value
 
     return replace(schema)
+
+
+def _json_type(value: Any) -> str:
+    if isinstance(value, str):
+        return "string"
+    if isinstance(value, bool):
+        return "boolean"
+    if isinstance(value, int):
+        return "integer"
+    if isinstance(value, float):
+        return "number"
+    if value is None:
+        return "null"
+    raise ValueError(f"unsupported JSON const type: {type(value).__name__}")
 
 
 def _check_case(case: dict[str, Any], root: Path) -> None:

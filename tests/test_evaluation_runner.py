@@ -61,6 +61,7 @@ def test_codex_schema_uses_supported_composition() -> None:
     assert '"oneOf"' not in encoded
     assert '"anyOf"' in encoded
     assert "evidence.schema.json" not in encoded
+    assert schema["properties"]["contract_version"]["type"] == "string"
 
 
 def test_strict_claim_evidence_postcondition() -> None:
