@@ -5,6 +5,7 @@ from logiclens.cli import main
 
 
 FIXTURE = Path(__file__).parent / "fixtures" / "tiny_python"
+ROOT = Path(__file__).parents[1]
 
 
 def test_map_then_list_files(tmp_path: Path, capsys) -> None:
@@ -40,3 +41,23 @@ def test_map_then_list_files(tmp_path: Path, capsys) -> None:
     context = json.loads(capsys.readouterr().out)
     assert context["documents"][0]["content"].startswith("# Tiny Shop")
     assert context["imports"][0]["target"] == "shop.repository"
+
+    brief = ROOT / "evals" / "tiny_python" / "repository-brief.example.json"
+    expectations = (
+        ROOT / "evals" / "tiny_python" / "repository-brief.expectations.json"
+    )
+    assert (
+        main(
+            [
+                "validate-brief",
+                str(brief),
+                "--db",
+                str(database),
+                "--expectations",
+                str(expectations),
+            ]
+        )
+        == 0
+    )
+    validation = json.loads(capsys.readouterr().out)
+    assert validation == {"valid": True, "errors": []}

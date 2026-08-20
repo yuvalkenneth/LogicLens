@@ -1,0 +1,4 @@
+interface:
+  display_name: "LogicLens"
+  short_description: "Map and explain unfamiliar repositories"
+  default_prompt: "Use $logiclens to map this repository and produce an evidence-backed onboarding brief."

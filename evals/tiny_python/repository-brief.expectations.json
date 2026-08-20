@@ -1,0 +1,11 @@
+{
+  "purpose_terms": ["order", "creation"],
+  "technology_names": ["Python"],
+  "required_component_member_groups": [
+    ["module:shop.main", "module:shop.service"],
+    ["module:shop.repository"]
+  ],
+  "maximum_confirmed_entry_points": 0,
+  "maximum_flows": 0,
+  "required_unknown_terms": ["entry point", "function"]
+}

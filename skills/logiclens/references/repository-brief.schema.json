@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/yuvalkenneth/LogicLens/repository-brief.schema.json",
+  "title": "LogicLens Repository Brief 0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "brief_version",
+    "snapshot_id",
+    "purpose",
+    "technologies",
+    "components",
+    "entry_points",
+    "flows",
+    "reading_order",
+    "unknowns"
+  ],
+  "properties": {
+    "brief_version": {"const": "0.1"},
+    "snapshot_id": {"type": "string", "minLength": 1},
+    "purpose": {"$ref": "#/$defs/purpose"},
+    "technologies": {"type": "array", "items": {"$ref": "#/$defs/technology"}},
+    "components": {"type": "array", "items": {"$ref": "#/$defs/component"}},
+    "entry_points": {"type": "array", "items": {"$ref": "#/$defs/entryPoint"}},
+    "flows": {"type": "array", "items": {"$ref": "#/$defs/flow"}},
+    "reading_order": {"type": "array", "items": {"$ref": "#/$defs/readingItem"}},
+    "unknowns": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  },
+  "$defs": {
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "purpose": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary", "evidence", "confidence"],
+      "properties": {
+        "summary": {"type": "string", "minLength": 1},
+        "evidence": {"$ref": "#/$defs/evidence"},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "technology": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "role", "evidence"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "role": {"type": "string", "minLength": 1},
+        "evidence": {"$ref": "#/$defs/evidence"}
+      }
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "members", "reason", "evidence"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "members": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "reason": {"type": "string", "minLength": 1},
+        "evidence": {"$ref": "#/$defs/evidence"}
+      }
+    },
+    "entryPoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target", "status", "reason", "evidence"],
+      "properties": {
+        "target": {"type": "string", "minLength": 1},
+        "status": {"enum": ["candidate", "confirmed"]},
+        "reason": {"type": "string", "minLength": 1},
+        "evidence": {"$ref": "#/$defs/evidence"}
+      }
+    },
+    "flow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "steps", "reason", "evidence"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "steps": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "reason": {"type": "string", "minLength": 1},
+        "evidence": {"$ref": "#/$defs/evidence"}
+      }
+    },
+    "readingItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target", "reason"],
+      "properties": {
+        "target": {"type": "string", "minLength": 1},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

@@ -14,6 +14,7 @@ from logiclens.database import (
     read_modules,
     read_repository_brief_context,
 )
+from logiclens.brief import validate_repository_brief
 from logiclens.inventory import build_inventory
 from logiclens.python_modules import analyze_python_modules
 
@@ -44,6 +45,13 @@ def build_parser() -> argparse.ArgumentParser:
     context_parser.add_argument("kind", choices=["repository-brief"])
     context_parser.add_argument("--db", required=True, type=Path)
     context_parser.add_argument("--json", action="store_true")
+
+    validate_parser = commands.add_parser(
+        "validate-brief", help="Validate an agent-produced Repository Brief."
+    )
+    validate_parser.add_argument("brief", type=Path)
+    validate_parser.add_argument("--db", required=True, type=Path)
+    validate_parser.add_argument("--expectations", type=Path)
     return parser
 
 
@@ -79,6 +87,17 @@ def main(argv: Sequence[str] | None = None) -> int:
             context = read_repository_brief_context(arguments.db)
             print(json.dumps(context, indent=2, sort_keys=True))
             return 0
+
+        if arguments.command == "validate-brief":
+            brief = json.loads(arguments.brief.read_text(encoding="utf-8"))
+            expectations = (
+                json.loads(arguments.expectations.read_text(encoding="utf-8"))
+                if arguments.expectations
+                else None
+            )
+            errors = validate_repository_brief(brief, arguments.db, expectations)
+            print(json.dumps({"valid": not errors, "errors": errors}, indent=2))
+            return 1 if errors else 0
 
         print("MODULE\tKIND\tFILE")
         for module in read_modules(arguments.db):

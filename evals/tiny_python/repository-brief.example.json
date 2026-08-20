@@ -1,0 +1,54 @@
+{
+  "brief_version": "0.1",
+  "snapshot_id": "dcdad6f9ef1eb8581fffb1b66fb34f3b4f8bb3de8e60f1a04d51946d32c611cf",
+  "purpose": {
+    "summary": "Tiny Shop is a Python demonstration of a three-layer order-creation design.",
+    "evidence": ["file:README.md"],
+    "confidence": 0.98
+  },
+  "technologies": [
+    {
+      "name": "Python",
+      "role": "Implementation language and package runtime",
+      "evidence": ["file:pyproject.toml", "module:shop"]
+    }
+  ],
+  "components": [
+    {
+      "name": "Application",
+      "members": ["module:shop.main", "module:shop.service"],
+      "reason": "The main module depends on the service module to coordinate the documented use case.",
+      "evidence": ["import:shop.main->shop.service"]
+    },
+    {
+      "name": "Persistence",
+      "members": ["module:shop.repository"],
+      "reason": "The documented repository role is isolated in the repository module.",
+      "evidence": ["file:README.md", "module:shop.repository"]
+    }
+  ],
+  "entry_points": [],
+  "flows": [],
+  "reading_order": [
+    {
+      "target": "file:README.md",
+      "reason": "Start with the documented intent before inspecting the module structure."
+    },
+    {
+      "target": "module:shop.main",
+      "reason": "It is the top of the mapped internal dependency direction."
+    },
+    {
+      "target": "module:shop.service",
+      "reason": "It connects the main and repository modules."
+    },
+    {
+      "target": "module:shop.repository",
+      "reason": "It is the terminal module in the mapped dependency direction."
+    }
+  ],
+  "unknowns": [
+    "No executable, HTTP, or CLI entry point is confirmed by the current map.",
+    "Function-level behavior and business flows require symbol and call evidence."
+  ]
+}
