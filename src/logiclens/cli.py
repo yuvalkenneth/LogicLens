@@ -59,6 +59,12 @@ def build_parser() -> argparse.ArgumentParser:
     validate_parser.add_argument("--db", required=True, type=Path)
     validate_parser.add_argument("--expectations", type=Path)
 
+    wiki_parser = commands.add_parser(
+        "wiki", help="Create a filesystem wiki scaffold from a saved mapping."
+    )
+    wiki_parser.add_argument("--db", required=True, type=Path)
+    wiki_parser.add_argument("--output", required=True, type=Path)
+
     eval_parser = commands.add_parser(
         "eval", help="Run a paired native-versus-LogicLens Codex evaluation."
     )
@@ -134,6 +140,13 @@ def main(argv: Sequence[str] | None = None) -> int:
             errors = validate_repository_brief(brief, arguments.db, expectations)
             print(json.dumps({"valid": not errors, "errors": errors}, indent=2))
             return 1 if errors else 0
+
+        if arguments.command == "wiki":
+            from logiclens.wiki import initialize_wiki
+
+            initialize_wiki(arguments.db, arguments.output)
+            print(f"Saved wiki scaffold to: {arguments.output}")
+            return 0
 
         if arguments.command == "symbols":
             print("ID\tKIND\tFILE\tLOCATION\tSIGNATURE")

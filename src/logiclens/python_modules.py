@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import ast
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 
@@ -65,17 +64,18 @@ def _node_text(node: Node, source: bytes) -> str:
     return source[node.start_byte : node.end_byte].decode("utf-8")
 
 
-def _walk(node: Node):
-    yield node
-    for child in node.children:
-        yield from _walk(child)
+def _named_children(node: Node):
+    for index in range(node.named_child_count):
+        child = node.named_child(index)
+        if child is not None:
+            yield child
 
 
 def _definition(node: Node) -> tuple[Node, Node] | None:
     if node.type in {"class_definition", "function_definition"}:
         return node, node
     if node.type == "decorated_definition":
-        for child in node.named_children:
+        for child in _named_children(node):
             if child.type in {"class_definition", "function_definition"}:
                 return child, node
     return None
@@ -83,19 +83,26 @@ def _definition(node: Node) -> tuple[Node, Node] | None:
 
 def _docstring(definition: Node, source: bytes) -> str | None:
     body = definition.child_by_field_name("body")
-    if body is None or not body.named_children:
+    if body is None or body.named_child_count == 0:
         return None
-    statement = body.named_children[0]
-    if statement.type != "expression_statement" or not statement.named_children:
+    statement = body.named_child(0)
+    if statement is None or statement.type != "expression_statement":
         return None
-    value = statement.named_children[0]
+    value = statement.named_child(0)
+    if value is None:
+        return None
     if value.type not in {"string", "concatenated_string"}:
         return None
-    try:
-        parsed = ast.literal_eval(_node_text(value, source))
-    except (SyntaxError, ValueError):
+    literal = _node_text(value, source)
+    prefix_length = 0
+    while prefix_length < len(literal) and literal[prefix_length].lower() in "rubf":
+        prefix_length += 1
+    if "b" in literal[:prefix_length].lower() or "f" in literal[:prefix_length].lower():
         return None
-    return parsed if isinstance(parsed, str) else None
+    for quote in ('"""', "'''", '"', "'"):
+        if literal[prefix_length:].startswith(quote) and literal.endswith(quote):
+            return literal[prefix_length + len(quote) : -len(quote)]
+    return None
 
 
 def _signature(definition: Node, source: bytes) -> str | None:
@@ -151,7 +158,7 @@ def _extract_symbols(
     root: Node, source: bytes, file_path: str, module_name: str
 ) -> list[SymbolRecord]:
     symbols: list[SymbolRecord] = []
-    for node in root.named_children:
+    for node in _named_children(root):
         match = _definition(node)
         if match is None:
             continue
@@ -165,7 +172,7 @@ def _extract_symbols(
         body = definition.child_by_field_name("body")
         if body is None:
             continue
-        for member in body.named_children:
+        for member in _named_children(body):
             member_match = _definition(member)
             if member_match is None or member_match[0].type != "function_definition":
                 continue
@@ -185,7 +192,7 @@ def _extract_symbols(
 
 def _imported_modules(node: Node, source: bytes) -> tuple[str, ...]:
     modules: list[str] = []
-    for child in node.named_children:
+    for child in _named_children(node):
         if child.type == "dotted_name":
             modules.append(_node_text(child, source))
         elif child.type == "aliased_import" and child.named_children:
@@ -196,7 +203,7 @@ def _imported_modules(node: Node, source: bytes) -> tuple[str, ...]:
 def _from_import_names(node: Node, source: bytes) -> tuple[str, ...]:
     names: list[str] = []
     module_node = node.child_by_field_name("module_name")
-    for child in node.named_children:
+    for child in _named_children(node):
         if child == module_node:
             continue
         if child.type == "dotted_name":
@@ -237,7 +244,7 @@ def _target_file(
     return None
 
 
-def analyze_python_modules(inventory: Inventory) -> PythonStructure:
+def _analyze_tree_sitter_modules(inventory: Inventory) -> PythonStructure:
     python_paths = {
         record.path
         for record in inventory.files
@@ -265,7 +272,9 @@ def analyze_python_modules(inventory: Inventory) -> PythonStructure:
         symbols.extend(
             _extract_symbols(tree.root_node, source, file_path, source_module.name)
         )
-        for node in _walk(tree.root_node):
+        # Module dependencies are top-level imports. Ignoring imports nested in
+        # functions avoids treating dynamic runtime behavior as a module edge.
+        for node in _named_children(tree.root_node):
             imported_name: str | None = None
             target_file_path: str | None = None
 
@@ -305,7 +314,12 @@ def analyze_python_modules(inventory: Inventory) -> PythonStructure:
                         node,
                     )
                 )
+        # The binding ties nodes to their tree. Release both before parsing the
+        # next file so large repositories do not retain an invalid native tree.
+        node = None
+        del tree
 
+    del parser
     imports.sort(
         key=lambda record: (
             record.source_file_path,
@@ -322,6 +336,13 @@ def analyze_python_modules(inventory: Inventory) -> PythonStructure:
         )
     )
     return PythonStructure(modules, tuple(imports), tuple(symbols))
+
+
+def analyze_python_modules(inventory: Inventory) -> PythonStructure:
+    """Extract Python structure with the standard library's stable AST."""
+    from logiclens.python_ast_modules import analyze
+
+    return analyze(inventory)
 
 
 def _record_import(
